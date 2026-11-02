@@ -30,10 +30,10 @@ function makeFrags(from: number, to: number, rows: number, side: -1 | 1, seed: n
         y: from + r * rh,
         w: cw,
         h: rh,
-        dx: (spread * 30 + (rand(i) - 0.5) * 30) * dist,
-        dy: side * (12 + rand(i + 1) * 28) * dist,
+        dx: (spread * 14 + (rand(i) - 0.5) * 22) * dist,
+        dy: (side === -1 ? 20 : 40) + rand(i + 1) * 90 * dist,
         dz: (rand(i + 2) - 0.3) * 120 * dist,
-        rx: side * -(6 + rand(i + 3) * 18) * dist,
+        rx: (8 + rand(i + 3) * 22) * dist,
         ry: (rand(i + 4) - 0.5) * 40 * dist,
         rz: (rand(i + 5) - 0.5) * 24 * dist,
       });
@@ -45,10 +45,63 @@ function makeFrags(from: number, to: number, rows: number, side: -1 | 1, seed: n
 const TOP = makeFrags(0, MID_FROM, 3, -1, 1);
 const BOTTOM = makeFrags(MID_TO, H, 3, 1, 100);
 
+
+const Svg = {
+  rebar: (
+    <svg viewBox="0 0 60 14" className="h-[14px] w-[60px] text-primary"><g stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M2 4 L58 2" /><path d="M2 11 L56 12" /></g><g stroke="currentColor" strokeWidth="1"><path d="M10 2v10M22 2v10M34 2v10M46 2v10" /></g></svg>
+  ),
+  window: (
+    <svg viewBox="0 0 34 44" className="h-11 w-[34px]"><rect x="1.5" y="1.5" width="31" height="41" fill="var(--muted)" stroke="var(--foreground)" strokeWidth="3" /><path d="M17 2v40M2 22h30" stroke="var(--foreground)" strokeWidth="2" /><path d="M6 8l8 10M22 26l6 10" stroke="var(--slate)" strokeWidth="1" /></svg>
+  ),
+  pipe: (
+    <svg viewBox="0 0 90 14" className="h-[14px] w-[90px]"><rect x="0" y="3" width="90" height="8" rx="4" fill="var(--slate)" /><rect x="20" y="1" width="6" height="12" fill="var(--muted-foreground)" /><rect x="64" y="1" width="6" height="12" fill="var(--muted-foreground)" /></svg>
+  ),
+  ac: (
+    <svg viewBox="0 0 48 32" className="h-8 w-12"><rect x="1" y="1" width="46" height="30" rx="2" fill="var(--foreground)" /><circle cx="17" cy="16" r="10" fill="var(--muted)" /><path d="M17 6v20M7 16h20M10 9l14 14M24 9 10 23" stroke="var(--slate)" strokeWidth="1.5" /><path d="M32 6h11M32 11h11M32 16h11M32 21h11M32 26h11" stroke="var(--slate)" strokeWidth="1.5" /></svg>
+  ),
+  duct: (
+    <svg viewBox="0 0 70 26" className="h-[26px] w-[70px]"><rect x="1" y="1" width="68" height="24" fill="var(--muted-foreground)" stroke="var(--slate)" strokeWidth="2" /><path d="M14 1v24M28 1v24M42 1v24M56 1v24" stroke="var(--slate)" strokeWidth="1.5" /></svg>
+  ),
+};
+
+type Debris = { kind: keyof typeof Svg; x: number; y: number; fall: number; drift: number; rot: number; at: number };
+const DEBRIS: Debris[] = [
+  { kind: "rebar", x: 20, y: 40, fall: 380, drift: -70, rot: -140, at: 0.15 },
+  { kind: "duct", x: 280, y: 20, fall: 420, drift: 90, rot: 120, at: 0.25 },
+  { kind: "ac", x: 300, y: 120, fall: 360, drift: 60, rot: 200, at: 0.1 },
+  { kind: "window", x: 150, y: 80, fall: 400, drift: -30, rot: 95, at: 0.35 },
+  { kind: "pipe", x: 10, y: 180, fall: 340, drift: -90, rot: -60, at: 0.2 },
+  { kind: "ac", x: 10, y: 90, fall: 390, drift: -50, rot: -230, at: 0.45 },
+  { kind: "rebar", x: 300, y: 225, fall: 300, drift: 100, rot: 170, at: 0.3 },
+  { kind: "window", x: 60, y: 380, fall: 160, drift: -80, rot: -110, at: 0.4 },
+  { kind: "pipe", x: 250, y: 400, fall: 140, drift: 110, rot: 80, at: 0.2 },
+  { kind: "duct", x: 140, y: 360, fall: 180, drift: 40, rot: -150, at: 0.5 },
+  { kind: "rebar", x: 180, y: 345, fall: 200, drift: -40, rot: 210, at: 0.1 },
+];
+
+function DebrisItem({ d, k }: { d: Debris; k: number }) {
+  const p = Math.max(0, (k - d.at) / (1 - d.at)); // 0..1 once it breaks off
+  const g = p * p; // gravity: accelerates
+  return (
+    <div
+      className="absolute z-20 transition-transform duration-500 ease-in"
+      style={{
+        left: d.x,
+        top: d.y,
+        opacity: p > 0 ? 1 : 0,
+        transform: `translate3d(${d.drift * p}px, ${d.fall * g}px, ${40 * p}px) rotate(${d.rot * p}deg)`,
+        transition: "transform 0.5s ease-in, opacity 0.2s",
+      }}
+    >
+      {Svg[d.kind]}
+    </div>
+  );
+}
+
 function Piece({ f, k, nx, ny }: { f: Frag; k: number; nx: number; ny: number }) {
   // direction of the cursor skews the debris; k = intensity 0..1
-  const tx = (f.dx + nx * 25) * k;
-  const ty = (f.dy + ny * 10) * k;
+  const tx = (f.dx + nx * 10) * k;
+  const ty = f.dy * k * k;
   const tz = f.dz * k;
   return (
     <div
@@ -104,6 +157,8 @@ export function HeroBuilding() {
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
         {BOTTOM.map((f, i) => <Piece key={`b${i}`} f={f} {...s} />)}
+
+        {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
 
         {/* Stable controlled floor */}
         <div className="absolute left-0 z-10 overflow-hidden" style={{ top: MID_FROM, width: W, height: MID_TO - MID_FROM }}>
