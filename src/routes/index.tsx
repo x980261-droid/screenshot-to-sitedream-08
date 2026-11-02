@@ -123,7 +123,7 @@ function Index() {
                 Все услуги
               </a>
             </div>
-            <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+            <p style={{ transform: "translateY(100%)" }} className="mt-6 max-w-xl text-lg text-muted-foreground">
               Контролируем каждый этап строительства на соответствие СП и ГОСТ, исключаем скрытые дефекты и
               оптимизируем затраты заказчика без потери качества.
             </p>
