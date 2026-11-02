@@ -114,7 +114,7 @@ function Index() {
             <div style={{ transform: "translateY(-73px)" }} className="mb-6 inline-flex items-center gap-2 border border-safe/40 px-3 py-1 font-mono text-xs text-safe">
               ● НЕЗАВИСИМЫЙ ИНЖЕНЕРНЫЙ КОНТРОЛЬ
             </div>
-            <h1 className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
+            <h1 style={{ transform: "translateY(-85px)" }} className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
               Технический аудит и строительный контроль
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
