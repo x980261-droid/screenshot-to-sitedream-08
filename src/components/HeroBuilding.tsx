@@ -329,6 +329,12 @@ export function HeroBuilding() {
       {/* Text-legibility shade sits under the sparks so the flash keeps its full brightness */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
       <div className="pointer-events-none absolute" style={{ left: "50%", bottom: 0, width: W, height: IMG_H, transform: `translateX(-50%) scale(${sc})`, transformOrigin: "bottom center" }}>
+        {/* Extra sign copy above the shade adds ~25% brightness. */}
+        <svg className="pointer-events-none absolute select-none" style={{ left: SIGN.x, top: SIGN.y, overflow: "visible", opacity: 0.25 }}
+          width={SIGN.w} height={SIGN.h} viewBox={`0 0 ${SIGN.w} ${SIGN.h}`}>
+          <text className="sign-neon" x="54.9" y="8.8" textAnchor="middle" textLength="64" lengthAdjust="spacingAndGlyphs">ВЕРИФИКАЦИЯ</text>
+          <text className="sign-neon" x="54.1" y="17.2" textAnchor="middle" textLength="107" lengthAdjust="spacingAndGlyphs">СТРОИТЕЛЬНОЙ ДОКУМЕНТАЦИИ</text>
+        </svg>
         {SPARK_SEQUENCE.map((p, i) => <Spark key={`s${i}`} p={p} i={i} k={s.k} />)}
       </div>
     </div>
