@@ -202,9 +202,11 @@ function Index() {
             Проверки до начала инструментального контроля
           </div>
           <div className="mb-16">
-            <SectionHead index="Этап 0" title="Предварительная экспертиза и верификация исходных данных" />
             <div className="border bg-card">
               <div className="border-b px-8 py-8">
+                <p className="mb-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                  Этап 0 — Предварительная экспертиза и верификация исходных данных
+                </p>
                 <h3 className="max-w-3xl text-lg font-bold leading-tight tracking-tight md:text-[22.5px]">
                   Входной аудит и экспертиза проектно-сметной документации
                 </h3>
