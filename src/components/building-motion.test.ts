@@ -4,6 +4,7 @@ import {
   CRACK_UPPER,
   FALL_DURATION_MS,
   FIXED_FLOORS_FROM,
+  SEAMS,
   crackClipPath,
   crackYAt,
   facadeDeformation,

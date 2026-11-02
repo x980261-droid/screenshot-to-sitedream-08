@@ -55,11 +55,11 @@ const STATIC_CLIP = crackClipPath({ x: 0, y: STATIC_FROM, w: W, h: H - STATIC_FR
 const CRACK_BOTTOM_MAX = Math.max(...CRACK_LOWER.map((p) => p.y));
 const CRACK_UPPER_MAX = Math.max(...CRACK_UPPER.map((p) => p.y));
 const seamMax = (r: number) => (r < SEAMS.length ? Math.max(...SEAMS[r].map((p) => p.y)) : CRACK_UPPER_MAX);
+const topFrags = makeFrags(0, MID_TO, 6, -1, 1);
 const TOP: Frag[] = [];
 for (let r = 0; r < 6; r++) {
-  const frags = makeFrags(r * (MID_TO / 6), (r + 1) * (MID_TO / 6), 1, -1, 1 + r);
   for (let c = 0; c < COLS; c++) {
-    const f = frags.at(c);
+    const f = topFrags.at(r * COLS + c);
     if (!f) continue;
     const ext = { ...f, h: seamMax(r) - f.y };
     TOP.push({ ...ext, clip: r > 0 ? crackClipPath(ext, SEAMS[r - 1], undefined) : undefined });
