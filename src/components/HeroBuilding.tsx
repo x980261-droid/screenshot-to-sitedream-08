@@ -316,11 +316,21 @@ export function HeroBuilding() {
             className="absolute left-0 block max-w-none select-none" style={{ top: -H, width: W, height: IMG_H }} />
         </div>
 
-        {/* White sign sits under the shade, without neon glow. */}
+        {/* Sign under the shade: light wave sweeps white -> yellow -> black every 10s. */}
         <svg className="pointer-events-none absolute z-10 select-none" style={{ left: SIGN.x, top: SIGN.y, overflow: "visible" }}
           width={SIGN.w} height={SIGN.h} viewBox={`0 0 ${SIGN.w} ${SIGN.h}`}>
-          <text className="sign-neon" x="54.9" y="8.8" textAnchor="middle" textLength="64" lengthAdjust="spacingAndGlyphs">ВЕРИФИКАЦИЯ</text>
-          <text className="sign-neon" x="54.1" y="17.2" textAnchor="middle" textLength="107" lengthAdjust="spacingAndGlyphs">СТРОИТЕЛЬНОЙ ДОКУМЕНТАЦИИ</text>
+          <defs>
+            <linearGradient id="signWaveA" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="108" y2="0">
+              <stop offset="0" stopColor="#ffffff" />
+              <stop offset="0.42" stopColor="#ffffff" />
+              <stop offset="0.55" stopColor="#ffe600" />
+              <stop offset="0.72" stopColor="#000000" />
+              <stop offset="1" stopColor="#000000" />
+              <animateTransform attributeName="gradientTransform" type="translate" values="216 0; -324 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
+            </linearGradient>
+          </defs>
+          <text className="sign-neon" fill="url(#signWaveA)" x="54.9" y="8.8" textAnchor="middle" textLength="64" lengthAdjust="spacingAndGlyphs">ВЕРИФИКАЦИЯ</text>
+          <text className="sign-neon" fill="url(#signWaveA)" x="54.1" y="17.2" textAnchor="middle" textLength="107" lengthAdjust="spacingAndGlyphs">СТРОИТЕЛЬНОЙ ДОКУМЕНТАЦИИ</text>
         </svg>
 
       </div>
