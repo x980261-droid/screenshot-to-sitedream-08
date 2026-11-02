@@ -106,8 +106,8 @@ export function withJaggedLeft(frag: { x: number; y: number; w: number; h: numbe
   return `polygon(${[...body, ...jag].join(", ")})`;
 }
 
-// Electrical sparks at the crossings of moving facade parts: horizontal fracture
-// seams × vertical breaks between columns. Only 25% of the crossings spark.
+// Welding sparks at the crossings of moving facade parts: horizontal fracture
+// seams × vertical breaks between columns. Only 5% of the crossings spark.
 export type SparkPoint = { x: number; y: number };
 
 const SPARK_WIDTH = 760;
