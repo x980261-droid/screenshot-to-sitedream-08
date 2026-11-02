@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import building from "@/assets/building-wide.jpg";
-import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, SPARK_BURST_DURATION_MS, SPARK_INTERSECTIONS, VERTICAL_AMP, crackClipPath, facadeDeformation, verticalCrack, withJaggedLeft } from "./building-motion";
+import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, SPARK_BURST_DURATION_MS, SPARK_SEQUENCE, VERTICAL_AMP, crackClipPath, facadeDeformation, sparkDelayMs, verticalCrack, withJaggedLeft } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -182,8 +182,10 @@ function Spark({ p, i, k }: { p: { x: number; y: number }; i: number; k: number 
   const [phase, setPhase] = useState<"idle" | "active" | "spent">("idle");
   const triggered = k > 0.1;
   useEffect(() => {
-    if (triggered && phase === "idle") setPhase("active");
-  }, [triggered, phase]);
+    if (!triggered || phase !== "idle") return;
+    const timer = setTimeout(() => setPhase("active"), sparkDelayMs(i));
+    return () => clearTimeout(timer);
+  }, [triggered, phase, i]);
   useEffect(() => {
     if (phase !== "active") return;
     const timer = setTimeout(() => setPhase("spent"), SPARK_BURST_DURATION_MS);
@@ -195,9 +197,9 @@ function Spark({ p, i, k }: { p: { x: number; y: number }; i: number; k: number 
       className="spark-weld"
       style={{ left: p.x, top: p.y }}
     >
-      {Array.from({ length: 18 }, (_, j) => {
-        const ang = (j / 18) * Math.PI * 2 + i + rand(j + 30) * 0.3;
-        const dist = 18 + rand(j + 60) * 36;
+      {Array.from({ length: 48 }, (_, j) => {
+        const ang = (j / 12) * Math.PI * 2 + i + rand(j + 30) * 0.3;
+        const dist = 24 + rand(j + 60) * 46;
         return (
           <span
             key={j}
@@ -206,8 +208,8 @@ function Spark({ p, i, k }: { p: { x: number; y: number }; i: number; k: number 
               "--dx": `${(Math.cos(ang) * dist).toFixed(1)}px`,
               "--dy": `${(Math.sin(ang) * dist + 10).toFixed(1)}px`,
               "--angle": `${(ang * 180 / Math.PI).toFixed(1)}deg`,
-              animationDelay: `${((j % 6) * 0.045).toFixed(3)}s`,
-              animationDuration: `${0.5 + rand(j + 90) * 0.3}s`,
+              animationDelay: `${(j * 0.033).toFixed(3)}s`,
+              animationDuration: `${0.6 + rand(j + 90) * 0.2}s`,
             } as CSSProperties}
           />
         );
@@ -294,7 +296,7 @@ export function HeroBuilding() {
 
         {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
 
-        {SPARK_INTERSECTIONS.map((p, i) => <Spark key={`s${i}`} p={p} i={i} k={s.k} />)}
+        {SPARK_SEQUENCE.map((p, i) => <Spark key={`s${i}`} p={p} i={i} k={s.k} />)}
 
         {/* Stable floors 1-2: first residential floor and shop ground floor, jagged broken-concrete top edge */}
         <div className="absolute left-0 z-10 overflow-hidden" style={{ top: STATIC_FROM, width: W, height: H - STATIC_FROM, clipPath: STATIC_CLIP }}>
