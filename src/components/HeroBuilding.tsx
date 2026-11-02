@@ -197,7 +197,6 @@ export function HeroBuilding() {
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
           {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
-          {BOTTOM.map((f, i) => <Piece key={`b${i}`} f={f} {...s} />)}
         </div>
 
         {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
@@ -215,10 +214,10 @@ export function HeroBuilding() {
           </div>
         </div>
 
-        {/* Stable shop ground floor */}
-        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: SHOP_FROM, width: W, height: H - SHOP_FROM }}>
+        {/* Stable floors 2-3 and shop ground floor */}
+        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: MID_TO, width: W, height: H - MID_TO }}>
           <img src={building} alt="" width={W} height={IMG_H} draggable={false}
-            className="absolute left-0 block max-w-none select-none" style={{ top: -SHOP_FROM, width: W, height: IMG_H }} />
+            className="absolute left-0 block max-w-none select-none" style={{ top: -MID_TO, width: W, height: IMG_H }} />
         </div>
 
         {/* Stable lawn */}
