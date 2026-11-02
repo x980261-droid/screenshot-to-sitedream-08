@@ -109,7 +109,7 @@ export function withJaggedLeft(frag: { x: number; y: number; w: number; h: numbe
 // Welding sparks at the crossings of moving facade parts: horizontal fracture
 // seams × vertical breaks between columns. Only 5% of the crossings spark.
 export type SparkPoint = { x: number; y: number };
-export const SPARK_BURST_DURATION_MS = 1100;
+export const SPARK_BURST_DURATION_MS = 2400;
 
 export function sparkActiveAt(elapsedMs: number) {
   return elapsedMs >= 0 && elapsedMs < SPARK_BURST_DURATION_MS;
@@ -135,3 +135,12 @@ export const SPARK_INTERSECTIONS = SPARK_CROSSINGS.map((p, i) => ({ p, r: sparkR
   .sort((a, b) => a.r - b.r)
   .slice(0, Math.max(1, Math.round(SPARK_CROSSINGS.length * 0.05)))
   .map((e) => e.p);
+
+// Sparse sequential bursts: only one crossing is active, and none is revisited.
+export const SPARK_SEQUENCE = [...SPARK_INTERSECTIONS, ...SPARK_CROSSINGS.filter(
+  (p) => !SPARK_INTERSECTIONS.some((selected) => selected.x === p.x && selected.y === p.y),
+)];
+
+export function sparkDelayMs(index: number) {
+  return index * (SPARK_BURST_DURATION_MS + 150);
+}

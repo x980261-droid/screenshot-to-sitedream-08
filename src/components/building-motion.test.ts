@@ -8,6 +8,8 @@ import {
   SPARK_CROSSINGS,
   SPARK_INTERSECTIONS,
   SPARK_BURST_DURATION_MS,
+  SPARK_SEQUENCE,
+  sparkDelayMs,
   sparkActiveAt,
   crackClipPath,
   crackYAt,
@@ -75,6 +77,17 @@ describe("jagged fracture lines", () => {
 });
 
 describe("electrical spark crossings", () => {
+  it("moves bursts to new crossings without revisiting a location", () => {
+    const locations = SPARK_SEQUENCE.map((p) => `${p.x}:${p.y}`);
+    expect(new Set(locations).size).toBe(SPARK_CROSSINGS.length);
+    expect(locations.length).toBe(SPARK_CROSSINGS.length);
+  });
+  it("keeps only the sparse 5% share active at a time", () => {
+    for (let ms = 0; ms < sparkDelayMs(SPARK_SEQUENCE.length); ms += 100) {
+      const active = SPARK_SEQUENCE.filter((_, i) => sparkActiveAt(ms - sparkDelayMs(i)));
+      expect(active.length).toBeLessThanOrEqual(Math.max(1, Math.round(SPARK_CROSSINGS.length * 0.05)));
+    }
+  });
   it("never repeats a spent spark burst at the same crossing", () => {
     expect(sparkActiveAt(0)).toBe(true);
     expect(sparkActiveAt(SPARK_BURST_DURATION_MS - 1)).toBe(true);
