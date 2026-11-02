@@ -46,20 +46,19 @@ function makeFrags(from: number, to: number, rows: number, side: -1 | 1, seed: n
   return frags;
 }
 
-// Jagged "broken concrete" fracture lines (see building-motion.ts)
+// Jagged "broken concrete" fracture lines (see building-motion.ts).
+// Edges overlap instead of abutting: the upper row reaches down over the crack
+// unclipped, the row below clips along the crack and paints over it — no gaps at rest.
 const STATIC_FROM = Math.min(...CRACK_LOWER.map((p) => p.y)) - 4;
 const STATIC_CLIP = crackClipPath({ x: 0, y: STATIC_FROM, w: W, h: H - STATIC_FROM }, CRACK_LOWER, undefined);
 const CRACK_BOTTOM_MAX = Math.max(...CRACK_LOWER.map((p) => p.y));
 const CRACK_UPPER_MAX = Math.max(...CRACK_UPPER.map((p) => p.y));
-const TOP = makeFrags(0, MID_TO, 6, -1, 1).map((f, i, all) => {
-  if (i < all.length - COLS) return f;
-  // the bottom row reaches down over the crack dips so no gap shows at rest
-  const ext = { ...f, h: CRACK_UPPER_MAX - f.y };
-  return { ...ext, clip: crackClipPath(ext, undefined, CRACK_UPPER) };
-});
+const TOP = makeFrags(0, MID_TO, 6, -1, 1).map((f, i, all) =>
+  i >= all.length - COLS ? { ...f, h: CRACK_UPPER_MAX - f.y } : f,
+);
 const BOTTOM = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100)
   .map((f) => ({ ...f, h: CRACK_BOTTOM_MAX - f.y }))
-  .map((f) => ({ ...f, clip: crackClipPath(f, CRACK_UPPER, CRACK_LOWER) }));
+  .map((f) => ({ ...f, clip: crackClipPath(f, CRACK_UPPER, undefined) }));
 
 
 const Svg = {
