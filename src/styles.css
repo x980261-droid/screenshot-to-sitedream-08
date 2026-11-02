@@ -94,14 +94,14 @@
   z-index: 30;
   pointer-events: none;
   mix-blend-mode: plus-lighter;
-  filter: drop-shadow(0 0 1px var(--spark-white)) drop-shadow(0 0 1px var(--spark-blue)) drop-shadow(0 0 2px var(--spark-blue));
+  filter: drop-shadow(0 0 2px var(--spark-white)) drop-shadow(0 0 4px var(--spark-blue)) drop-shadow(0 0 8px var(--spark-blue));
 }
 .spark-star {
   position: absolute;
-  left: -4.5px;
-  top: -4.5px;
-  width: 9px;
-  height: 9px;
+  left: -12px;
+  top: -12px;
+  width: 24px;
+  height: 24px;
   background: var(--spark-white);
   clip-path: polygon(50% 0%, 52% 43%, 83% 17%, 57% 48%, 100% 50%, 57% 52%, 83% 83%, 52% 57%, 50% 100%, 48% 57%, 17% 83%, 43% 52%, 0% 50%, 43% 48%, 17% 17%, 48% 43%);
   animation: spark-star-flash 2.4s linear both;
@@ -109,10 +109,10 @@
 .spark-star::before, .spark-star::after {
   content: "";
   position: absolute;
-  left: 0;
-  top: 4px;
-  width: 9px;
-  height: 1px;
+  left: -8px;
+  top: 11px;
+  width: 40px;
+  height: 2px;
   background: var(--spark-rays);
 }
 .spark-star::after { rotate: 90deg; }
@@ -121,7 +121,7 @@
   left: 0;
   top: 0;
   width: var(--trail);
-  height: 1px;
+  height: 1.5px;
   transform-origin: left center;
   background: var(--spark-trail);
   box-shadow: var(--spark-glow);
