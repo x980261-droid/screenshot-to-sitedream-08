@@ -36,16 +36,16 @@ describe("jagged fracture lines", () => {
     expect(Math.max(...ys)).toBeGreaterThan(FIXED_FLOORS_FROM);
   });
   it("keeps the crack flush with the building edges", () => {
-    expect(CRACK_LOWER[0].y).toBe(FIXED_FLOORS_FROM);
-    expect(CRACK_LOWER[CRACK_LOWER.length - 1].y).toBe(FIXED_FLOORS_FROM);
-    expect(CRACK_UPPER[0].y).toBe(353);
-    expect(CRACK_UPPER[CRACK_UPPER.length - 1].y).toBe(353);
+    expect(CRACK_LOWER.at(0)?.y).toBe(FIXED_FLOORS_FROM);
+    expect(CRACK_LOWER.at(-1)?.y).toBe(FIXED_FLOORS_FROM);
+    expect(CRACK_UPPER.at(0)?.y).toBe(353);
+    expect(CRACK_UPPER.at(-1)?.y).toBe(353);
   });
   it("spans the crack across the full facade width", () => {
-    expect(CRACK_LOWER[0].x).toBe(0);
-    expect(CRACK_LOWER[CRACK_LOWER.length - 1].x).toBe(760);
+    expect(CRACK_LOWER.at(0)?.x).toBe(0);
+    expect(CRACK_LOWER.at(-1)?.x).toBe(760);
     for (let i = 1; i < CRACK_LOWER.length; i++) {
-      expect(CRACK_LOWER[i].x).toBeGreaterThan(CRACK_LOWER[i - 1].x);
+      expect(CRACK_LOWER.at(i)?.x).toBeGreaterThan(CRACK_LOWER.at(i - 1)?.x ?? -Infinity);
     }
   });
   it("clips fragments with a jagged polygon along the crack", () => {
