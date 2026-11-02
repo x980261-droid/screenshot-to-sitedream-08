@@ -96,19 +96,44 @@ const DEBRIS: Debris[] = [
 ];
 
 function DebrisItem({ d, k }: { d: Debris; k: number }) {
-  const p = Math.max(0, (k - d.at) / (1 - d.at)); // 0..1 once it breaks off
-  const g = p * p; // gravity: accelerates
-  const fall = k > 0 ? "3s" : "0.6s"; // debris drops for 3s, snaps back quickly
+  // one-shot: once broken off, the piece falls for 3s, lands, fades and is removed for good
+  const [phase, setPhase] = useState<"idle" | "start" | "falling" | "fading" | "gone">("idle");
+  const triggered = k > d.at;
+
+  useEffect(() => {
+    if (!triggered || phase !== "idle") return;
+    setPhase("start");
+  }, [triggered, phase]);
+
+  useEffect(() => {
+    if (phase === "start") {
+      const r = requestAnimationFrame(() => requestAnimationFrame(() => setPhase("falling")));
+      return () => cancelAnimationFrame(r);
+    }
+    if (phase === "falling") {
+      const t = setTimeout(() => setPhase("fading"), 3000);
+      return () => clearTimeout(t);
+    }
+    if (phase === "fading") {
+      const t = setTimeout(() => setPhase("gone"), 700);
+      return () => clearTimeout(t);
+    }
+  }, [phase]);
+
+  if (phase === "idle" || phase === "gone") return null;
+  const down = phase === "falling" || phase === "fading";
   return (
     <div
-      className="absolute z-20 transition-transform ease-in"
+      className="absolute z-20"
       style={{
         left: d.x,
         top: d.y,
-        opacity: p > 0 ? 1 : 0,
-        transform: `translate3d(${d.drift * p}px, ${(IMG_H - 30 - d.y) * g}px, ${40 * p}px) rotate(${d.rot * p}deg) scale(${p})`,
+        opacity: phase === "fading" ? 0 : 1,
+        transform: down
+          ? `translate3d(${d.drift}px, ${IMG_H - 30 - d.y}px, 40px) rotate(${d.rot}deg) scale(1)`
+          : "translate3d(0,0,0) rotate(0deg) scale(0)",
         transformOrigin: "center",
-        transition: `transform ${fall} ease-in, opacity 0.2s`,
+        transition: down ? "transform 3s cubic-bezier(0.55,0,1,0.45), opacity 0.7s" : "none",
       }}
     >
       {Svg[d.kind]}
