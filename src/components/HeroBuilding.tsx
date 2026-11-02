@@ -63,6 +63,9 @@ const Svg = {
   duct: (
     <svg viewBox="0 0 70 26" className="h-[26px] w-[70px]"><rect x="1" y="1" width="68" height="24" fill="var(--muted-foreground)" stroke="var(--slate)" strokeWidth="2" /><path d="M14 1v24M28 1v24M42 1v24M56 1v24" stroke="var(--slate)" strokeWidth="1.5" /></svg>
   ),
+  radiator: (
+    <svg viewBox="0 0 48 30" className="h-8 w-12"><rect x="1" y="4" width="46" height="22" rx="2" fill="var(--foreground)" /><g fill="var(--muted)"><rect x="4" y="6" width="5" height="18" rx="2" /><rect x="12" y="6" width="5" height="18" rx="2" /><rect x="20" y="6" width="5" height="18" rx="2" /><rect x="28" y="6" width="5" height="18" rx="2" /><rect x="36" y="6" width="5" height="18" rx="2" /></g><path d="M8 1v3M24 1v3M40 1v3" stroke="var(--slate)" strokeWidth="2" /></svg>
+  ),
 };
 
 type Debris = { kind: keyof typeof Svg; x: number; y: number; fall: number; drift: number; rot: number; at: number };
@@ -78,6 +81,17 @@ const DEBRIS: Debris[] = [
   { kind: "pipe", x: 250, y: 400, fall: 140, drift: 110, rot: 80, at: 0.2 },
   { kind: "duct", x: 140, y: 360, fall: 180, drift: 40, rot: -150, at: 0.5 },
   { kind: "rebar", x: 180, y: 345, fall: 200, drift: -40, rot: 210, at: 0.1 },
+  { kind: "rebar", x: 90, y: 30, fall: 420, drift: 40, rot: 160, at: 0.2 },
+  { kind: "rebar", x: 210, y: 60, fall: 380, drift: -60, rot: -120, at: 0.35 },
+  { kind: "pipe", x: 120, y: 150, fall: 400, drift: 70, rot: 60, at: 0.15 },
+  { kind: "pipe", x: 330, y: 240, fall: 320, drift: -80, rot: -90, at: 0.4 },
+  { kind: "pipe", x: 350, y: 350, fall: 240, drift: -100, rot: -60, at: 0.55 },
+  { kind: "radiator", x: 60, y: 200, fall: 420, drift: -50, rot: 140, at: 0.25 },
+  { kind: "radiator", x: 180, y: 230, fall: 380, drift: 90, rot: -170, at: 0.3 },
+  { kind: "radiator", x: 300, y: 170, fall: 430, drift: -30, rot: 210, at: 0.2 },
+  { kind: "radiator", x: 250, y: 330, fall: 260, drift: -70, rot: -120, at: 0.45 },
+  { kind: "rebar", x: 40, y: 320, fall: 280, drift: 60, rot: 90, at: 0.5 },
+  { kind: "duct", x: 90, y: 410, fall: 200, drift: 60, rot: 100, at: 0.6 },
 ];
 
 function DebrisItem({ d, k }: { d: Debris; k: number }) {
