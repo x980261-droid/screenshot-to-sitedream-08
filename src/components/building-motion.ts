@@ -34,16 +34,15 @@ export function crackLine(centerY: number, amplitude: number, width: number, seg
 }
 
 export function crackYAt(crack: CrackPoint[], x: number) {
-  const first = crack[0];
-  const last = crack[crack.length - 1];
+  const first = crack.at(0);
+  const last = crack.at(-1);
+  if (!first || !last) return 0;
   if (x <= first.x) return first.y;
   if (x >= last.x) return last.y;
   for (let i = 1; i < crack.length; i++) {
-    if (x <= crack[i].x) {
-      const a = crack[i - 1];
-      const b = crack[i];
-      return a.y + ((b.y - a.y) * (x - a.x)) / (b.x - a.x);
-    }
+    const a = crack.at(i - 1);
+    const b = crack.at(i);
+    if (a && b && x <= b.x) return a.y + ((b.y - a.y) * (x - a.x)) / (b.x - a.x);
   }
   return last.y;
 }
@@ -68,8 +67,8 @@ export function crackClipPath(
   if (bottom) {
     pts.push([x1, crackYAt(bottom, x1)]);
     for (let i = bottom.length - 1; i >= 0; i--) {
-      const p = bottom[i];
-      if (p.x > x0 && p.x < x1) pts.push([p.x, p.y]);
+      const p = bottom.at(i);
+      if (p && p.x > x0 && p.x < x1) pts.push([p.x, p.y]);
     }
     pts.push([x0, crackYAt(bottom, x0)]);
   } else {
