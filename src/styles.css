@@ -144,22 +144,6 @@
   .facade-drift { animation: none; }
 }
 
-/* Neon label: blinks from near-black to light violet. */
-.neon-verify {
-  color: var(--neon-black);
-  text-shadow: none;
-  animation: neon-blink 2.4s ease-in-out infinite;
-}
-@keyframes neon-blink {
-  0%, 100% { color: var(--neon-black); text-shadow: none; }
-  6% { color: var(--neon-violet); text-shadow: var(--neon-glow); }
-  10% { color: var(--neon-black); text-shadow: none; }
-  13% { color: var(--neon-violet); text-shadow: var(--neon-glow); }
-  88% { color: var(--neon-violet); text-shadow: var(--neon-glow); }
-  91% { color: var(--neon-black); text-shadow: none; }
-  94% { color: var(--neon-violet); text-shadow: var(--neon-glow); }
-}
-
 @layer base {
   * { border-color: var(--color-border); }
   html { scroll-behavior: smooth; }
