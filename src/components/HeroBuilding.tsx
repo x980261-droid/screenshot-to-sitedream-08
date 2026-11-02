@@ -97,6 +97,8 @@ const SIGN = { x: 56.5, y: 483.5, w: 108, h: 19 };
 // (x1258-1446) reads АУДИТ ЖИЛЫХ ОБЪЕКТОВ. Both re-rendered as wave overlays.
 const SIGN2 = { x: 622.6, y: 491.4, w: 92.8, h: 9.5 };
 const SIGN3 = { x: 267.7, y: 491.4, w: 82.6, h: 9.5 };
+// Former THE DAILY BEAN band (image x826-1026, y984-1023), now two lines.
+const SIGN4 = { x: 408.7, y: 485.5, w: 98.9, h: 19 };
 
 
 const Svg = {
@@ -373,6 +375,24 @@ export function HeroBuilding() {
           <text className="sign-neon" fill="url(#signWaveC)" x={SIGN2.w / 2} y="7" textAnchor="middle" textLength="88" lengthAdjust="spacingAndGlyphs" style={{ fontSize: 6.2 }}>АУДИТ ЖИЛЫХ ОБЪЕКТОВ</text>
         </svg>
 
+        <svg className="pointer-events-none absolute z-10 select-none" style={{ left: SIGN4.x, top: SIGN4.y, overflow: "visible" }}
+          width={SIGN4.w} height={SIGN4.h} viewBox={`0 0 ${SIGN4.w} ${SIGN4.h}`}>
+          <defs>
+            <linearGradient id="signWaveG" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
+              <stop offset="0" stopColor="#ffffff" />
+              <stop offset="0.167" stopColor="#ffe600" />
+              <stop offset="0.333" stopColor="#6ec1ff" />
+              <stop offset="0.5" stopColor="#ffffff" />
+              <stop offset="0.667" stopColor="#ffe600" />
+              <stop offset="0.833" stopColor="#6ec1ff" />
+              <stop offset="1" stopColor="#ffffff" />
+              <animateTransform attributeName="gradientTransform" type="translate" values="0 0; -108 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
+            </linearGradient>
+          </defs>
+          <text className="sign-neon" fill="url(#signWaveG)" x={SIGN4.w / 2} y="8.8" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">ИНСПЕКЦИЯ ВСТРОЕННЫХ</text>
+          <text className="sign-neon" fill="url(#signWaveG)" x={SIGN4.w / 2} y="17.2" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">КОММЕРЧЕСКИХ ПОМЕЩЕНИЙ</text>
+        </svg>
+
       </div>
       </div>
       </div>
@@ -428,6 +448,23 @@ export function HeroBuilding() {
             </linearGradient>
           </defs>
           <text className="sign-neon" fill="url(#signWaveD)" x={SIGN2.w / 2} y="7" textAnchor="middle" textLength="88" lengthAdjust="spacingAndGlyphs" style={{ fontSize: 6.2 }}>АУДИТ ЖИЛЫХ ОБЪЕКТОВ</text>
+        </svg>
+        <svg className="pointer-events-none absolute select-none" style={{ left: SIGN4.x, top: SIGN4.y, overflow: "visible", opacity: 0.2 }}
+          width={SIGN4.w} height={SIGN4.h} viewBox={`0 0 ${SIGN4.w} ${SIGN4.h}`}>
+          <defs>
+            <linearGradient id="signWaveH" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
+              <stop offset="0" stopColor="#ffffff" />
+              <stop offset="0.167" stopColor="#ffe600" />
+              <stop offset="0.333" stopColor="#6ec1ff" />
+              <stop offset="0.5" stopColor="#ffffff" />
+              <stop offset="0.667" stopColor="#ffe600" />
+              <stop offset="0.833" stopColor="#6ec1ff" />
+              <stop offset="1" stopColor="#ffffff" />
+              <animateTransform attributeName="gradientTransform" type="translate" values="0 0; -108 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
+            </linearGradient>
+          </defs>
+          <text className="sign-neon" fill="url(#signWaveH)" x={SIGN4.w / 2} y="8.8" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">ИНСПЕКЦИЯ ВСТРОЕННЫХ</text>
+          <text className="sign-neon" fill="url(#signWaveH)" x={SIGN4.w / 2} y="17.2" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">КОММЕРЧЕСКИХ ПОМЕЩЕНИЙ</text>
         </svg>
         {SPARK_SEQUENCE.map((p, i) => <Spark key={`s${i}`} p={p} i={i} k={s.k} />)}
       </div>
