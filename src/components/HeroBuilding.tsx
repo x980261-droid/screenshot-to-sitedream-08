@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building-wide.jpg";
-import { FALL_DURATION_MS, FIXED_FLOORS_FROM, facadeDeformation } from "./building-motion";
+import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, VERTICAL_SEAMS, crackClipPath, facadeDeformation } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -11,7 +11,7 @@ const SHOP_FROM = FIXED_FLOORS_FROM; // floors 1-2 stay fixed
 const COLS = 4;
 const SX = W / 380; // debris x-coords were tuned for the single-section building
 
-type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number };
+type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number; clip?: string | undefined };
 
 // Deterministic pseudo-random so SSR and client match
 function rand(seed: number) {
@@ -46,8 +46,44 @@ function makeFrags(from: number, to: number, rows: number, side: -1 | 1, seed: n
   return frags;
 }
 
-const TOP = makeFrags(0, MID_TO, 6, -1, 1);
-const BOTTOM = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100);
+// Jagged "broken concrete" fracture lines (see building-motion.ts).
+// Every floor boundary in the collapsing mass gets its own jagged crack.
+// Edges overlap instead of abutting: the row above reaches down over the crack
+// unclipped, the row below clips along the crack and paints over it — no gaps at rest.
+const STATIC_FROM = Math.min(...CRACK_LOWER.map((p) => p.y)) - 4;
+const STATIC_CLIP = crackClipPath({ x: 0, y: STATIC_FROM, w: W, h: H - STATIC_FROM }, CRACK_LOWER, undefined);
+const CRACK_BOTTOM_MAX = Math.max(...CRACK_LOWER.map((p) => p.y));
+const CRACK_UPPER_MAX = Math.max(...CRACK_UPPER.map((p) => p.y));
+const seamMax = (r: number) => {
+  const seam = SEAMS.at(r);
+  return seam ? Math.max(...seam.map((p) => p.y)) : CRACK_UPPER_MAX;
+};
+const topFrags = makeFrags(0, MID_TO, 6, -1, 1);
+const bottomFrags = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100);
+const TOP: Frag[] = [];
+const BOTTOM: Frag[] = [];
+for (let r = 0; r < 6; r++) {
+  for (let c = 0; c < COLS; c++) {
+    const f = topFrags.at(r * COLS + c);
+    if (!f) continue;
+    // reach over the crack below and the vertical crack on the right, so the
+    // neighbouring piece can clip along them and paint over — no gaps at rest
+    const ext = { ...f, h: seamMax(r) - f.y, w: c < COLS - 1 ? f.w + 5 : f.w };
+    TOP.push({
+      ...ext,
+      clip: crackClipPath(ext, r > 0 ? SEAMS[r - 1] : undefined, undefined, c > 0 ? VERTICAL_SEAMS[c - 1] : undefined),
+    });
+  }
+}
+for (let c = 0; c < COLS; c++) {
+  const f = bottomFrags.at(c);
+  if (!f) continue;
+  const ext = { ...f, h: CRACK_BOTTOM_MAX - f.y, w: c < COLS - 1 ? f.w + 5 : f.w };
+  BOTTOM.push({
+    ...ext,
+    clip: crackClipPath(ext, CRACK_UPPER, undefined, c > 0 ? VERTICAL_SEAMS[c - 1] : undefined),
+  });
+}
 
 
 const Svg = {
@@ -147,12 +183,11 @@ function Piece({ f, k }: { f: Frag; k: number }) {
         top: f.y,
         width: f.w + 0.5,
         height: f.h + 0.5,
+        clipPath: f.clip,
         transform: `translate3d(${tx}px, ${damage.drop}px, 0) rotateX(${f.rx * k * 0.2}deg) rotateZ(${damage.rotation}deg)`,
         opacity: damage.opacity,
         transition: `transform ${FALL_DURATION_MS}ms cubic-bezier(0.55,0,1,0.45)`,
         transformOrigin: "center",
-        animationDelay: `${-(f.x + f.y) / 100}s`,
-        animationDuration: `${6 + (f.y % 4)}s`,
       }}
     >
       <img src={building} alt="" width={W} height={IMG_H} draggable={false}
@@ -213,10 +248,10 @@ export function HeroBuilding() {
 
         {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
 
-        {/* Stable floors 1-2: first residential floor and shop ground floor */}
-        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: SHOP_FROM, width: W, height: H - SHOP_FROM }}>
+        {/* Stable floors 1-2: first residential floor and shop ground floor, jagged broken-concrete top edge */}
+        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: STATIC_FROM, width: W, height: H - STATIC_FROM, clipPath: STATIC_CLIP }}>
           <img src={building} alt="" width={W} height={IMG_H} draggable={false}
-            className="absolute left-0 block max-w-none select-none" style={{ top: -SHOP_FROM, width: W, height: IMG_H }} />
+            className="absolute left-0 block max-w-none select-none" style={{ top: -STATIC_FROM, width: W, height: IMG_H }} />
         </div>
 
         {/* Stable lawn */}
