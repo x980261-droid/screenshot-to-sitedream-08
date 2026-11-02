@@ -300,8 +300,6 @@ export function HeroBuilding() {
 
         {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
 
-        {SPARK_SEQUENCE.map((p, i) => <Spark key={`s${i}`} p={p} i={i} k={s.k} />)}
-
         {/* Stable floors 1-2: first residential floor and shop ground floor, jagged broken-concrete top edge */}
         <div className="absolute left-0 z-10 overflow-hidden" style={{ top: STATIC_FROM, width: W, height: H - STATIC_FROM, clipPath: STATIC_CLIP }}>
           <img src={building} alt="" width={W} height={IMG_H} draggable={false}
@@ -315,6 +313,11 @@ export function HeroBuilding() {
         </div>
       </div>
       </div>
+      </div>
+      {/* Text-legibility shade sits under the sparks so the flash keeps its full brightness */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
+      <div className="pointer-events-none absolute" style={{ left: "50%", bottom: 0, width: W, height: IMG_H, transform: `translateX(-50%) scale(${sc})`, transformOrigin: "bottom center" }}>
+        {SPARK_SEQUENCE.map((p, i) => <Spark key={`s${i}`} p={p} i={i} k={s.k} />)}
       </div>
     </div>
   );
