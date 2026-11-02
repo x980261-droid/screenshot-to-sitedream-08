@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import building from "@/assets/building.jpg";
+import building from "@/assets/building-wide.jpg";
 
-const K = 1.2; // building scale
-const W = 380 * K;
-const H = 570 * K;
-const IMG_H = 623 * K; // displayed image height: building (H) + lawn strip below
-const MID_FROM = 245 * K;
-const MID_TO = 353 * K;
-const COLS = 3;
+const W = 760; // two building sections side by side (two entrances)
+const H = 570;
+const IMG_H = 623; // displayed image height: building (H) + lawn strip below
+const MID_FROM = 245;
+const MID_TO = 353;
+const COLS = 4;
+const SX = W / 380; // debris x-coords were tuned for the single-section building
 
 type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number };
 
@@ -118,11 +118,11 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
     <div
       className="absolute z-20"
       style={{
-        left: d.x * K,
-        top: d.y * K,
+        left: d.x * SX,
+        top: d.y,
         opacity: phase === "fading" ? 0 : 1,
         transform: down
-          ? `translate3d(${d.drift * K}px, ${IMG_H - 30 - d.y * K}px, 40px) rotate(${d.rot}deg) scale(1)`
+          ? `translate3d(${d.drift * SX}px, ${IMG_H - 30 - d.y}px, 40px) rotate(${d.rot}deg) scale(1)`
           : "translate3d(0,0,0) rotate(0deg) scale(0)",
         transformOrigin: "center",
         transition: down ? "transform 3s cubic-bezier(0.55,0,1,0.45), opacity 0.7s" : "none",
@@ -160,6 +160,17 @@ function Piece({ f, k, nx, ny }: { f: Frag; k: number; nx: number; ny: number })
 export function HeroBuilding() {
   const ref = useRef<HTMLDivElement>(null);
   const [s, setS] = useState({ k: 0, nx: 0, ny: 0 });
+  const [sc, setSc] = useState(1);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => setSc(el.clientWidth / W);
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const desktop = window.matchMedia("(hover: hover) and (min-width: 1024px)");
@@ -186,7 +197,9 @@ export function HeroBuilding() {
   }, []);
 
   return (
-    <div ref={ref} className="relative mx-auto w-[456px] max-w-full" style={{ height: IMG_H, perspective: 900 }}>
+    <div ref={ref} className="relative mx-auto w-full max-w-[760px]" style={{ aspectRatio: `${W} / ${IMG_H}` }}>
+      <div className="absolute left-0 top-0 origin-top-left" style={{ width: W, height: IMG_H, transform: `scale(${sc})` }}>
+      <div className="relative" style={{ width: W, height: IMG_H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
           {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
@@ -218,6 +231,8 @@ export function HeroBuilding() {
           <img src={building} alt="" width={W} height={IMG_H} draggable={false}
             className="absolute left-0 block max-w-none select-none" style={{ top: -H, width: W, height: IMG_H }} />
         </div>
+      </div>
+      </div>
       </div>
     </div>
   );
