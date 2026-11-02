@@ -1,3 +1,4 @@
+import building from "@/assets/building.jpg";
 import { useEffect, useRef, useState } from "react";
 
 type Offset = { x: number; r: number; y: number };
@@ -5,17 +6,13 @@ const ZERO: Offset = { x: 0, r: 0, y: 0 };
 const MAX_T = 25;
 const MAX_R = 3;
 
-const ROW = "grid grid-cols-4 gap-2";
-function Floors({ count }: { count: number }) {
+const W = 380;
+const H = 570;
+function Slice({ from, to }: { from: number; to: number }) {
   return (
-    <div className="flex flex-col gap-2 px-6 py-1">
-      {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className={ROW}>
-          {Array.from({ length: 4 }).map((_, j) => (
-            <div key={j} className="h-6 bg-muted" />
-          ))}
-        </div>
-      ))}
+    <div className="relative overflow-hidden" style={{ height: to - from }}>
+      <img src={building} alt="" width={W} height={H} draggable={false}
+        className="absolute left-0 block max-w-none select-none" style={{ top: -from, width: W, height: H }} />
     </div>
   );
 }
@@ -62,22 +59,22 @@ export function HeroBuilding() {
   const t = (o: Offset) => ({ transform: `translate(${o.x}px, ${o.y}px) rotate(${o.r}deg)` });
 
   return (
-    <div ref={ref} className="relative mx-auto flex w-full max-w-[380px] flex-col">
-      <div className="layer-move origin-bottom bg-card pt-5" style={t(top)}>
-        <Floors count={7} />
+    <div ref={ref} className="relative mx-auto flex w-[380px] max-w-full flex-col overflow-visible">
+      <div className="layer-move origin-bottom" style={t(top)}>
+        <Slice from={0} to={245} />
       </div>
-      <div className="relative z-10 bg-card px-6 py-1">
-        <div className={ROW}>
-          <div className="col-span-2 flex h-[88px] items-center justify-center border-2 border-foreground p-2 text-center text-xs font-bold leading-tight tracking-wide">
-            СТРОИТЕЛЬНЫЙ КОНТРОЛЬ
-          </div>
-          <div className="col-span-2 flex h-[88px] items-center justify-center border-2 border-foreground p-2 text-center text-xs font-bold leading-tight tracking-wide">
-            ТЕХНИЧЕСКИЙ АУДИТ
-          </div>
+      <div className="relative z-10">
+        <Slice from={245} to={353} />
+        <div className="absolute inset-0 flex items-center gap-3 px-5">
+          {["СТРОИТЕЛЬНЫЙ КОНТРОЛЬ", "ТЕХНИЧЕСКИЙ АУДИТ"].map((l) => (
+            <div key={l} className="flex h-20 flex-1 items-center justify-center border-2 border-foreground bg-background/80 p-2 text-center text-xs font-bold leading-tight tracking-wide backdrop-blur-sm">
+              {l}
+            </div>
+          ))}
         </div>
       </div>
-      <div className="layer-move origin-top bg-card pb-5" style={t(bottom)}>
-        <Floors count={7} />
+      <div className="layer-move origin-top" style={t(bottom)}>
+        <Slice from={353} to={H} />
       </div>
     </div>
   );
