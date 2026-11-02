@@ -156,10 +156,7 @@ export function HeroBuilding() {
   return (
     <div ref={ref} className="relative mx-auto w-[380px] max-w-full" style={{ height: H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
-        <div
-          className={s.k > 0.05 ? "quake absolute inset-0" : "absolute inset-0"}
-          style={{ ["--q" as string]: `${2 + s.k * 6}px`, animationDuration: `${0.18 - s.k * 0.08}s` }}
-        >
+        <div className="absolute inset-0">
           {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
           {BOTTOM.map((f, i) => <Piece key={`b${i}`} f={f} {...s} />)}
         </div>
