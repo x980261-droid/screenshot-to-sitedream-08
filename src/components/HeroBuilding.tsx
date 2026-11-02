@@ -54,7 +54,10 @@ const STATIC_FROM = Math.min(...CRACK_LOWER.map((p) => p.y)) - 4;
 const STATIC_CLIP = crackClipPath({ x: 0, y: STATIC_FROM, w: W, h: H - STATIC_FROM }, CRACK_LOWER, undefined);
 const CRACK_BOTTOM_MAX = Math.max(...CRACK_LOWER.map((p) => p.y));
 const CRACK_UPPER_MAX = Math.max(...CRACK_UPPER.map((p) => p.y));
-const seamMax = (r: number) => (r < SEAMS.length ? Math.max(...SEAMS[r].map((p) => p.y)) : CRACK_UPPER_MAX);
+const seamMax = (r: number) => {
+  const seam = SEAMS.at(r);
+  return seam ? Math.max(...seam.map((p) => p.y)) : CRACK_UPPER_MAX;
+};
 const topFrags = makeFrags(0, MID_TO, 6, -1, 1);
 const TOP: Frag[] = [];
 for (let r = 0; r < 6; r++) {
@@ -62,7 +65,8 @@ for (let r = 0; r < 6; r++) {
     const f = topFrags.at(r * COLS + c);
     if (!f) continue;
     const ext = { ...f, h: seamMax(r) - f.y };
-    TOP.push({ ...ext, clip: r > 0 ? crackClipPath(ext, SEAMS[r - 1], undefined) : undefined });
+    const seam = r > 0 ? SEAMS.at(r - 1) : undefined;
+    TOP.push(seam ? { ...ext, clip: crackClipPath(ext, seam, undefined) } : ext);
   }
 }
 const BOTTOM = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100)
