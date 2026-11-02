@@ -145,12 +145,6 @@ function Index() {
             <h1 style={{ transform: "translateY(-85px)" }} className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
               Технический аудит и строительный контроль
             </h1>
-            <div style={{ transform: "translate(901px, 192px)" }} className="pointer-events-auto mt-8 flex flex-wrap gap-4">
-              <a href="#request" className={btn}>Заказать услугу</a>
-              <a href="#directions" className="inline-flex items-center border px-6 py-3 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-foreground">
-                Все услуги
-              </a>
-            </div>
             <p style={{ transform: "translateY(100%)" }} className="mt-6 max-w-xl text-lg text-muted-foreground">
               Контролируем каждый этап строительства на соответствие СП и ГОСТ, исключаем скрытые дефекты и
               оптимизируем затраты заказчика без потери качества.
