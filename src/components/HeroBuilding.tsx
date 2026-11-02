@@ -178,6 +178,12 @@ export function HeroBuilding() {
             ))}
           </div>
         </div>
+
+        {/* Stable shop ground floor */}
+        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: SHOP_FROM, width: W, height: H - SHOP_FROM }}>
+          <img src={building} alt="" width={W} height={H} draggable={false}
+            className="absolute left-0 block max-w-none select-none" style={{ top: -SHOP_FROM, width: W, height: H }} />
+        </div>
       </div>
     </div>
   );
