@@ -198,10 +198,6 @@ function Index() {
           <SectionHead index="Этап 0" title="Предварительная экспертиза и верификация исходных данных" />
           <div className="border bg-card">
             <div className="border-b px-8 py-8">
-              <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-safe">
-                <span className="inline-block h-2 w-2 bg-safe" />
-                Проверки до начала инструментального контроля
-              </div>
               <h3 className="mt-4 max-w-3xl text-2xl font-bold leading-tight tracking-tight md:text-3xl">
                 Входной аудит и экспертиза проектно-сметной документации
               </h3>
@@ -236,6 +232,10 @@ function Index() {
       <section id="directions" className="scroll-mt-20 border-t bg-blueprint">
         <div className="mx-auto max-w-7xl px-5 py-24">
           <SectionHead index="02" title="Основные направления деятельности" />
+          <div className="mb-8 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-safe">
+            <span className="inline-block h-2 w-2 bg-safe" />
+            Проверки до начала инструментального контроля
+          </div>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {directions.map((d, i) => (
               <article key={d.id} id={d.id} className="relative flex scroll-mt-24 flex-col border bg-card p-8 transition-colors hover:border-safe/60">
