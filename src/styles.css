@@ -150,13 +150,12 @@
 }
 @keyframes sign-neon-cycle {
   0% { color: #0e1013; filter: none; }
-  2% { color: #b9d6ff; filter: none; }
-  4%, 30% { color: #9cc8ff; filter: drop-shadow(0 0 2px #2a6bff) drop-shadow(0 0 5px #1638cc); }
-  31%, 33% { color: #0e1013; filter: none; }
-  34% { color: #a8ffc9; filter: none; }
-  36%, 62% { color: #7dffb0; filter: drop-shadow(0 0 2px #19d06a) drop-shadow(0 0 5px #0a7a3e); }
-  63%, 66% { color: #0e1013; filter: none; }
-  67%, 100% { color: #111318; filter: none; }
+  2% { color: #ffffff; filter: none; }
+  4%, 46% { color: #ffffff; filter: drop-shadow(0 0 2px #eaf4ff) drop-shadow(0 0 6px #b9d6ff) drop-shadow(0 0 10px #7fb2ff); }
+  47%, 52% { color: #0e1013; filter: none; }
+  53% { color: #ffffff; filter: none; }
+  55%, 95% { color: #ffffff; filter: drop-shadow(0 0 2px #eaf4ff) drop-shadow(0 0 6px #b9d6ff) drop-shadow(0 0 10px #7fb2ff); }
+  96%, 100% { color: #0e1013; filter: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
