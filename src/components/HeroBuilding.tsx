@@ -198,6 +198,12 @@ export function HeroBuilding() {
           <img src={building} alt="" width={W} height={IMG_H} draggable={false}
             className="absolute left-0 block max-w-none select-none" style={{ top: -SHOP_FROM, width: W, height: IMG_H }} />
         </div>
+
+        {/* Stable lawn */}
+        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: H, width: W, height: IMG_H - H }}>
+          <img src={building} alt="" width={W} height={IMG_H} draggable={false}
+            className="absolute left-0 block max-w-none select-none" style={{ top: -H, width: W, height: IMG_H }} />
+        </div>
       </div>
     </div>
   );
