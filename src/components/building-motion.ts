@@ -84,3 +84,24 @@ export function crackClipPath(
     .map(([px, py]) => `${(((px - x0) / frag.w) * 100).toFixed(2)}% ${(((py - frag.y) / frag.h) * 100).toFixed(2)}%`)
     .join(", ")})`;
 }
+
+// Jagged vertical fracture between facade columns, points ordered top → bottom.
+export const VERTICAL_AMP = 4;
+export function verticalCrack(centerX: number, fromY: number, toY: number, seed: number): CrackPoint[] {
+  const segments = Math.max(2, Math.round((toY - fromY) / 5));
+  const points: CrackPoint[] = [];
+  for (let i = 0; i <= segments; i++) {
+    const jitter = Math.sin(i * 12.9898 + seed * 78.233) * 0.5 + 0.5;
+    const edge = i % 2 === 1 ? 1 : -1;
+    points.push({ x: Math.round(centerX + edge * VERTICAL_AMP * (0.55 + 0.45 * jitter)), y: fromY + ((toY - fromY) * i) / segments });
+  }
+  return points;
+}
+
+// Adds a jagged left edge to a polygon clip (or to the full box when clip is undefined).
+export function withJaggedLeft(frag: { x: number; y: number; w: number; h: number }, clip: string | undefined, left: CrackPoint[]) {
+  const pct = (p: CrackPoint) => `${(((p.x - frag.x) / frag.w) * 100).toFixed(2)}% ${(((p.y - frag.y) / frag.h) * 100).toFixed(2)}%`;
+  const body = clip ? clip.slice("polygon(".length, -1).split(", ") : ["0.00% 0.00%", "100.00% 0.00%", "100.00% 100.00%", "0.00% 100.00%"];
+  const jag = [...left].reverse().map(pct);
+  return `polygon(${[...body, ...jag].join(", ")})`;
+}

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building-wide.jpg";
-import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, crackClipPath, facadeDeformation } from "./building-motion";
+import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, crackClipPath, facadeDeformation, VERTICAL_AMP, verticalCrack, withJaggedLeft } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -72,6 +72,23 @@ for (let r = 0; r < 6; r++) {
 const BOTTOM = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100)
   .map((f) => ({ ...f, h: CRACK_BOTTOM_MAX - f.y }))
   .map((f) => ({ ...f, clip: crackClipPath(f, CRACK_UPPER, undefined) }));
+
+// Jagged vertical breaks between columns: each piece overlaps its left neighbour
+// and clips its own left edge along a zigzag, so there are no gaps at rest.
+function jagColumns(frags: Frag[]): Frag[] {
+  return frags.map((f, i) => {
+    const c = Math.round(f.x / (W / COLS));
+    const right = c < COLS - 1 ? VERTICAL_AMP + 1 : 0;
+    if (c === 0) return { ...f, w: f.w + right };
+    const box = { ...f, x: f.x - VERTICAL_AMP - 1, w: f.w + VERTICAL_AMP + 1 + right };
+    const top = f.y - 10;
+    const line = verticalCrack(f.x, top, f.y + f.h + 10, i + 11);
+    const clip = withJaggedLeft(box, f.clip, line);
+    return { ...box, clip };
+  });
+}
+const TOP_J = jagColumns(TOP);
+const BOTTOM_J = jagColumns(BOTTOM);
 
 
 const Svg = {
