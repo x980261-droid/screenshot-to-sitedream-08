@@ -135,10 +135,10 @@ function Index() {
       {/* Metrics */}
       <section className="border-y bg-card">
         <div className="mx-auto grid max-w-7xl grid-cols-2 lg:grid-cols-4">
-          {metrics.map(([v, l], i) => (
+          {metrics.map(([v, l]) => (
             <div key={l} className="border-r p-8 last:border-r-0">
               <div className="text-4xl font-bold tracking-tight md:text-5xl">{v}</div>
-              <div className={`mt-2 ${i === 0 ? "text-lg font-medium text-foreground" : "text-sm text-muted-foreground"}`}>{l}</div>
+              <div className="mt-2 text-sm text-muted-foreground">{l}</div>
             </div>
           ))}
         </div>
