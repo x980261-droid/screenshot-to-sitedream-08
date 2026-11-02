@@ -87,7 +87,10 @@ function Index() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-background/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
-          <span aria-hidden className="hidden lg:block" />
+          <a href="#top" className="leading-none">
+            <div className="text-xl font-bold tracking-[0.2em]">ТЕРМИН</div>
+          </a>
+
 
           <nav className="hidden gap-6 text-sm lg:flex">
             {nav.map(([l, h]) => (
