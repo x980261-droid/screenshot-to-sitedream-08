@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building-wide.jpg";
-import { FALL_DURATION_MS, FIXED_FLOORS_FROM, landingDistance } from "./building-motion";
+import { FALL_DURATION_MS, FIXED_FLOORS_FROM, facadeDeformation } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -137,24 +137,8 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
 }
 
 function Piece({ f, k }: { f: Frag; k: number }) {
-  const [phase, setPhase] = useState<"idle" | "falling" | "fading" | "gone">("idle");
-  const triggered = k > 0.08;
-  useEffect(() => {
-    if (phase === "idle" && triggered) setPhase("falling");
-    if (phase === "falling") {
-      const timer = setTimeout(() => setPhase("fading"), FALL_DURATION_MS);
-      return () => clearTimeout(timer);
-    }
-    if (phase === "fading") {
-      const timer = setTimeout(() => setPhase("gone"), 700);
-      return () => clearTimeout(timer);
-    }
-    return undefined;
-  }, [phase, triggered]);
-  if (phase === "gone") return null;
-  const falling = phase !== "idle";
-  const tx = falling ? f.dx : 0;
-  const ty = falling ? landingDistance(f.y, f.h) : 0;
+  const damage = facadeDeformation(k, f.dy, f.rz);
+  const tx = f.dx * k * 0.5;
   return (
     <div
       className="layer-move absolute overflow-hidden"
@@ -163,9 +147,9 @@ function Piece({ f, k }: { f: Frag; k: number }) {
         top: f.y,
         width: f.w + 0.5,
         height: f.h + 0.5,
-        transform: `translate3d(${tx}px, ${ty}px, 0) rotateX(${falling ? f.rx : 0}deg) rotateZ(${falling ? f.rz : 0}deg)`,
-        opacity: phase === "fading" ? 0 : 1,
-        transition: `transform ${FALL_DURATION_MS}ms cubic-bezier(0.55,0,1,0.45), opacity 700ms`,
+        transform: `translate3d(${tx}px, ${damage.drop}px, 0) rotateX(${f.rx * k * 0.2}deg) rotateZ(${damage.rotation}deg)`,
+        opacity: damage.opacity,
+        transition: `transform ${FALL_DURATION_MS}ms cubic-bezier(0.55,0,1,0.45)`,
         transformOrigin: "center",
       }}
     >
