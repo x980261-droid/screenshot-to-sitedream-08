@@ -345,13 +345,13 @@ export function HeroBuilding() {
           width={SIGN3.w} height={SIGN3.h} viewBox={`0 0 ${SIGN3.w} ${SIGN3.h}`}>
           <defs>
             <linearGradient id="signWaveE" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
-              <stop offset="0" stopColor="#ffffff" />
-              <stop offset="0.167" stopColor="#ffe600" />
-              <stop offset="0.333" stopColor="#6ec1ff" />
-              <stop offset="0.5" stopColor="#ffffff" />
-              <stop offset="0.667" stopColor="#ffe600" />
-              <stop offset="0.833" stopColor="#6ec1ff" />
-              <stop offset="1" stopColor="#ffffff" />
+              <stop offset="0" stopColor="#2036c8" />
+              <stop offset="0.167" stopColor="#39d98a" />
+              <stop offset="0.333" stopColor="#ff5050" />
+              <stop offset="0.5" stopColor="#2036c8" />
+              <stop offset="0.667" stopColor="#39d98a" />
+              <stop offset="0.833" stopColor="#ff5050" />
+              <stop offset="1" stopColor="#2036c8" />
               <animateTransform attributeName="gradientTransform" type="translate" values="0 0; -108 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
             </linearGradient>
           </defs>
