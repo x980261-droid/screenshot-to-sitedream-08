@@ -9,6 +9,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Независимый строительный контроль, технический аудит и экспертиза объектов по СП и ГОСТ с 2011 года." },
       { property: "og:title", content: "Термин — строительный контроль и технический аудит" },
       { property: "og:description", content: "Независимый строительный контроль и аудит по СП и ГОСТ. Оптимизация затрат заказчика." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
