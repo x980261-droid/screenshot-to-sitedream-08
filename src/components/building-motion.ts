@@ -109,6 +109,11 @@ export function withJaggedLeft(frag: { x: number; y: number; w: number; h: numbe
 // Welding sparks at the crossings of moving facade parts: horizontal fracture
 // seams × vertical breaks between columns. Only 5% of the crossings spark.
 export type SparkPoint = { x: number; y: number };
+export const SPARK_BURST_DURATION_MS = 1100;
+
+export function sparkActiveAt(elapsedMs: number) {
+  return elapsedMs >= 0 && elapsedMs < SPARK_BURST_DURATION_MS;
+}
 
 const SPARK_WIDTH = 760;
 const SPARK_COL_COUNT = 4;

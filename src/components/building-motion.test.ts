@@ -7,6 +7,8 @@ import {
   SEAMS,
   SPARK_CROSSINGS,
   SPARK_INTERSECTIONS,
+  SPARK_BURST_DURATION_MS,
+  sparkActiveAt,
   crackClipPath,
   crackYAt,
   facadeDeformation,
@@ -73,6 +75,13 @@ describe("jagged fracture lines", () => {
 });
 
 describe("electrical spark crossings", () => {
+  it("never repeats a spent spark burst at the same crossing", () => {
+    expect(sparkActiveAt(0)).toBe(true);
+    expect(sparkActiveAt(SPARK_BURST_DURATION_MS - 1)).toBe(true);
+    for (let repeat = 1; repeat <= 100; repeat++) {
+      expect(sparkActiveAt(SPARK_BURST_DURATION_MS * repeat)).toBe(false);
+    }
+  });
   it("sparks at 5% of the moving-part crossings", () => {
     expect(SPARK_INTERSECTIONS.length).toBe(Math.max(1, Math.round(SPARK_CROSSINGS.length * 0.05)));
   });

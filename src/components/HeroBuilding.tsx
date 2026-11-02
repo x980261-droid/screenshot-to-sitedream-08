@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import building from "@/assets/building-wide.jpg";
-import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, SPARK_INTERSECTIONS, VERTICAL_AMP, crackClipPath, facadeDeformation, verticalCrack, withJaggedLeft } from "./building-motion";
+import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, SPARK_BURST_DURATION_MS, SPARK_INTERSECTIONS, VERTICAL_AMP, crackClipPath, facadeDeformation, verticalCrack, withJaggedLeft } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -177,27 +177,37 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
   );
 }
 
-// Welding spark at a crossing of moving facade parts: hot flash with a spray of glowing motes
+// One finite spray from a point; a spent crossing never sparks again.
 function Spark({ p, i, k }: { p: { x: number; y: number }; i: number; k: number }) {
-  if (k <= 0.1) return null;
-  const dur = 0.9;
+  const [phase, setPhase] = useState<"idle" | "active" | "spent">("idle");
+  const triggered = k > 0.1;
+  useEffect(() => {
+    if (triggered && phase === "idle") setPhase("active");
+  }, [triggered, phase]);
+  useEffect(() => {
+    if (phase !== "active") return;
+    const timer = setTimeout(() => setPhase("spent"), SPARK_BURST_DURATION_MS);
+    return () => clearTimeout(timer);
+  }, [phase]);
+  if (phase !== "active") return null;
   return (
     <div
       className="spark-weld"
-      style={{ left: p.x, top: p.y, animationDelay: `-${((i * 0.41) % dur).toFixed(2)}s` }}
+      style={{ left: p.x, top: p.y }}
     >
-      <span className="spark-core" />
-      {Array.from({ length: 8 }, (_, j) => {
-        const ang = (j / 8) * Math.PI * 2 + i;
-        const dist = 12 + ((i * 13 + j * 7) % 5) * 6;
+      {Array.from({ length: 18 }, (_, j) => {
+        const ang = (j / 18) * Math.PI * 2 + i + rand(j + 30) * 0.3;
+        const dist = 18 + rand(j + 60) * 36;
         return (
           <span
             key={j}
             className="spark-mote"
             style={{
               "--dx": `${(Math.cos(ang) * dist).toFixed(1)}px`,
-              "--dy": `${(Math.sin(ang) * dist).toFixed(1)}px`,
-              animationDelay: `-${((j * 0.13) % dur).toFixed(2)}s`,
+              "--dy": `${(Math.sin(ang) * dist + 10).toFixed(1)}px`,
+              "--angle": `${(ang * 180 / Math.PI).toFixed(1)}deg`,
+              animationDelay: `${((j % 6) * 0.045).toFixed(3)}s`,
+              animationDuration: `${0.5 + rand(j + 90) * 0.3}s`,
             } as CSSProperties}
           />
         );
