@@ -324,8 +324,8 @@ export function HeroBuilding() {
               <stop offset="0" stopColor="#ffffff" />
               <stop offset="0.42" stopColor="#ffffff" />
               <stop offset="0.55" stopColor="#ffe600" />
-              <stop offset="0.72" stopColor="#000000" />
-              <stop offset="1" stopColor="#000000" />
+              <stop offset="0.72" stopColor="#6ec1ff" />
+              <stop offset="1" stopColor="#6ec1ff" />
               <animateTransform attributeName="gradientTransform" type="translate" values="216 0; -324 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
             </linearGradient>
           </defs>
@@ -347,8 +347,8 @@ export function HeroBuilding() {
               <stop offset="0" stopColor="#ffffff" />
               <stop offset="0.42" stopColor="#ffffff" />
               <stop offset="0.55" stopColor="#ffe600" />
-              <stop offset="0.72" stopColor="#000000" />
-              <stop offset="1" stopColor="#000000" />
+              <stop offset="0.72" stopColor="#6ec1ff" />
+              <stop offset="1" stopColor="#6ec1ff" />
               <animateTransform attributeName="gradientTransform" type="translate" values="216 0; -324 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
             </linearGradient>
           </defs>
