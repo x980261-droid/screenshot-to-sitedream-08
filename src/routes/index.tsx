@@ -104,7 +104,10 @@ function Index() {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-blueprint">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-2 lg:py-24">
+        <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+          <HeroBuilding />
+        </div>
+        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-2 lg:py-24">
           <div>
             <div className="mb-6 inline-flex items-center gap-2 border border-safe/40 px-3 py-1 font-mono text-xs text-safe">
               ● НЕЗАВИСИМЫЙ ИНЖЕНЕРНЫЙ КОНТРОЛЬ
