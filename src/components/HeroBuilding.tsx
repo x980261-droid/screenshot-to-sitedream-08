@@ -6,6 +6,7 @@ const H = 570;
 const IMG_H = 623; // displayed image height: building (H) + lawn strip below
 const MID_FROM = 245;
 const MID_TO = 353;
+const SHOP_FROM = 410; // floors 1-2 (shop + first residential floor) stay fixed
 const COLS = 4;
 const SX = W / 380; // debris x-coords were tuned for the single-section building
 
@@ -44,7 +45,8 @@ function makeFrags(from: number, to: number, rows: number, side: -1 | 1, seed: n
   return frags;
 }
 
-const TOP = makeFrags(0, MID_FROM, 3, -1, 1);
+const TOP = makeFrags(0, MID_TO, 6, -1, 1);
+const BOTTOM = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100);
 
 
 const Svg = {
@@ -203,18 +205,13 @@ export function HeroBuilding() {
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
           {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
+          {BOTTOM.map((f, i) => <Piece key={`b${i}`} f={f} {...s} />)}
         </div>
 
         {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
 
-        {/* Stable controlled floor */}
-        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: MID_FROM, width: W, height: MID_TO - MID_FROM }}>
-          <img src={building} alt="Жилой дом под строительным контролем" width={W} height={IMG_H} draggable={false}
-            className="absolute left-0 block max-w-none select-none" style={{ top: -MID_FROM, width: W, height: IMG_H }} />
-        </div>
-
-        {/* Stable floors 2-3 and shop ground floor */}
-        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: MID_TO, width: W, height: H - MID_TO }}>
+        {/* Stable floors 1-2: first residential floor and shop ground floor */}
+        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: SHOP_FROM, width: W, height: H - SHOP_FROM }}>
           <img src={building} alt="" width={W} height={IMG_H} draggable={false}
             className="absolute left-0 block max-w-none select-none" style={{ top: -MID_TO, width: W, height: IMG_H }} />
         </div>
