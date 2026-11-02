@@ -5,6 +5,8 @@ import {
   FALL_DURATION_MS,
   FIXED_FLOORS_FROM,
   SEAMS,
+  SPARK_CROSSINGS,
+  SPARK_INTERSECTIONS,
   crackClipPath,
   crackYAt,
   facadeDeformation,
@@ -67,5 +69,24 @@ describe("jagged fracture lines", () => {
     const mid = crackYAt(CRACK_LOWER, 380);
     expect(mid).toBeGreaterThan(low);
     expect(mid).toBeLessThan(high);
+  });
+});
+
+describe("electrical spark crossings", () => {
+  it("sparks at 5% of the moving-part crossings", () => {
+    expect(SPARK_INTERSECTIONS.length).toBe(Math.max(1, Math.round(SPARK_CROSSINGS.length * 0.05)));
+  });
+  it("places sparks only on real crossings of seams and vertical breaks", () => {
+    const key = (p: { x: number; y: number }) => `${p.x}:${p.y}`;
+    const all = new Set(SPARK_CROSSINGS.map(key));
+    for (const p of SPARK_INTERSECTIONS) expect(all.has(key(p))).toBe(true);
+  });
+  it("keeps spark columns at the vertical breaks, not the facade edges", () => {
+    for (const p of SPARK_CROSSINGS) {
+      expect(p.x).toBeGreaterThan(0);
+      expect(p.x).toBeLessThan(760);
+      expect(p.y).toBeGreaterThan(0);
+      expect(p.y).toBeLessThan(420);
+    }
   });
 });

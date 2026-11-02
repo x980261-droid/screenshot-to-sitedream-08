@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import building from "@/assets/building-wide.jpg";
-import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, crackClipPath, facadeDeformation, VERTICAL_AMP, verticalCrack, withJaggedLeft } from "./building-motion";
+import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, SPARK_INTERSECTIONS, VERTICAL_AMP, crackClipPath, facadeDeformation, verticalCrack, withJaggedLeft } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -177,6 +177,35 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
   );
 }
 
+// Welding spark at a crossing of moving facade parts: hot flash with a spray of glowing motes
+function Spark({ p, i, k }: { p: { x: number; y: number }; i: number; k: number }) {
+  if (k <= 0.1) return null;
+  const dur = 0.9;
+  return (
+    <div
+      className="spark-weld"
+      style={{ left: p.x, top: p.y, animationDelay: `-${((i * 0.41) % dur).toFixed(2)}s` }}
+    >
+      <span className="spark-core" />
+      {Array.from({ length: 8 }, (_, j) => {
+        const ang = (j / 8) * Math.PI * 2 + i;
+        const dist = 12 + ((i * 13 + j * 7) % 5) * 6;
+        return (
+          <span
+            key={j}
+            className="spark-mote"
+            style={{
+              "--dx": `${(Math.cos(ang) * dist).toFixed(1)}px`,
+              "--dy": `${(Math.sin(ang) * dist).toFixed(1)}px`,
+              animationDelay: `-${((j * 0.13) % dur).toFixed(2)}s`,
+            } as CSSProperties}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
 function Piece({ f, k }: { f: Frag; k: number }) {
   const damage = facadeDeformation(k, f.dy, f.rz);
   const tx = f.dx * k * 0.5;
@@ -254,6 +283,8 @@ export function HeroBuilding() {
         </div>
 
         {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
+
+        {SPARK_INTERSECTIONS.map((p, i) => <Spark key={`s${i}`} p={p} i={i} k={s.k} />)}
 
         {/* Stable floors 1-2: first residential floor and shop ground floor, jagged broken-concrete top edge */}
         <div className="absolute left-0 z-10 overflow-hidden" style={{ top: STATIC_FROM, width: W, height: H - STATIC_FROM, clipPath: STATIC_CLIP }}>
