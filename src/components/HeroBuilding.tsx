@@ -5,6 +5,7 @@ const W = 380;
 const H = 570;
 const MID_FROM = 245;
 const MID_TO = 353;
+const SHOP_FROM = 462; // ground floor with the shop stays fixed
 const COLS = 3;
 
 type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number };
@@ -43,7 +44,7 @@ function makeFrags(from: number, to: number, rows: number, side: -1 | 1, seed: n
 }
 
 const TOP = makeFrags(0, MID_FROM, 3, -1, 1);
-const BOTTOM = makeFrags(MID_TO, H, 3, 1, 100);
+const BOTTOM = makeFrags(MID_TO, SHOP_FROM, 2, 1, 100);
 
 
 const Svg = {
@@ -176,6 +177,12 @@ export function HeroBuilding() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Stable shop ground floor */}
+        <div className="absolute left-0 z-10 overflow-hidden" style={{ top: SHOP_FROM, width: W, height: H - SHOP_FROM }}>
+          <img src={building} alt="" width={W} height={H} draggable={false}
+            className="absolute left-0 block max-w-none select-none" style={{ top: -SHOP_FROM, width: W, height: H }} />
         </div>
       </div>
     </div>
