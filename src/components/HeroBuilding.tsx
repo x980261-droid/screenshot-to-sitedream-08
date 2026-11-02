@@ -323,8 +323,7 @@ export function HeroBuilding() {
         </div>
 
         {/* Sign under the shade: light wave sweeps white -> yellow -> black every 10s. */}
-        <a href="#services" className="pointer-events-auto absolute z-10" style={{ left: SIGN.x - 6, top: SIGN.y - 5 }}>
-        <svg className="sign-svg select-none" style={{ overflow: "visible" }}
+        <svg className="pointer-events-none absolute z-10 select-none" style={{ left: SIGN.x, top: SIGN.y, overflow: "visible" }}
           width={SIGN.w} height={SIGN.h} viewBox={`0 0 ${SIGN.w} ${SIGN.h}`}>
           <defs>
             <linearGradient id="signWaveA" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
@@ -341,10 +340,8 @@ export function HeroBuilding() {
           <text className="sign-neon" fill="url(#signWaveA)" x="54.9" y="8.8" textAnchor="middle" textLength="64" lengthAdjust="spacingAndGlyphs">ВЕРИФИКАЦИЯ</text>
           <text className="sign-neon" fill="url(#signWaveA)" x="54.1" y="17.2" textAnchor="middle" textLength="107" lengthAdjust="spacingAndGlyphs">СТРОИТЕЛЬНОЙ ДОКУМЕНТАЦИИ</text>
         </svg>
-        </a>
 
-        <a href="#services" className="pointer-events-auto absolute z-10" style={{ left: SIGN3.x - 6, top: SIGN3.y - 5 }}>
-        <svg className="sign-svg select-none" style={{ overflow: "visible" }}
+        <svg className="pointer-events-none absolute z-10 select-none" style={{ left: SIGN3.x, top: SIGN3.y, overflow: "visible" }}
           width={SIGN3.w} height={SIGN3.h} viewBox={`0 0 ${SIGN3.w} ${SIGN3.h}`}>
           <defs>
             <linearGradient id="signWaveE" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
@@ -360,10 +357,8 @@ export function HeroBuilding() {
           </defs>
           <text className="sign-neon" fill="url(#signWaveE)" x={SIGN3.w / 2} y="7" textAnchor="middle" textLength="78" lengthAdjust="spacingAndGlyphs" style={{ fontSize: 6.2 }}>ЭКСПЕРТИЗА КВАРТИР</text>
         </svg>
-        </a>
 
-        <a href="#services" className="pointer-events-auto absolute z-10" style={{ left: SIGN2.x - 6, top: SIGN2.y - 5 }}>
-        <svg className="sign-svg select-none" style={{ overflow: "visible" }}
+        <svg className="pointer-events-none absolute z-10 select-none" style={{ left: SIGN2.x, top: SIGN2.y, overflow: "visible" }}
           width={SIGN2.w} height={SIGN2.h} viewBox={`0 0 ${SIGN2.w} ${SIGN2.h}`}>
           <defs>
             <linearGradient id="signWaveC" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
@@ -379,10 +374,8 @@ export function HeroBuilding() {
           </defs>
           <text className="sign-neon" fill="url(#signWaveC)" x={SIGN2.w / 2} y="7" textAnchor="middle" textLength="88" lengthAdjust="spacingAndGlyphs" style={{ fontSize: 6.2 }}>АУДИТ ЖИЛЫХ ОБЪЕКТОВ</text>
         </svg>
-        </a>
 
-        <a href="#services" className="pointer-events-auto absolute z-10" style={{ left: SIGN4.x - 6, top: SIGN4.y - 5 }}>
-        <svg className="sign-svg select-none" style={{ overflow: "visible" }}
+        <svg className="pointer-events-none absolute z-10 select-none" style={{ left: SIGN4.x, top: SIGN4.y, overflow: "visible" }}
           width={SIGN4.w} height={SIGN4.h} viewBox={`0 0 ${SIGN4.w} ${SIGN4.h}`}>
           <defs>
             <linearGradient id="signWaveG" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
@@ -399,7 +392,6 @@ export function HeroBuilding() {
           <text className="sign-neon" fill="url(#signWaveG)" x={SIGN4.w / 2} y="8.8" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">ИНСПЕКЦИЯ ВСТРОЕННЫХ</text>
           <text className="sign-neon" fill="url(#signWaveG)" x={SIGN4.w / 2} y="17.2" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">КОММЕРЧЕСКИХ ПОМЕЩЕНИЙ</text>
         </svg>
-        </a>
 
 
       </div>
