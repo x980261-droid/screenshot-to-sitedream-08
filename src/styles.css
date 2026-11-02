@@ -10,7 +10,6 @@
   --radius-sm: calc(var(--radius) - 2px);
   --radius-md: var(--radius);
   --radius-lg: var(--radius);
-  --color-plaster: var(--plaster);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -35,7 +34,6 @@
 }
 
 :root {
-  --plaster: oklch(0.86 0.02 80);
   --radius: 2px;
   --background: oklch(0.17 0.012 255);   /* #0d1117 */
   --foreground: oklch(0.97 0.003 250);
@@ -100,14 +98,3 @@
   }
 }
 
-@keyframes plaster-fall {
-  0% { transform: translate(0, 0); opacity: 0; }
-  8% { opacity: 1; }
-  100% { transform: translate(var(--drift), var(--fall)); opacity: 0.2; }
-}
-.plaster {
-  animation: plaster-fall 2s cubic-bezier(0.55, 0, 1, 0.45) infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .plaster { animation: none; display: none; }
-}

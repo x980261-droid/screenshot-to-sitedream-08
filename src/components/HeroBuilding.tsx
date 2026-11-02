@@ -87,14 +87,6 @@ function jagColumns(frags: Frag[]): Frag[] {
     return { ...box, clip };
   });
 }
-// Plaster crumbs that trickle from the cracks while the building moves
-const SEAM_YS = [1, 2, 3, 4, 5].map((r) => (r * MID_TO) / 6).concat([MID_TO, FIXED_FLOORS_FROM]);
-const PLASTER = Array.from({ length: 70 }, (_, i) => {
-  const onJoint = i % 3 === 0; // crossings of vertical and horizontal cracks
-  const y = SEAM_YS[Math.floor(rand(i + 300) * SEAM_YS.length)] ?? MID_TO;
-  const x = onJoint ? (1 + Math.floor(rand(i + 400) * (COLS - 1))) * (W / COLS) + (rand(i + 500) - 0.5) * 10 : rand(i + 600) * W;
-  return { x, y, size: 1.5 + rand(i + 700) * 2.5, fall: IMG_H - 30 - y, delay: rand(i + 800) * 4, dur: 1.6 + rand(i + 900) * 1.6, drift: (rand(i + 1000) - 0.5) * 14 };
-});
 const TOP_J = jagColumns(TOP);
 const BOTTOM_J = jagColumns(BOTTOM);
 
@@ -260,15 +252,6 @@ export function HeroBuilding() {
           {TOP_J.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
           {BOTTOM_J.map((f, i) => <Piece key={`b${i}`} f={f} {...s} />)}
         </div>
-
-        {s.k > 0.08 && (
-          <div className="pointer-events-none absolute inset-0 z-20" style={{ opacity: Math.min(1, s.k * 1.4) }}>
-            {PLASTER.map((p, i) => (
-              <span key={`p${i}`} className="plaster absolute rounded-[1px] bg-plaster"
-                style={{ left: p.x, top: p.y, width: p.size, height: p.size, animationDelay: `${p.delay}s`, animationDuration: `${p.dur}s`, ["--fall" as string]: `${p.fall}px`, ["--drift" as string]: `${p.drift}px` }} />
-            ))}
-          </div>
-        )}
 
         {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
 
