@@ -186,7 +186,7 @@ export function HeroBuilding() {
   }, []);
 
   return (
-    <div ref={ref} className="relative mx-auto w-[456px] max-w-full" style={{ height: IMG_H, perspective: 900 }}>
+    <div ref={ref} className="relative mx-auto w-[760px] max-w-full" style={{ height: IMG_H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
           {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
