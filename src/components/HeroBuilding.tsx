@@ -198,7 +198,7 @@ export function HeroBuilding() {
 
   return (
     <div ref={ref} className="absolute inset-0 overflow-hidden">
-      <div className="absolute" style={{ left: "50%", top: "50%", width: W, height: IMG_H, transform: `translate(-50%, -50%) scale(${sc})` }}>
+      <div className="absolute" style={{ left: "50%", bottom: 0, width: W, height: IMG_H, transform: `translateX(-50%) scale(${sc})`, transformOrigin: "bottom center" }}>
       <div className="relative" style={{ width: W, height: IMG_H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
