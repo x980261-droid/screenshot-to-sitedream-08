@@ -150,22 +150,20 @@ export function HeroBuilding() {
       if (!desktop.matches) return;
       const nx = Math.max(-1, Math.min(1, (e.clientX / window.innerWidth) * 2 - 1));
       const ny = Math.max(-1, Math.min(1, (e.clientY / window.innerHeight) * 2 - 1));
-      setS({ k: Math.min(1, Math.hypot(nx, ny)), nx, ny });
+      // collapse is one-way: intensity only grows, never returns to 0
+      setS((prev) => ({ k: Math.max(prev.k, Math.min(1, Math.hypot(nx, ny))), nx, ny }));
     };
-    const onLeave = () => desktop.matches && setS({ k: 0, nx: 0, ny: 0 });
     const onScroll = () => {
       if (desktop.matches) return;
       const el = ref.current;
       if (!el) return;
       const p = Math.max(0, Math.min(1, window.scrollY / (el.getBoundingClientRect().height + 200)));
-      setS({ k: p, nx: 0, ny: 0 });
+      setS((prev) => ({ k: Math.max(prev.k, p), nx: 0, ny: 0 }));
     };
     window.addEventListener("mousemove", onMove);
-    document.documentElement.addEventListener("mouseleave", onLeave);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("mousemove", onMove);
-      document.documentElement.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
