@@ -379,7 +379,8 @@ export function HeroBuilding() {
           <text className="sign-neon" fill="url(#signWaveC)" x={SIGN2.w / 2} y="7" textAnchor="middle" textLength="88" lengthAdjust="spacingAndGlyphs" style={{ fontSize: 6.2 }}>АУДИТ ЖИЛЫХ ОБЪЕКТОВ</text>
         </svg>
 
-        <svg className="pointer-events-none absolute z-10 select-none" style={{ left: SIGN4.x, top: SIGN4.y, overflow: "visible" }}
+        <a href="#services" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN4.x - 7, top: SIGN4.y - 5 }}>
+        <svg className="pointer-events-none select-none" style={{ overflow: "visible" }}
           width={SIGN4.w} height={SIGN4.h} viewBox={`0 0 ${SIGN4.w} ${SIGN4.h}`}>
           <defs>
             <linearGradient id="signWaveG" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
@@ -396,6 +397,7 @@ export function HeroBuilding() {
           <text className="sign-neon" fill="url(#signWaveG)" x={SIGN4.w / 2} y="8.8" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">ИНСПЕКЦИЯ ВСТРОЕННЫХ</text>
           <text className="sign-neon" fill="url(#signWaveG)" x={SIGN4.w / 2} y="17.2" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">КОММЕРЧЕСКИХ ПОМЕЩЕНИЙ</text>
         </svg>
+        </a>
 
 
       </div>
