@@ -350,8 +350,73 @@ export function HeroBuilding() {
       {/* Text-legibility shade sits under the sparks so the flash keeps its full brightness */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
       <div className="pointer-events-none absolute" style={{ left: "50%", bottom: 0, width: W, height: IMG_H, transform: `translateX(-50%) scale(${sc})`, transformOrigin: "bottom center" }}>
-        {/* Interactive shop-floor buttons: solid plates with a unified emerald neon glow. */}
-        {SIGNS.map((sgn) => <SignButton key={sgn.key} s={sgn} />)}
+        {/* Extra sign copy above the shade adds ~20% brightness, same wave. */}
+        <svg className="pointer-events-none absolute select-none" style={{ left: SIGN.x, top: SIGN.y, overflow: "visible", opacity: 0.2 }}
+          width={SIGN.w} height={SIGN.h} viewBox={`0 0 ${SIGN.w} ${SIGN.h}`}>
+          <defs>
+            <linearGradient id="signWaveB" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
+              <stop offset="0" stopColor="#ffffff" />
+              <stop offset="0.167" stopColor="#ffe600" />
+              <stop offset="0.333" stopColor="#6ec1ff" />
+              <stop offset="0.5" stopColor="#ffffff" />
+              <stop offset="0.667" stopColor="#ffe600" />
+              <stop offset="0.833" stopColor="#6ec1ff" />
+              <stop offset="1" stopColor="#ffffff" />
+              <animateTransform attributeName="gradientTransform" type="translate" values="0 0; -108 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
+            </linearGradient>
+          </defs>
+          <text className="sign-neon" fill="url(#signWaveB)" x="54.9" y="8.8" textAnchor="middle" textLength="64" lengthAdjust="spacingAndGlyphs">ВЕРИФИКАЦИЯ</text>
+          <text className="sign-neon" fill="url(#signWaveB)" x="54.1" y="17.2" textAnchor="middle" textLength="107" lengthAdjust="spacingAndGlyphs">СТРОИТЕЛЬНОЙ ДОКУМЕНТАЦИИ</text>
+        </svg>
+        <svg className="pointer-events-none absolute select-none" style={{ left: SIGN3.x, top: SIGN3.y, overflow: "visible", opacity: 0.2 }}
+          width={SIGN3.w} height={SIGN3.h} viewBox={`0 0 ${SIGN3.w} ${SIGN3.h}`}>
+          <defs>
+            <linearGradient id="signWaveF" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
+              <stop offset="0" stopColor="#2036c8" />
+              <stop offset="0.167" stopColor="#39d98a" />
+              <stop offset="0.333" stopColor="#ff5050" />
+              <stop offset="0.5" stopColor="#2036c8" />
+              <stop offset="0.667" stopColor="#39d98a" />
+              <stop offset="0.833" stopColor="#ff5050" />
+              <stop offset="1" stopColor="#2036c8" />
+              <animateTransform attributeName="gradientTransform" type="translate" values="0 0; -108 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
+            </linearGradient>
+          </defs>
+          <text className="sign-neon" fill="url(#signWaveF)" x={SIGN3.w / 2} y="7" textAnchor="middle" textLength="78" lengthAdjust="spacingAndGlyphs" style={{ fontSize: 6.2 }}>ЭКСПЕРТИЗА КВАРТИР</text>
+        </svg>
+        <svg className="pointer-events-none absolute select-none" style={{ left: SIGN2.x, top: SIGN2.y, overflow: "visible", opacity: 0.2 }}
+          width={SIGN2.w} height={SIGN2.h} viewBox={`0 0 ${SIGN2.w} ${SIGN2.h}`}>
+          <defs>
+            <linearGradient id="signWaveD" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
+              <stop offset="0" stopColor="#ffffff" />
+              <stop offset="0.167" stopColor="#ffe600" />
+              <stop offset="0.333" stopColor="#6ec1ff" />
+              <stop offset="0.5" stopColor="#ffffff" />
+              <stop offset="0.667" stopColor="#ffe600" />
+              <stop offset="0.833" stopColor="#6ec1ff" />
+              <stop offset="1" stopColor="#ffffff" />
+              <animateTransform attributeName="gradientTransform" type="translate" values="0 0; -108 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
+            </linearGradient>
+          </defs>
+          <text className="sign-neon" fill="url(#signWaveD)" x={SIGN2.w / 2} y="7" textAnchor="middle" textLength="88" lengthAdjust="spacingAndGlyphs" style={{ fontSize: 6.2 }}>АУДИТ ЖИЛЫХ ОБЪЕКТОВ</text>
+        </svg>
+        <svg className="pointer-events-none absolute select-none" style={{ left: SIGN4.x, top: SIGN4.y, overflow: "visible", opacity: 0.2 }}
+          width={SIGN4.w} height={SIGN4.h} viewBox={`0 0 ${SIGN4.w} ${SIGN4.h}`}>
+          <defs>
+            <linearGradient id="signWaveH" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
+              <stop offset="0" stopColor="#3d8bff" />
+              <stop offset="0.167" stopColor="#ff5050" />
+              <stop offset="0.333" stopColor="#39d98a" />
+              <stop offset="0.5" stopColor="#3d8bff" />
+              <stop offset="0.667" stopColor="#ff5050" />
+              <stop offset="0.833" stopColor="#39d98a" />
+              <stop offset="1" stopColor="#3d8bff" />
+              <animateTransform attributeName="gradientTransform" type="translate" values="0 0; -108 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
+            </linearGradient>
+          </defs>
+          <text className="sign-neon" fill="url(#signWaveH)" x={SIGN4.w / 2} y="8.8" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">ИНСПЕКЦИЯ ВСТРОЕННЫХ</text>
+          <text className="sign-neon" fill="url(#signWaveH)" x={SIGN4.w / 2} y="17.2" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">КОММЕРЧЕСКИХ ПОМЕЩЕНИЙ</text>
+        </svg>
         {SPARK_SEQUENCE.map((p, i) => <Spark key={`s${i}`} p={p} i={i} k={s.k} />)}
       </div>
     </div>
