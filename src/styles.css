@@ -74,13 +74,18 @@
 }
 
 @keyframes facade-drift {
-  0%, 100% { translate: 0 0; rotate: 0deg; }
-  35% { translate: 3px 5px; rotate: 0.7deg; }
-  70% { translate: -3px 9px; rotate: -0.6deg; }
+  0%, 100% { translate: 0 0; rotate: -0.4deg; }
+  12% { translate: 5px 2px; rotate: 0.8deg; }
+  24% { translate: 2px 7px; rotate: -0.7deg; }
+  39% { translate: -5px 9px; rotate: -1.2deg; }
+  51% { translate: -2px 4px; rotate: 0.5deg; }
+  66% { translate: 6px 11px; rotate: 1.1deg; }
+  79% { translate: 1px 8px; rotate: -0.9deg; }
+  91% { translate: -4px 3px; rotate: 0.6deg; }
 }
 
 .facade-drift {
-  animation: facade-drift 7s ease-in-out infinite;
+  animation: facade-drift 7s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
