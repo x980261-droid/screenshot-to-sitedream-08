@@ -167,6 +167,18 @@
     inset 0 0 8px rgba(0, 230, 115, 0.35);
 }
 
+/* Аудит жилых объектов: on hover the frame is laid with red bricks. */
+.sign-frame.sign-bricks {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.25s ease;
+}
+.sign-frame.sign-bricks:hover {
+  background-color: #a83424;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(42, 12, 7, 0.85) 0 1.5px, transparent 1.5px 9px),
+    repeating-linear-gradient(90deg, rgba(42, 12, 7, 0.85) 0 1.5px, transparent 1.5px 18px);
+  background-position: 0 0, 9px 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .facade-drift { animation: none; }
 }
