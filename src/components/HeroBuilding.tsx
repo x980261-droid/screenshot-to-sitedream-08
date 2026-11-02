@@ -11,7 +11,7 @@ const SHOP_FROM = FIXED_FLOORS_FROM; // floors 1-2 stay fixed
 const COLS = 4;
 const SX = W / 380; // debris x-coords were tuned for the single-section building
 
-type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number; clip?: string };
+type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number; clip?: string | undefined };
 
 // Deterministic pseudo-random so SSR and client match
 function rand(seed: number) {
@@ -54,7 +54,10 @@ const STATIC_FROM = Math.min(...CRACK_LOWER.map((p) => p.y)) - 4;
 const STATIC_CLIP = crackClipPath({ x: 0, y: STATIC_FROM, w: W, h: H - STATIC_FROM }, CRACK_LOWER, undefined);
 const CRACK_BOTTOM_MAX = Math.max(...CRACK_LOWER.map((p) => p.y));
 const CRACK_UPPER_MAX = Math.max(...CRACK_UPPER.map((p) => p.y));
-const seamMax = (r: number) => (r < SEAMS.length ? Math.max(...SEAMS[r].map((p) => p.y)) : CRACK_UPPER_MAX);
+const seamMax = (r: number) => {
+  const seam = SEAMS.at(r);
+  return seam ? Math.max(...seam.map((p) => p.y)) : CRACK_UPPER_MAX;
+};
 const topFrags = makeFrags(0, MID_TO, 6, -1, 1);
 const bottomFrags = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100);
 const TOP: Frag[] = [];
