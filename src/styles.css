@@ -53,7 +53,7 @@
   --slate: oklch(0.55 0.02 255);
   --spark-white: oklch(0.98 0.015 235);
   --spark-blue: oklch(0.85 0.08 235);
-  --spark-glow: 0 0 4px 1px color-mix(in oklab, var(--spark-blue) 85%, transparent);
+  --spark-glow: 0 0 2px 0.5px color-mix(in oklab, var(--spark-blue) 85%, transparent);
   --spark-rays: linear-gradient(90deg, transparent, var(--spark-blue) 35%, var(--spark-white) 50%, var(--spark-blue) 65%, transparent);
   --spark-trail: linear-gradient(90deg, transparent, var(--spark-blue), var(--spark-white));
   --destructive: oklch(0.5 0.17 25);
