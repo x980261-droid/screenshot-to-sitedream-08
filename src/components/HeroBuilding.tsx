@@ -90,6 +90,10 @@ function jagColumns(frags: Frag[]): Frag[] {
 const TOP_J = jagColumns(TOP);
 const BOTTOM_J = jagColumns(BOTTOM);
 
+// Neon sign overlay box (component px): image band x108-348,y976-1021 erased,
+// text re-rendered as SVG scaled 760/1536 (x) and 623/1264 (y) from image coords.
+const SIGN = { x: 56.5, y: 483.5, w: 108, h: 19 };
+
 
 const Svg = {
   rebar: (
