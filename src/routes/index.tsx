@@ -115,7 +115,7 @@ function Index() {
               ● НЕЗАВИСИМЫЙ ИНЖЕНЕРНЫЙ КОНТРОЛЬ
             </div>
             <h1 className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
-              Надежный технический аудит и строительный контроль
+              Технический аудит и строительный контроль
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
               Контролируем каждый этап строительства на соответствие СП и ГОСТ, исключаем скрытые дефекты и
