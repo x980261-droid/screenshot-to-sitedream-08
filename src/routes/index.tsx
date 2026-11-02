@@ -22,7 +22,7 @@ const EMAIL = "info@termin-audit.ru";
 const nav = [
   ["Главная", "#top"],
   ["О компании", "#about"],
-  ["Услуги", "#services"],
+  ["Услуги", "#directions"],
   ["Кейсы", "#cases"],
   ["Контакты", "#contacts"],
 ];
@@ -38,6 +38,14 @@ const services = [
   ["Аудит качества строительно-монтажных работ", "Независимая оценка качества СМР с фотофиксацией и протоколами испытаний."],
   ["Юридическое сопровождение и консалтинг", "Претензионная работа, сопровождение договоров подряда и споров."],
 ];
+
+const directions = [
+  { id: "dir-houses", title: "Аудит жилых объектов", text: "Технадзор и инструментальный контроль качества строительства коттеджей и загородных домов премиум-класса.", items: ["Инспекция фундаментов и несущих стен", "Тепловизионный аудит", "Проверка кровельных систем"] },
+  { id: "dir-flats", title: "Экспертиза квартир", text: "Приборный контроль качества отделки, геометрии помещений и инженерных сетей в новостройках перед приемкой.", items: ["Замер отклонений лазерным тахеометром", "Ультразвуковой поиск пустот в монолите", "Инспекция вентиляции и электрики"] },
+  { id: "dir-commercial", title: "Инспекция встроенных коммерческих помещений", text: "Технический аудит торговых и офисных площадей на первых этажах зданий и в ТЦ перед покупкой или арендой под ритейл.", items: ["Экспертиза прочности конструктива", "Аудит систем ОВиК и ВИС", "Проверка на соответствие требованиям МЧС"] },
+  { id: "dir-docs", title: "Верификация строительной документации", text: "Камеральный и финансово-технический анализ смет, договоров подряда и исполнительных актов для защиты от переплат.", items: ["Экспертиза сметной стоимости", "Проверка актов выполненных работ (КС-2, КС-3, КС-14)", "Подготовка заключений для суда"] },
+];
+
 
 const metrics = [
   ["Более 25 лет", "Опыт ведущих инженеров"],
@@ -120,7 +128,7 @@ function Index() {
             </h1>
             <div style={{ transform: "translate(901px, 192px)" }} className="pointer-events-auto mt-8 flex flex-wrap gap-4">
               <a href="#request" className={btn}>Заказать услугу</a>
-              <a href="#services" className="inline-flex items-center border px-6 py-3 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-foreground">
+              <a href="#directions" className="inline-flex items-center border px-6 py-3 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-foreground">
                 Все услуги
               </a>
             </div>
@@ -165,10 +173,32 @@ function Index() {
         </div>
       </section>
 
+      {/* Directions */}
+      <section id="directions" className="scroll-mt-20 border-t bg-blueprint">
+        <div className="mx-auto max-w-7xl px-5 py-24">
+          <SectionHead index="02" title="Основные направления деятельности" />
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {directions.map((d, i) => (
+              <article key={d.id} id={d.id} className="relative flex scroll-mt-24 flex-col border bg-card p-8 transition-colors hover:border-safe/60">
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-safe shadow-safe" />
+                <div className="font-mono text-sm text-safe">{String(i + 1).padStart(2, "0")}</div>
+                <h3 className="mt-5 text-2xl font-bold leading-tight">{d.title}</h3>
+                <p className="mt-4 text-sm text-muted-foreground">{d.text}</p>
+                <ul className="mt-6 space-y-3 border-t pt-6 text-sm">
+                  {d.items.map((it) => (
+                    <li key={it} className="flex gap-3"><span className="text-safe">—</span><span>{it}</span></li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Services */}
       <section id="services" className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-5 py-24">
-          <SectionHead index="02" title="Практики и услуги" />
+          <SectionHead index="03" title="Специализированные экспертные практики" />
           <div className="grid border-l border-t sm:grid-cols-2 lg:grid-cols-3">
             {services.map(([t, d], i) => (
               <div key={t} className="group border-b border-r p-8 transition-colors hover:bg-muted">
@@ -212,7 +242,7 @@ function Index() {
 
       {/* Clients */}
       <section className="mx-auto max-w-7xl px-5 py-24">
-        <SectionHead index="03" title="Клиенты и доверие" />
+        <SectionHead index="04" title="Клиенты и доверие" />
         <div className="grid gap-px border bg-border md:grid-cols-3">
           {clients.map(([t, d, f]) => (
             <div key={t} className="bg-background p-8">
@@ -227,7 +257,7 @@ function Index() {
       {/* Cases */}
       <section id="cases" className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-5 py-24">
-          <SectionHead index="04" title="Кейсы и проекты" />
+          <SectionHead index="05" title="Кейсы и проекты" />
           <div className="grid gap-6 md:grid-cols-3">
             {cases.map(([t, o, d]) => (
               <article key={t} className="flex flex-col border bg-background p-8">
@@ -243,7 +273,7 @@ function Index() {
 
       {/* News */}
       <section className="mx-auto max-w-7xl px-5 py-24">
-        <SectionHead index="05" title="Отраслевые новости" />
+        <SectionHead index="06" title="Отраслевые новости" />
         <div className="grid gap-6 md:grid-cols-3">
           {news.map(([date, tag, t]) => (
             <article key={t} className="border-t-2 border-foreground pt-6">
