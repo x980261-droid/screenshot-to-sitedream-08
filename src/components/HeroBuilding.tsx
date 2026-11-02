@@ -76,21 +76,13 @@ const DEBRIS: Debris[] = [
   { kind: "pipe", x: 10, y: 180, fall: 340, drift: -90, rot: -60, at: 0.2 },
   { kind: "ac", x: 10, y: 90, fall: 390, drift: -50, rot: -230, at: 0.45 },
   { kind: "rebar", x: 300, y: 225, fall: 300, drift: 100, rot: 170, at: 0.3 },
-  { kind: "window", x: 60, y: 380, fall: 160, drift: -80, rot: -110, at: 0.4 },
-  { kind: "pipe", x: 250, y: 400, fall: 140, drift: 110, rot: 80, at: 0.2 },
-  { kind: "duct", x: 140, y: 360, fall: 180, drift: 40, rot: -150, at: 0.5 },
-  { kind: "rebar", x: 180, y: 345, fall: 200, drift: -40, rot: 210, at: 0.1 },
   { kind: "rebar", x: 90, y: 30, fall: 420, drift: 40, rot: 160, at: 0.2 },
   { kind: "rebar", x: 210, y: 60, fall: 380, drift: -60, rot: -120, at: 0.35 },
   { kind: "pipe", x: 120, y: 150, fall: 400, drift: 70, rot: 60, at: 0.15 },
   { kind: "pipe", x: 330, y: 240, fall: 320, drift: -80, rot: -90, at: 0.4 },
-  { kind: "pipe", x: 350, y: 350, fall: 240, drift: -100, rot: -60, at: 0.55 },
   { kind: "radiator", x: 60, y: 200, fall: 420, drift: -50, rot: 140, at: 0.25 },
   { kind: "radiator", x: 180, y: 230, fall: 380, drift: 90, rot: -170, at: 0.3 },
   { kind: "radiator", x: 300, y: 170, fall: 430, drift: -30, rot: 210, at: 0.2 },
-  { kind: "radiator", x: 250, y: 330, fall: 260, drift: -70, rot: -120, at: 0.45 },
-  { kind: "rebar", x: 40, y: 320, fall: 280, drift: 60, rot: 90, at: 0.5 },
-  { kind: "duct", x: 90, y: 410, fall: 200, drift: 60, rot: 100, at: 0.6 },
 ];
 
 function DebrisItem({ d, k }: { d: Debris; k: number }) {
