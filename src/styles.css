@@ -142,7 +142,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .facade-drift { animation: none; }
-  .spark-weld { animation: none; opacity: 0; }
 }
 
 
