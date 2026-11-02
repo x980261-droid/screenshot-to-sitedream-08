@@ -90,6 +90,10 @@ function jagColumns(frags: Frag[]): Frag[] {
 const TOP_J = jagColumns(TOP);
 const BOTTOM_J = jagColumns(BOTTOM);
 
+// Neon sign overlay box (component px): image band x108-348,y976-1021 erased,
+// text re-rendered as SVG scaled 760/1536 (x) and 623/1264 (y) from image coords.
+const SIGN = { x: 56.5, y: 483.5, w: 108, h: 19 };
+
 
 const Svg = {
   rebar: (
@@ -311,6 +315,13 @@ export function HeroBuilding() {
           <img src={building} alt="" width={W} height={IMG_H} draggable={false}
             className="absolute left-0 block max-w-none select-none" style={{ top: -H, width: W, height: IMG_H }} />
         </div>
+
+        {/* Animated neon sign over the erased band: blinks blue -> green -> black */}
+        <svg className="pointer-events-none absolute z-10 select-none" style={{ left: SIGN.x, top: SIGN.y, overflow: "visible" }}
+          width={SIGN.w} height={SIGN.h} viewBox={`0 0 ${SIGN.w} ${SIGN.h}`}>
+          <text className="sign-neon" x="54.9" y="8.8" textAnchor="middle" textLength="64" lengthAdjust="spacingAndGlyphs">ВЕРИФИКАЦИЯ</text>
+          <text className="sign-neon" x="54.1" y="17.2" textAnchor="middle" textLength="107" lengthAdjust="spacingAndGlyphs">СТРОИТЕЛЬНОЙ ДОКУМЕНТАЦИИ</text>
+        </svg>
       </div>
       </div>
       </div>
