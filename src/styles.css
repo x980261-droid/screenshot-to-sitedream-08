@@ -93,24 +93,25 @@
   position: absolute;
   z-index: 30;
   pointer-events: none;
+  mix-blend-mode: plus-lighter;
+  filter: drop-shadow(0 0 4px var(--spark-white)) drop-shadow(0 0 10px var(--spark-blue)) drop-shadow(0 0 22px var(--spark-blue));
 }
 .spark-star {
   position: absolute;
-  left: -31px;
-  top: -31px;
-  width: 62px;
-  height: 62px;
+  left: -45px;
+  top: -45px;
+  width: 90px;
+  height: 90px;
   background: var(--spark-white);
   clip-path: polygon(50% 0%, 52% 43%, 83% 17%, 57% 48%, 100% 50%, 57% 52%, 83% 83%, 52% 57%, 50% 100%, 48% 57%, 17% 83%, 43% 52%, 0% 50%, 43% 48%, 17% 17%, 48% 43%);
-  filter: drop-shadow(0 0 3px var(--spark-blue));
   animation: spark-star-flash 2.4s linear both;
 }
 .spark-star::before, .spark-star::after {
   content: "";
   position: absolute;
   left: 0;
-  top: 30px;
-  width: 62px;
+  top: 44px;
+  width: 90px;
   height: 2px;
   background: var(--spark-rays);
 }
