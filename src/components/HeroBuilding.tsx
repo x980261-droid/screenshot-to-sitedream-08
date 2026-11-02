@@ -141,7 +141,7 @@ function Piece({ f, k }: { f: Frag; k: number }) {
   const tx = f.dx * k * 0.5;
   return (
     <div
-      className="layer-move absolute overflow-hidden"
+      className={`layer-move absolute overflow-hidden${k > 0.08 ? " facade-drift" : ""}`}
       style={{
         left: f.x,
         top: f.y,
@@ -151,6 +151,8 @@ function Piece({ f, k }: { f: Frag; k: number }) {
         opacity: damage.opacity,
         transition: `transform ${FALL_DURATION_MS}ms cubic-bezier(0.55,0,1,0.45)`,
         transformOrigin: "center",
+        animationDelay: `${-(f.x + f.y) / 100}s`,
+        animationDuration: `${6 + (f.y % 4)}s`,
       }}
     >
       <img src={building} alt="" width={W} height={IMG_H} draggable={false}
