@@ -111,10 +111,7 @@ function Index() {
           <HeroBuilding />
         </div>
         <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-2 lg:py-24">
-          <div className="relative">
-            <div className="neon-verify absolute left-0 top-[52%] z-10 max-w-md text-2xl font-semibold leading-tight tracking-tight md:text-3xl">
-              Верификация строительной документации
-            </div>
+          <div>
             <div style={{ transform: "translateY(-73px)" }} className="mb-6 inline-flex items-center gap-2 border border-safe/40 px-3 py-1 font-mono text-xs text-safe">
               ● НЕЗАВИСИМЫЙ ИНЖЕНЕРНЫЙ КОНТРОЛЬ
             </div>
