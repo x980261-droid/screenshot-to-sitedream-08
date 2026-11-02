@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building.jpg";
 
-const W = 380;
-const H = 570;
-const IMG_H = 623; // displayed image height: building (H) + lawn strip below
-const MID_FROM = 245;
-const MID_TO = 353;
+const K = 1.2; // building scale
+const W = 380 * K;
+const H = 570 * K;
+const IMG_H = 623 * K; // displayed image height: building (H) + lawn strip below
+const MID_FROM = 245 * K;
+const MID_TO = 353 * K;
 const COLS = 3;
 
 type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number };
@@ -117,11 +118,11 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
     <div
       className="absolute z-20"
       style={{
-        left: d.x,
-        top: d.y,
+        left: d.x * K,
+        top: d.y * K,
         opacity: phase === "fading" ? 0 : 1,
         transform: down
-          ? `translate3d(${d.drift}px, ${IMG_H - 30 - d.y}px, 40px) rotate(${d.rot}deg) scale(1)`
+          ? `translate3d(${d.drift * K}px, ${IMG_H - 30 - d.y * K}px, 40px) rotate(${d.rot}deg) scale(1)`
           : "translate3d(0,0,0) rotate(0deg) scale(0)",
         transformOrigin: "center",
         transition: down ? "transform 3s cubic-bezier(0.55,0,1,0.45), opacity 0.7s" : "none",
@@ -185,7 +186,7 @@ export function HeroBuilding() {
   }, []);
 
   return (
-    <div ref={ref} className="relative mx-auto w-[380px] max-w-full" style={{ height: IMG_H, perspective: 900 }}>
+    <div ref={ref} className="relative mx-auto w-[456px] max-w-full" style={{ height: IMG_H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
           {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
