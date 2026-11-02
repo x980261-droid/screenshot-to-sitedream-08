@@ -126,7 +126,6 @@ function Index() {
               </a>
             </div>
           </div>
-          <HeroBuilding />
         </div>
       </section>
 
