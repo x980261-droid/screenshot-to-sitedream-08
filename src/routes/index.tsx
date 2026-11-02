@@ -22,7 +22,7 @@ const EMAIL = "info@termin-audit.ru";
 const nav = [
   ["Главная", "#top"],
   ["О компании", "#about"],
-  ["Услуги", "#services"],
+  ["Услуги", "#directions"],
   ["Кейсы", "#cases"],
   ["Контакты", "#contacts"],
 ];
@@ -120,7 +120,7 @@ function Index() {
             </h1>
             <div style={{ transform: "translate(901px, 192px)" }} className="pointer-events-auto mt-8 flex flex-wrap gap-4">
               <a href="#request" className={btn}>Заказать услугу</a>
-              <a href="#services" className="inline-flex items-center border px-6 py-3 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-foreground">
+              <a href="#directions" className="inline-flex items-center border px-6 py-3 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-foreground">
                 Все услуги
               </a>
             </div>
@@ -168,7 +168,7 @@ function Index() {
       {/* Services */}
       <section id="services" className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-5 py-24">
-          <SectionHead index="02" title="Практики и услуги" />
+          <SectionHead index="02" title="Специализированные экспертные практики" />
           <div className="grid border-l border-t sm:grid-cols-2 lg:grid-cols-3">
             {services.map(([t, d], i) => (
               <div key={t} className="group border-b border-r p-8 transition-colors hover:bg-muted">

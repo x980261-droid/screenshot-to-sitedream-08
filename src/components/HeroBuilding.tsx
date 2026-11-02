@@ -323,7 +323,7 @@ export function HeroBuilding() {
         </div>
 
         {/* Sign under the shade: light wave sweeps white -> yellow -> black every 10s. */}
-        <a href="#services" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN.x - 7, top: SIGN.y - 5 }}>
+        <a href="#dir-docs" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN.x - 7, top: SIGN.y - 5 }}>
         <svg className="pointer-events-none select-none" style={{ overflow: "visible" }}
           width={SIGN.w} height={SIGN.h} viewBox={`0 0 ${SIGN.w} ${SIGN.h}`}>
           <defs>
@@ -343,7 +343,7 @@ export function HeroBuilding() {
         </svg>
         </a>
 
-        <a href="#services" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN3.x - 7, top: SIGN3.y - 5 }}>
+        <a href="#dir-flats" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN3.x - 7, top: SIGN3.y - 5 }}>
         <svg className="pointer-events-none select-none" style={{ overflow: "visible" }}
           width={SIGN3.w} height={SIGN3.h} viewBox={`0 0 ${SIGN3.w} ${SIGN3.h}`}>
           <defs>
@@ -362,7 +362,7 @@ export function HeroBuilding() {
         </svg>
         </a>
 
-        <a href="#services" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN2.x - 7, top: SIGN2.y - 5 }}>
+        <a href="#dir-houses" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN2.x - 7, top: SIGN2.y - 5 }}>
         <svg className="pointer-events-none select-none" style={{ overflow: "visible" }}
           width={SIGN2.w} height={SIGN2.h} viewBox={`0 0 ${SIGN2.w} ${SIGN2.h}`}>
           <defs>
@@ -381,7 +381,7 @@ export function HeroBuilding() {
         </svg>
         </a>
 
-        <a href="#services" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN4.x - 7, top: SIGN4.y - 5 }}>
+        <a href="#dir-commercial" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN4.x - 7, top: SIGN4.y - 5 }}>
         <svg className="pointer-events-none select-none" style={{ overflow: "visible" }}
           width={SIGN4.w} height={SIGN4.h} viewBox={`0 0 ${SIGN4.w} ${SIGN4.h}`}>
           <defs>
