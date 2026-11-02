@@ -140,12 +140,11 @@
   100% { transform: translate(var(--dx), var(--dy)) rotate(var(--angle)) scaleX(0.3); opacity: 0; }
 }
 
-/* Facade sign: white lettering without glow or blinking. */
+/* Facade sign lettering: color driven by the signWave gradient (white -> yellow -> black). */
 .sign-neon {
   font-family: var(--font-sans);
   font-weight: 700;
   font-size: 11px;
-  fill: #ffffff;
   filter: none;
 }
 
