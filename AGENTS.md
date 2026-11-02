@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep facade slice coordinates and collapse timing in the browser-safe building-motion module so fixed floors align with the source image and animation rules can be tested independently.
+- Keep spark burst lifetime in building-motion and use a terminal spent state in the visual effect so further pointer movement cannot restart an exhausted crossing.
