@@ -73,16 +73,6 @@
   will-change: transform;
 }
 
-@keyframes quake {
-  0%, 100% { translate: 0 0; rotate: 0deg; }
-  20% { translate: calc(var(--q) * -1) calc(var(--q) * 0.4); rotate: -0.6deg; }
-  40% { translate: var(--q) calc(var(--q) * -0.3); rotate: 0.5deg; }
-  60% { translate: calc(var(--q) * -0.7) calc(var(--q) * 0.5); rotate: -0.3deg; }
-  80% { translate: calc(var(--q) * 0.8) 0; rotate: 0.4deg; }
-}
-@utility quake {
-  animation: quake 0.15s linear infinite;
-}
 
 @layer base {
   * { border-color: var(--color-border); }
