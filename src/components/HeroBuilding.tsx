@@ -118,6 +118,7 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
       const t = setTimeout(() => setPhase("gone"), 700);
       return () => clearTimeout(t);
     }
+    return undefined;
   }, [phase]);
 
   if (phase === "idle" || phase === "gone") return null;
