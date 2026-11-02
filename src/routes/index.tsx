@@ -232,6 +232,10 @@ function Index() {
       <section id="directions" className="scroll-mt-20 border-t bg-blueprint">
         <div className="mx-auto max-w-7xl px-5 py-24">
           <SectionHead index="02" title="Основные направления деятельности" />
+          <div className="mb-8 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-safe">
+            <span className="inline-block h-2 w-2 bg-safe" />
+            Проверки до начала инструментального контроля
+          </div>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {directions.map((d, i) => (
               <article key={d.id} id={d.id} className="relative flex scroll-mt-24 flex-col border bg-card p-8 transition-colors hover:border-safe/60">
