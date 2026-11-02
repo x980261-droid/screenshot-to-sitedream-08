@@ -93,9 +93,8 @@ const BOTTOM_J = jagColumns(BOTTOM);
 // Neon sign overlay box (component px): image band x108-348,y976-1021 erased,
 // text re-rendered as SVG scaled 760/1536 (x) and 623/1264 (y) from image coords.
 const SIGN = { x: 56.5, y: 483.5, w: 108, h: 19 };
-// Two shop bands read COFFEE on the source image: right band x1258-1446 and
-// centre band x541-708, y997-1016 erased, same wave overlay on both.
-const SIGN2 = { x: 622.6, y: 491.4, w: 92.8, h: 9.5 };
+// The centre band that read COFFEE on the source image (x541-708, y997-1016)
+// is erased and re-rendered as a wave overlay; the right band stays empty.
 const SIGN3 = { x: 267.7, y: 491.4, w: 82.6, h: 9.5 };
 
 
