@@ -20,8 +20,8 @@ export type CrackPoint = { x: number; y: number };
 // Jagged "broken concrete" fracture lines across the facade, in facade pixels.
 // The upper seam runs inside the collapsing mass; the lower seam is the tear
 // against the stable floors 1-2 (centered on FIXED_FLOORS_FROM).
-export const CRACK_UPPER = crackLine(353, 13, 760, 10, 3);
-export const CRACK_LOWER = crackLine(FIXED_FLOORS_FROM, 22, 760, 10, 7);
+export const CRACK_UPPER = crackLine(353, 26, 760, 24, 3);
+export const CRACK_LOWER = crackLine(FIXED_FLOORS_FROM, 44, 760, 24, 7);
 
 export function crackLine(centerY: number, amplitude: number, width: number, segments: number, seed: number): CrackPoint[] {
   const points: CrackPoint[] = [];

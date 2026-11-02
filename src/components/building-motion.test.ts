@@ -49,12 +49,14 @@ describe("jagged fracture lines", () => {
     }
   });
   it("clips fragments with a jagged polygon along the crack", () => {
-    const clip = crackClipPath({ x: 190, y: 353, w: 190, h: 79 }, CRACK_UPPER, CRACK_LOWER);
+    const low = Math.min(...CRACK_LOWER.map((p) => p.y));
+    const high = Math.max(...CRACK_LOWER.map((p) => p.y));
+    const clip = crackClipPath({ x: 190, y: 353, w: 190, h: high - 353 }, CRACK_UPPER, CRACK_LOWER);
     expect(clip.startsWith("polygon(")).toBe(true);
     expect(clip).toContain("%");
     // sampled crack height between nodes stays inside the torn band
     const mid = crackYAt(CRACK_LOWER, 380);
-    expect(mid).toBeGreaterThan(FIXED_FLOORS_FROM - 22);
-    expect(mid).toBeLessThan(FIXED_FLOORS_FROM + 22);
+    expect(mid).toBeGreaterThan(low);
+    expect(mid).toBeLessThan(high);
   });
 });
