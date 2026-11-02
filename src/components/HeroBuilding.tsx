@@ -105,7 +105,8 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
         left: d.x,
         top: d.y,
         opacity: p > 0 ? 1 : 0,
-        transform: `translate3d(${d.drift * p}px, ${d.fall * g}px, ${40 * p}px) rotate(${d.rot * p}deg)`,
+        transform: `translate3d(${d.drift * p}px, ${d.fall * g}px, ${40 * p}px) rotate(${d.rot * p}deg) scale(${p})`,
+        transformOrigin: "center",
         transition: `transform ${fall} ease-in, opacity 0.2s`,
       }}
     >
