@@ -83,23 +83,29 @@ export function crackXAt(crack: CrackPoint[], y: number) {
   return last.x;
 }
 
-// clip-path polygon for a fragment bounded above and/or below by a crack line;
-// with no crack given that side stays a straight fragment edge
+// clip-path polygon for a fragment bounded by crack lines (horizontal top/bottom,
+// vertical left); with no crack given that side stays a straight fragment edge
 export function crackClipPath(
   frag: { x: number; y: number; w: number; h: number },
   top?: CrackPoint[],
   bottom?: CrackPoint[],
-) {
+  left?: CrackPoint[],
+): string | undefined {
+  if (!top && !bottom && !left) return undefined;
   const x0 = frag.x;
   const x1 = frag.x + frag.w;
+  const y0 = frag.y;
+  const y1 = frag.y + frag.h;
   const pts: Array<[number, number]> = [];
   if (top) {
     pts.push([x0, crackYAt(top, x0)]);
     for (const p of top) if (p.x > x0 && p.x < x1) pts.push([p.x, p.y]);
     pts.push([x1, crackYAt(top, x1)]);
   } else {
-    pts.push([x0, frag.y], [x1, frag.y]);
+    pts.push([x0, y0], [x1, y0]);
   }
+  // right edge, straight (the fragment to the right clips its own left edge)
+  pts.push([x1, y1]);
   if (bottom) {
     pts.push([x1, crackYAt(bottom, x1)]);
     for (let i = bottom.length - 1; i >= 0; i--) {
@@ -108,9 +114,18 @@ export function crackClipPath(
     }
     pts.push([x0, crackYAt(bottom, x0)]);
   } else {
-    pts.push([x1, frag.y + frag.h], [x0, frag.y + frag.h]);
+    pts.push([x0, y1]);
+  }
+  // left edge, bottom -> top along a vertical crack
+  if (left) {
+    pts.push([crackXAt(left, y1), y1]);
+    for (let i = left.length - 1; i >= 0; i--) {
+      const p = left.at(i);
+      if (p && p.y > y0 && p.y < y1) pts.push([p.x, p.y]);
+    }
+    pts.push([crackXAt(left, y0), y0]);
   }
   return `polygon(${pts
-    .map(([px, py]) => `${(((px - x0) / frag.w) * 100).toFixed(2)}% ${(((py - frag.y) / frag.h) * 100).toFixed(2)}%`)
+    .map(([px, py]) => `${(((px - x0) / frag.w) * 100).toFixed(2)}% ${(((py - y0) / frag.h) * 100).toFixed(2)}%`)
     .join(", ")})`;
 }
