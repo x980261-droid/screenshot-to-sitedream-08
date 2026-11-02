@@ -249,8 +249,8 @@ export function HeroBuilding() {
       <div className="relative" style={{ width: W, height: IMG_H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
-          {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
-          {BOTTOM.map((f, i) => <Piece key={`b${i}`} f={f} {...s} />)}
+          {TOP_J.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
+          {BOTTOM_J.map((f, i) => <Piece key={`b${i}`} f={f} {...s} />)}
         </div>
 
         {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
