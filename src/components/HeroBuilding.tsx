@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building-wide.jpg";
-import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, crackClipPath, facadeDeformation, VERTICAL_AMP, verticalCrack, withJaggedLeft } from "./building-motion";
+import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, SPARK_INTERSECTIONS, crackClipPath, facadeDeformation, verticalCrack, withJaggedLeft } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
