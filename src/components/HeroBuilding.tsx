@@ -320,13 +320,15 @@ export function HeroBuilding() {
         <svg className="pointer-events-none absolute z-10 select-none" style={{ left: SIGN.x, top: SIGN.y, overflow: "visible" }}
           width={SIGN.w} height={SIGN.h} viewBox={`0 0 ${SIGN.w} ${SIGN.h}`}>
           <defs>
-            <linearGradient id="signWaveA" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="108" y2="0">
+            <linearGradient id="signWaveA" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
               <stop offset="0" stopColor="#ffffff" />
-              <stop offset="0.42" stopColor="#ffffff" />
-              <stop offset="0.55" stopColor="#ffe600" />
-              <stop offset="0.72" stopColor="#000000" />
-              <stop offset="1" stopColor="#000000" />
-              <animateTransform attributeName="gradientTransform" type="translate" values="216 0; -324 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
+              <stop offset="0.167" stopColor="#ffe600" />
+              <stop offset="0.333" stopColor="#6ec1ff" />
+              <stop offset="0.5" stopColor="#ffffff" />
+              <stop offset="0.667" stopColor="#ffe600" />
+              <stop offset="0.833" stopColor="#6ec1ff" />
+              <stop offset="1" stopColor="#ffffff" />
+              <animateTransform attributeName="gradientTransform" type="translate" values="0 0; -108 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
             </linearGradient>
           </defs>
           <text className="sign-neon" fill="url(#signWaveA)" x="54.9" y="8.8" textAnchor="middle" textLength="64" lengthAdjust="spacingAndGlyphs">ВЕРИФИКАЦИЯ</text>
@@ -343,13 +345,15 @@ export function HeroBuilding() {
         <svg className="pointer-events-none absolute select-none" style={{ left: SIGN.x, top: SIGN.y, overflow: "visible", opacity: 0.2 }}
           width={SIGN.w} height={SIGN.h} viewBox={`0 0 ${SIGN.w} ${SIGN.h}`}>
           <defs>
-            <linearGradient id="signWaveB" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="108" y2="0">
+            <linearGradient id="signWaveB" gradientUnits="userSpaceOnUse" x1="-108" y1="0" x2="216" y2="0">
               <stop offset="0" stopColor="#ffffff" />
-              <stop offset="0.42" stopColor="#ffffff" />
-              <stop offset="0.55" stopColor="#ffe600" />
-              <stop offset="0.72" stopColor="#000000" />
-              <stop offset="1" stopColor="#000000" />
-              <animateTransform attributeName="gradientTransform" type="translate" values="216 0; -324 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
+              <stop offset="0.167" stopColor="#ffe600" />
+              <stop offset="0.333" stopColor="#6ec1ff" />
+              <stop offset="0.5" stopColor="#ffffff" />
+              <stop offset="0.667" stopColor="#ffe600" />
+              <stop offset="0.833" stopColor="#6ec1ff" />
+              <stop offset="1" stopColor="#ffffff" />
+              <animateTransform attributeName="gradientTransform" type="translate" values="0 0; -108 0" dur="10s" repeatCount="indefinite" calcMode="linear" />
             </linearGradient>
           </defs>
           <text className="sign-neon" fill="url(#signWaveB)" x="54.9" y="8.8" textAnchor="middle" textLength="64" lengthAdjust="spacingAndGlyphs">ВЕРИФИКАЦИЯ</text>
