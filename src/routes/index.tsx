@@ -205,7 +205,7 @@ function Index() {
             <SectionHead index="Этап 0" title="Предварительная экспертиза и верификация исходных данных" />
             <div className="border bg-card">
               <div className="border-b px-8 py-8">
-                <h3 className="max-w-3xl text-2xl font-bold leading-tight tracking-tight md:text-3xl">
+                <h3 className="max-w-3xl text-lg font-bold leading-tight tracking-tight md:text-[22.5px]">
                   Входной аудит и экспертиза проектно-сметной документации
                 </h3>
                 <p className="mt-4 max-w-3xl text-sm text-muted-foreground">
