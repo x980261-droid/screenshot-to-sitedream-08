@@ -198,7 +198,7 @@ function Index() {
       {/* Services */}
       <section id="services" className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-5 py-24">
-          <SectionHead index="02" title="Специализированные экспертные практики" />
+          <SectionHead index="03" title="Специализированные экспертные практики" />
           <div className="grid border-l border-t sm:grid-cols-2 lg:grid-cols-3">
             {services.map(([t, d], i) => (
               <div key={t} className="group border-b border-r p-8 transition-colors hover:bg-muted">
@@ -242,7 +242,7 @@ function Index() {
 
       {/* Clients */}
       <section className="mx-auto max-w-7xl px-5 py-24">
-        <SectionHead index="03" title="Клиенты и доверие" />
+        <SectionHead index="04" title="Клиенты и доверие" />
         <div className="grid gap-px border bg-border md:grid-cols-3">
           {clients.map(([t, d, f]) => (
             <div key={t} className="bg-background p-8">
@@ -257,7 +257,7 @@ function Index() {
       {/* Cases */}
       <section id="cases" className="border-t bg-card">
         <div className="mx-auto max-w-7xl px-5 py-24">
-          <SectionHead index="04" title="Кейсы и проекты" />
+          <SectionHead index="05" title="Кейсы и проекты" />
           <div className="grid gap-6 md:grid-cols-3">
             {cases.map(([t, o, d]) => (
               <article key={t} className="flex flex-col border bg-background p-8">
@@ -273,7 +273,7 @@ function Index() {
 
       {/* News */}
       <section className="mx-auto max-w-7xl px-5 py-24">
-        <SectionHead index="05" title="Отраслевые новости" />
+        <SectionHead index="06" title="Отраслевые новости" />
         <div className="grid gap-6 md:grid-cols-3">
           {news.map(([date, tag, t]) => (
             <article key={t} className="border-t-2 border-foreground pt-6">
