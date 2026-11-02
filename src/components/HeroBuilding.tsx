@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building-wide.jpg";
-import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, crackClipPath, facadeDeformation } from "./building-motion";
+import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, crackClipPath, facadeDeformation } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -47,15 +47,24 @@ function makeFrags(from: number, to: number, rows: number, side: -1 | 1, seed: n
 }
 
 // Jagged "broken concrete" fracture lines (see building-motion.ts).
-// Edges overlap instead of abutting: the upper row reaches down over the crack
+// Every floor boundary in the collapsing mass gets its own jagged crack.
+// Edges overlap instead of abutting: the row above reaches down over the crack
 // unclipped, the row below clips along the crack and paints over it — no gaps at rest.
 const STATIC_FROM = Math.min(...CRACK_LOWER.map((p) => p.y)) - 4;
 const STATIC_CLIP = crackClipPath({ x: 0, y: STATIC_FROM, w: W, h: H - STATIC_FROM }, CRACK_LOWER, undefined);
 const CRACK_BOTTOM_MAX = Math.max(...CRACK_LOWER.map((p) => p.y));
 const CRACK_UPPER_MAX = Math.max(...CRACK_UPPER.map((p) => p.y));
-const TOP = makeFrags(0, MID_TO, 6, -1, 1).map((f, i, all) =>
-  i >= all.length - COLS ? { ...f, h: CRACK_UPPER_MAX - f.y } : f,
-);
+const seamMax = (r: number) => (r < SEAMS.length ? Math.max(...SEAMS[r].map((p) => p.y)) : CRACK_UPPER_MAX);
+const TOP: Frag[] = [];
+for (let r = 0; r < 6; r++) {
+  const frags = makeFrags(r * (MID_TO / 6), (r + 1) * (MID_TO / 6), 1, -1, 1 + r);
+  for (let c = 0; c < COLS; c++) {
+    const f = frags.at(c);
+    if (!f) continue;
+    const ext = { ...f, h: seamMax(r) - f.y };
+    TOP.push({ ...ext, clip: r > 0 ? crackClipPath(ext, SEAMS[r - 1], undefined) : undefined });
+  }
+}
 const BOTTOM = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100)
   .map((f) => ({ ...f, h: CRACK_BOTTOM_MAX - f.y }))
   .map((f) => ({ ...f, clip: crackClipPath(f, CRACK_UPPER, undefined) }));
