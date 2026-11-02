@@ -211,13 +211,6 @@ export function HeroBuilding() {
         <div className="absolute left-0 z-10 overflow-hidden" style={{ top: MID_FROM, width: W, height: MID_TO - MID_FROM }}>
           <img src={building} alt="Жилой дом под строительным контролем" width={W} height={IMG_H} draggable={false}
             className="absolute left-0 block max-w-none select-none" style={{ top: -MID_FROM, width: W, height: IMG_H }} />
-          <div className="absolute inset-0 flex items-center gap-3 px-5">
-            {["СТРОИТЕЛЬНЫЙ КОНТРОЛЬ", "ТЕХНИЧЕСКИЙ АУДИТ"].map((l) => (
-              <div key={l} className="flex h-20 flex-1 items-center justify-center border-2 border-foreground bg-background/80 p-2 text-center text-xs font-bold leading-tight tracking-wide backdrop-blur-sm">
-                {l}
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Stable floors 2-3 and shop ground floor */}
