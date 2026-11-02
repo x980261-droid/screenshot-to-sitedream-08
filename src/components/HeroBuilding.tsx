@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building-wide.jpg";
+import { FALL_DURATION_MS, FIXED_FLOORS_FROM, landingDistance } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
 const IMG_H = 623; // displayed image height: building (H) + lawn strip below
 const MID_FROM = 245;
 const MID_TO = 353;
-const SHOP_FROM = 410; // floors 1-2 (shop + first residential floor) stay fixed
+const SHOP_FROM = FIXED_FLOORS_FROM; // floors 1-2 stay fixed
 const COLS = 4;
 const SX = W / 380; // debris x-coords were tuned for the single-section building
 
@@ -104,7 +105,7 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
       return () => cancelAnimationFrame(r);
     }
     if (phase === "falling") {
-      const t = setTimeout(() => setPhase("fading"), 3000);
+      const t = setTimeout(() => setPhase("fading"), FALL_DURATION_MS);
       return () => clearTimeout(t);
     }
     if (phase === "fading") {
@@ -135,11 +136,25 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
   );
 }
 
-function Piece({ f, k, nx, ny }: { f: Frag; k: number; nx: number; ny: number }) {
-  // direction of the cursor skews the debris; k = intensity 0..1
-  const tx = f.dx * k;
-  const ty = f.dy * k * k;
-  const tz = f.dz * k;
+function Piece({ f, k }: { f: Frag; k: number }) {
+  const [phase, setPhase] = useState<"idle" | "falling" | "fading" | "gone">("idle");
+  const triggered = k > 0.08;
+  useEffect(() => {
+    if (phase === "idle" && triggered) setPhase("falling");
+    if (phase === "falling") {
+      const timer = setTimeout(() => setPhase("fading"), FALL_DURATION_MS);
+      return () => clearTimeout(timer);
+    }
+    if (phase === "fading") {
+      const timer = setTimeout(() => setPhase("gone"), 700);
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, [phase, triggered]);
+  if (phase === "gone") return null;
+  const falling = phase !== "idle";
+  const tx = falling ? f.dx : 0;
+  const ty = falling ? landingDistance(f.y, f.h) : 0;
   return (
     <div
       className="layer-move absolute overflow-hidden"
@@ -148,7 +163,9 @@ function Piece({ f, k, nx, ny }: { f: Frag; k: number; nx: number; ny: number })
         top: f.y,
         width: f.w + 0.5,
         height: f.h + 0.5,
-        transform: `translate3d(${tx}px, ${ty}px, ${tz}px) rotateX(${f.rx * k}deg)  rotateZ(${f.rz * k}deg)`,
+        transform: `translate3d(${tx}px, ${ty}px, 0) rotateX(${falling ? f.rx : 0}deg) rotateZ(${falling ? f.rz : 0}deg)`,
+        opacity: phase === "fading" ? 0 : 1,
+        transition: `transform ${FALL_DURATION_MS}ms cubic-bezier(0.55,0,1,0.45), opacity 700ms`,
         transformOrigin: "center",
       }}
     >
@@ -213,7 +230,7 @@ export function HeroBuilding() {
         {/* Stable floors 1-2: first residential floor and shop ground floor */}
         <div className="absolute left-0 z-10 overflow-hidden" style={{ top: SHOP_FROM, width: W, height: H - SHOP_FROM }}>
           <img src={building} alt="" width={W} height={IMG_H} draggable={false}
-            className="absolute left-0 block max-w-none select-none" style={{ top: -MID_TO, width: W, height: IMG_H }} />
+            className="absolute left-0 block max-w-none select-none" style={{ top: -SHOP_FROM, width: W, height: IMG_H }} />
         </div>
 
         {/* Stable lawn */}
