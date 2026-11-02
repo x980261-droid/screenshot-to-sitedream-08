@@ -393,6 +393,7 @@ export function HeroBuilding() {
           <text className="sign-neon" fill="url(#signWaveG)" x={SIGN4.w / 2} y="17.2" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">КОММЕРЧЕСКИХ ПОМЕЩЕНИЙ</text>
         </svg>
 
+
       </div>
       </div>
       </div>
