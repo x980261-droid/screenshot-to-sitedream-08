@@ -177,6 +177,25 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
   );
 }
 
+// Electric spark at a crossing of moving facade parts: flickering jagged arcs
+function Spark({ p, i, k }: { p: { x: number; y: number }; i: number; k: number }) {
+  if (k <= 0.1) return null;
+  const dur = 0.9 + ((i * 7) % 5) * 0.25;
+  return (
+    <div
+      className="spark"
+      style={{ left: p.x - 22, top: p.y - 11, animationDuration: `${dur.toFixed(2)}s`, animationDelay: `-${((i * 0.73) % dur).toFixed(2)}s` }}
+    >
+      <svg viewBox="0 0 44 22" className="h-[22px] w-[44px]">
+        <path d="M2 11 L10 5 L15 15 L22 4 L28 17 L36 8 L42 11" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <svg viewBox="0 0 40 18" className="spark-arc absolute left-2 top-4 h-[18px] w-[40px]">
+        <path d="M2 15 L11 10 L17 17 L25 7 L32 13 L38 5" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
+  );
+}
+
 function Piece({ f, k }: { f: Frag; k: number }) {
   const damage = facadeDeformation(k, f.dy, f.rz);
   const tx = f.dx * k * 0.5;
