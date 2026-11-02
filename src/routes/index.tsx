@@ -110,7 +110,7 @@ function Index() {
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <HeroBuilding />
         </div>
-        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-2 lg:py-24">
+        <div className="pointer-events-none relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-2 lg:py-24">
           <div>
             <div style={{ transform: "translateY(-73px)" }} className="mb-6 inline-flex items-center gap-2 border border-safe/40 px-3 py-1 font-mono text-xs text-safe">
               ● НЕЗАВИСИМЫЙ ИНЖЕНЕРНЫЙ КОНТРОЛЬ
@@ -118,7 +118,7 @@ function Index() {
             <h1 style={{ transform: "translateY(-85px)" }} className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
               Технический аудит и строительный контроль
             </h1>
-            <div style={{ transform: "translate(901px, 192px)" }} className="mt-8 flex flex-wrap gap-4">
+            <div style={{ transform: "translate(901px, 192px)" }} className="pointer-events-auto mt-8 flex flex-wrap gap-4">
               <a href="#request" className={btn}>Заказать услугу</a>
               <a href="#services" className="inline-flex items-center border px-6 py-3 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-foreground">
                 Все услуги

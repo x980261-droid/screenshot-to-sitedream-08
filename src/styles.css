@@ -148,6 +148,22 @@
   filter: none;
 }
 
+/* Hover on the Экспертиза квартир sign: pronounced emerald neon flare. */
+.sign-svg {
+  pointer-events: auto;
+  cursor: pointer;
+  transition: filter 0.25s ease;
+}
+
+.sign-svg:hover {
+  filter:
+    brightness(1.35)
+    drop-shadow(0 0 2px rgba(0, 230, 115, 0.95))
+    drop-shadow(0 0 6px rgba(0, 230, 115, 0.8))
+    drop-shadow(0 0 14px rgba(0, 230, 115, 0.6))
+    drop-shadow(0 0 28px rgba(0, 230, 115, 0.35));
+}
+
 @media (prefers-reduced-motion: reduce) {
   .facade-drift { animation: none; }
 }
