@@ -149,7 +149,7 @@ function Index() {
         <SectionHead index="01" title="О компании" />
         <div className="grid gap-10 md:grid-cols-2">
           <p className="text-2xl font-medium leading-snug">
-            «Термин» — независимая группа технического надзора, которая с 2011 года защищает интересы заказчиков
+            «Термин» — независимая группа технического надзора, которая защищает интересы заказчиков
             на объектах промышленного, складского и гражданского строительства.
           </p>
           <div className="space-y-4 text-muted-foreground">
