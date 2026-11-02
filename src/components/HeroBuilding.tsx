@@ -100,6 +100,27 @@ const SIGN3 = { x: 267.7, y: 491.4, w: 82.6, h: 9.5 };
 // Former THE DAILY BEAN band (image x826-1026, y984-1023), now two lines.
 const SIGN4 = { x: 408.7, y: 485.5, w: 98.9, h: 19 };
 
+// Interactive shop-floor buttons rendered on the erased sign bands.
+type SignSpec = { key: string; box: { x: number; y: number; w: number; h: number }; lines: string[]; fs: number };
+const SIGNS: SignSpec[] = [
+  { key: "verify", box: SIGN, lines: ["ВЕРИФИКАЦИЯ", "СТРОИТЕЛЬНОЙ ДОКУМЕНТАЦИИ"], fs: 7.5 },
+  { key: "audit", box: SIGN2, lines: ["АУДИТ ЖИЛЫХ ОБЪЕКТОВ"], fs: 7 },
+  { key: "expert", box: SIGN3, lines: ["ЭКСПЕРТИЗА КВАРТИР"], fs: 7 },
+  { key: "inspect", box: SIGN4, lines: ["ИНСПЕКЦИЯ ВСТРОЕННЫХ", "КОММЕРЧЕСКИХ ПОМЕЩЕНИЙ"], fs: 7.5 },
+];
+
+function SignButton({ s }: { s: SignSpec }) {
+  return (
+    <a
+      href="#services"
+      className="sign-btn"
+      style={{ left: s.box.x + s.box.w / 2, top: s.box.y + s.box.h / 2 }}
+    >
+      {s.lines.map((line) => <span key={line} style={{ fontSize: s.fs }}>{line}</span>)}
+    </a>
+  );
+}
+
 
 const Svg = {
   rebar: (

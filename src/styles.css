@@ -140,12 +140,41 @@
   100% { transform: translate(var(--dx), var(--dy)) rotate(var(--angle)) scaleX(0.3); opacity: 0; }
 }
 
-/* Facade sign lettering: color driven by the signWave gradient (white -> yellow -> black). */
-.sign-neon {
+/* Interactive shop-floor sign buttons: solid emerald plate, unified neon glow,
+   brightening on hover to show the signs are clickable. */
+.sign-btn {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: #0e8f57;
+  color: #ffffff;
   font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 11px;
-  filter: none;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1.25;
+  pointer-events: auto;
+  cursor: pointer;
+  box-shadow:
+    0 0 6px rgba(0, 230, 115, 0.55),
+    0 0 18px rgba(0, 230, 115, 0.35),
+    0 0 40px rgba(0, 230, 115, 0.2);
+  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.sign-btn:hover {
+  background: #12b96e;
+  box-shadow:
+    0 0 10px rgba(0, 230, 115, 0.95),
+    0 0 30px rgba(0, 230, 115, 0.65),
+    0 0 60px rgba(0, 230, 115, 0.4);
 }
 
 @media (prefers-reduced-motion: reduce) {
