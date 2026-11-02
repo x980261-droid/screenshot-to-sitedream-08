@@ -232,6 +232,8 @@ export function HeroBuilding() {
             className="absolute left-0 block max-w-none select-none" style={{ top: -H, width: W, height: IMG_H }} />
         </div>
       </div>
+      </div>
+      </div>
     </div>
   );
 }
