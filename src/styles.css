@@ -140,22 +140,13 @@
   100% { transform: translate(var(--dx), var(--dy)) rotate(var(--angle)) scaleX(0.3); opacity: 0; }
 }
 
-/* Facade neon sign: bright white neon, blinking on and off with quick flickers */
+/* Facade neon sign: steady bright white neon, no blinking */
 .sign-neon {
   font-family: "Times New Roman", Georgia, serif;
   font-weight: 700;
   font-size: 11px;
-  fill: currentColor;
-  animation: sign-neon-cycle 3.6s linear infinite;
-}
-@keyframes sign-neon-cycle {
-  0% { color: #0e1013; filter: none; }
-  2% { color: #ffffff; filter: none; }
-  4%, 46% { color: #ffffff; filter: drop-shadow(0 0 2px #eaf4ff) drop-shadow(0 0 6px #b9d6ff) drop-shadow(0 0 10px #7fb2ff); }
-  47%, 52% { color: #0e1013; filter: none; }
-  53% { color: #ffffff; filter: none; }
-  55%, 95% { color: #ffffff; filter: drop-shadow(0 0 2px #eaf4ff) drop-shadow(0 0 6px #b9d6ff) drop-shadow(0 0 10px #7fb2ff); }
-  96%, 100% { color: #0e1013; filter: none; }
+  fill: #ffffff;
+  filter: drop-shadow(0 0 2px #eaf4ff) drop-shadow(0 0 6px #b9d6ff) drop-shadow(0 0 10px #7fb2ff);
 }
 
 @media (prefers-reduced-motion: reduce) {
