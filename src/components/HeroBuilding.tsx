@@ -165,7 +165,7 @@ export function HeroBuilding() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const fit = () => setSc(el.clientWidth / W);
+    const fit = () => setSc(Math.max(el.clientWidth / W, el.clientHeight / IMG_H));
     fit();
     const ro = new ResizeObserver(fit);
     ro.observe(el);
@@ -197,8 +197,8 @@ export function HeroBuilding() {
   }, []);
 
   return (
-    <div ref={ref} className="relative mx-auto w-full max-w-[760px]" style={{ aspectRatio: `${W} / ${IMG_H}` }}>
-      <div className="absolute left-0 top-0 origin-top-left" style={{ width: W, height: IMG_H, transform: `scale(${sc})` }}>
+    <div ref={ref} className="absolute inset-0 overflow-hidden">
+      <div className="absolute" style={{ left: "50%", top: "50%", width: W, height: IMG_H, transform: `translate(-50%, -50%) scale(${sc})` }}>
       <div className="relative" style={{ width: W, height: IMG_H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
@@ -211,13 +211,6 @@ export function HeroBuilding() {
         <div className="absolute left-0 z-10 overflow-hidden" style={{ top: MID_FROM, width: W, height: MID_TO - MID_FROM }}>
           <img src={building} alt="Жилой дом под строительным контролем" width={W} height={IMG_H} draggable={false}
             className="absolute left-0 block max-w-none select-none" style={{ top: -MID_FROM, width: W, height: IMG_H }} />
-          <div className="absolute inset-0 flex items-center gap-3 px-5">
-            {["СТРОИТЕЛЬНЫЙ КОНТРОЛЬ", "ТЕХНИЧЕСКИЙ АУДИТ"].map((l) => (
-              <div key={l} className="flex h-20 flex-1 items-center justify-center border-2 border-foreground bg-background/80 p-2 text-center text-xs font-bold leading-tight tracking-wide backdrop-blur-sm">
-                {l}
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Stable floors 2-3 and shop ground floor */}
