@@ -23,6 +23,12 @@ export type CrackPoint = { x: number; y: number };
 export const CRACK_UPPER = crackLine(353, 3.25, 760, 72, 3);
 export const CRACK_LOWER = crackLine(FIXED_FLOORS_FROM, 5.5, 760, 72, 7);
 
+// One jagged crack per floor boundary inside the collapsing mass (6 rows above y=353).
+export const TOP_ROWS = 6;
+export const SEAMS: CrackPoint[][] = [1, 2, 3, 4, 5].map((r) =>
+  crackLine((r * 353) / TOP_ROWS, 4.5, 760, 72, r * 2 + 1),
+);
+
 export function crackLine(centerY: number, amplitude: number, width: number, segments: number, seed: number): CrackPoint[] {
   const points: CrackPoint[] = [];
   for (let i = 0; i <= segments; i++) {
