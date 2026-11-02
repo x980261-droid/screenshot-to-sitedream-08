@@ -202,16 +202,16 @@ function Spark({ p, i, k }: { p: { x: number; y: number }; i: number; k: number 
         const ang = j % 5 === 0
           ? rand(j + 30) * Math.PI * 2
           : Math.PI * (0.2 + rand(j + 30) * 0.6);
-        const dist = 30 + rand(j + 60) * 75;
+        const dist = 3 + rand(j + 60) * 7.5;
         return (
           <span
             key={j}
             className="spark-mote"
             style={{
               "--dx": `${(Math.cos(ang) * dist).toFixed(1)}px`,
-              "--dy": `${(Math.sin(ang) * dist + 20).toFixed(1)}px`,
+              "--dy": `${(Math.sin(ang) * dist + 2).toFixed(1)}px`,
               "--angle": `${(ang * 180 / Math.PI).toFixed(1)}deg`,
-              "--trail": `${(4 + rand(j + 120) * 10).toFixed(1)}px`,
+              "--trail": `${(1 + rand(j + 120) * 1.5).toFixed(1)}px`,
               animationDelay: `${(j * 0.024).toFixed(3)}s`,
               animationDuration: `${0.6 + rand(j + 90) * 0.2}s`,
             } as CSSProperties}
