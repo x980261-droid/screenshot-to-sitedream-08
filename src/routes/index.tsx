@@ -118,7 +118,7 @@ function Index() {
             <h1 style={{ transform: "translateY(-85px)" }} className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
               Технический аудит и строительный контроль
             </h1>
-            <div style={{ transform: "translate(460px, 84px)" }} className="mt-8 flex flex-wrap gap-4">
+            <div style={{ transform: "translate(440px, 84px)" }} className="mt-8 flex flex-wrap gap-4">
               <a href="#request" className={btn}>Заказать услугу</a>
               <a href="#services" className="inline-flex items-center border px-6 py-3 text-sm font-semibold uppercase tracking-wider transition-colors hover:border-foreground">
                 Все услуги
