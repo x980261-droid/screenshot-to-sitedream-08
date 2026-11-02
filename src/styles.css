@@ -54,6 +54,8 @@
   --spark-white: oklch(0.98 0.015 235);
   --spark-blue: oklch(0.85 0.08 235);
   --spark-glow: 0 0 4px 1px color-mix(in oklab, var(--spark-blue) 85%, transparent);
+  --spark-rays: linear-gradient(90deg, transparent, var(--spark-blue) 35%, var(--spark-white) 50%, var(--spark-blue) 65%, transparent);
+  --spark-trail: linear-gradient(90deg, transparent, var(--spark-blue), var(--spark-white));
   --destructive: oklch(0.5 0.17 25);
   --destructive-foreground: oklch(0.98 0 0);
   --border: oklch(0.32 0.014 255);
@@ -92,16 +94,43 @@
   z-index: 30;
   pointer-events: none;
 }
+.spark-star {
+  position: absolute;
+  left: -31px;
+  top: -31px;
+  width: 62px;
+  height: 62px;
+  background: var(--spark-white);
+  clip-path: polygon(50% 0%, 52% 43%, 83% 17%, 57% 48%, 100% 50%, 57% 52%, 83% 83%, 52% 57%, 50% 100%, 48% 57%, 17% 83%, 43% 52%, 0% 50%, 43% 48%, 17% 17%, 48% 43%);
+  filter: drop-shadow(0 0 3px var(--spark-blue));
+  animation: spark-star-flash 2.4s linear both;
+}
+.spark-star::before, .spark-star::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 30px;
+  width: 62px;
+  height: 2px;
+  background: var(--spark-rays);
+}
+.spark-star::after { rotate: 90deg; }
 .spark-mote {
   position: absolute;
   left: 0;
   top: 0;
-  width: 7px;
-  height: 1.5px;
+  width: var(--trail);
+  height: 1px;
   transform-origin: left center;
-  background: var(--spark-white);
+  background: var(--spark-trail);
   box-shadow: var(--spark-glow);
   animation: spark-spray 0.7s ease-out both;
+}
+@keyframes spark-star-flash {
+  0%, 100% { opacity: 0; scale: 0.35; }
+  5%, 24%, 47%, 69% { opacity: 1; scale: 1; }
+  16%, 38%, 58% { opacity: 0.5; scale: 0.7; }
+  82% { opacity: 0; scale: 0.5; }
 }
 @keyframes spark-spray {
   0% { transform: translate(0, 0) rotate(var(--angle)) scaleX(0.1); opacity: 0; }

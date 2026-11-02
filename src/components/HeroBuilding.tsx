@@ -197,18 +197,22 @@ function Spark({ p, i, k }: { p: { x: number; y: number }; i: number; k: number 
       className="spark-weld"
       style={{ left: p.x, top: p.y }}
     >
-      {Array.from({ length: 48 }, (_, j) => {
-        const ang = (j / 12) * Math.PI * 2 + i + rand(j + 30) * 0.3;
-        const dist = 24 + rand(j + 60) * 46;
+      <span className="spark-star" aria-hidden="true" />
+      {Array.from({ length: 64 }, (_, j) => {
+        const ang = j % 5 === 0
+          ? rand(j + 30) * Math.PI * 2
+          : Math.PI * (0.2 + rand(j + 30) * 0.6);
+        const dist = 30 + rand(j + 60) * 75;
         return (
           <span
             key={j}
             className="spark-mote"
             style={{
               "--dx": `${(Math.cos(ang) * dist).toFixed(1)}px`,
-              "--dy": `${(Math.sin(ang) * dist + 10).toFixed(1)}px`,
+              "--dy": `${(Math.sin(ang) * dist + 20).toFixed(1)}px`,
               "--angle": `${(ang * 180 / Math.PI).toFixed(1)}deg`,
-              animationDelay: `${(j * 0.033).toFixed(3)}s`,
+              "--trail": `${(4 + rand(j + 120) * 10).toFixed(1)}px`,
+              animationDelay: `${(j * 0.024).toFixed(3)}s`,
               animationDuration: `${0.6 + rand(j + 90) * 0.2}s`,
             } as CSSProperties}
           />
