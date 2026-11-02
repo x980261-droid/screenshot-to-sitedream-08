@@ -30,12 +30,12 @@ function makeFrags(from: number, to: number, rows: number, side: -1 | 1, seed: n
         y: from + r * rh,
         w: cw,
         h: rh,
-        dx: (spread * 14 + (rand(i) - 0.5) * 22) * dist,
-        dy: (side === -1 ? 20 : 40) + rand(i + 1) * 90 * dist,
-        dz: (rand(i + 2) - 0.3) * 120 * dist,
-        rx: (8 + rand(i + 3) * 22) * dist,
-        ry: (rand(i + 4) - 0.5) * 40 * dist,
-        rz: (rand(i + 5) - 0.5) * 24 * dist,
+        dx: (rand(i) - 0.5) * 16 * dist,
+        dy: (side === -1 ? 60 + r * 25 : 30 + r * 40) + rand(i + 1) * 60 * dist,
+        dz: 0,
+        rx: rand(i + 3) * 10 * dist,
+        ry: 0,
+        rz: (rand(i + 5) - 0.5) * 22 * dist,
       });
     }
   }
@@ -100,7 +100,7 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
 
 function Piece({ f, k, nx, ny }: { f: Frag; k: number; nx: number; ny: number }) {
   // direction of the cursor skews the debris; k = intensity 0..1
-  const tx = (f.dx + nx * 10) * k;
+  const tx = f.dx * k;
   const ty = f.dy * k * k;
   const tz = f.dz * k;
   return (
@@ -111,7 +111,7 @@ function Piece({ f, k, nx, ny }: { f: Frag; k: number; nx: number; ny: number })
         top: f.y,
         width: f.w + 0.5,
         height: f.h + 0.5,
-        transform: `translate3d(${tx}px, ${ty}px, ${tz}px) rotateX(${f.rx * k}deg) rotateY(${f.ry * k + nx * 8 * k}deg) rotateZ(${f.rz * k}deg)`,
+        transform: `translate3d(${tx}px, ${ty}px, ${tz}px) rotateX(${f.rx * k}deg)  rotateZ(${f.rz * k}deg)`,
         transformOrigin: "center",
       }}
     >
@@ -155,8 +155,13 @@ export function HeroBuilding() {
   return (
     <div ref={ref} className="relative mx-auto w-[380px] max-w-full" style={{ height: H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
-        {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
-        {BOTTOM.map((f, i) => <Piece key={`b${i}`} f={f} {...s} />)}
+        <div
+          className={s.k > 0.05 ? "quake absolute inset-0" : "absolute inset-0"}
+          style={{ ["--q" as string]: `${2 + s.k * 6}px`, animationDuration: `${0.18 - s.k * 0.08}s` }}
+        >
+          {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
+          {BOTTOM.map((f, i) => <Piece key={`b${i}`} f={f} {...s} />)}
+        </div>
 
         {DEBRIS.map((d, i) => <DebrisItem key={`d${i}`} d={d} k={s.k} />)}
 
