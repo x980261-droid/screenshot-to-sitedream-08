@@ -36,6 +36,14 @@ describe("jagged fracture lines", () => {
     expect(Math.min(...ys)).toBeLessThan(FIXED_FLOORS_FROM);
     expect(Math.max(...ys)).toBeGreaterThan(FIXED_FLOORS_FROM);
   });
+  it("makes every internal floor seam jagged, never a straight line", () => {
+    expect(SEAMS.length).toBe(5);
+    for (const seam of SEAMS) {
+      const ys = seam.map((p) => p.y);
+      expect(new Set(ys).size).toBeGreaterThan(3);
+      expect(Math.max(...ys)).toBeGreaterThan(Math.min(...ys));
+    }
+  });
   it("keeps the crack flush with the building edges", () => {
     expect(CRACK_LOWER.at(0)?.y).toBe(FIXED_FLOORS_FROM);
     expect(CRACK_LOWER.at(-1)?.y).toBe(FIXED_FLOORS_FROM);
