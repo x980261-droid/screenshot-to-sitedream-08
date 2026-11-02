@@ -97,15 +97,16 @@ const DEBRIS: Debris[] = [
 function DebrisItem({ d, k }: { d: Debris; k: number }) {
   const p = Math.max(0, (k - d.at) / (1 - d.at)); // 0..1 once it breaks off
   const g = p * p; // gravity: accelerates
+  const fall = k > 0 ? "3s" : "0.6s"; // debris drops for 3s, snaps back quickly
   return (
     <div
-      className="absolute z-20 transition-transform duration-500 ease-in"
+      className="absolute z-20 transition-transform ease-in"
       style={{
         left: d.x,
         top: d.y,
         opacity: p > 0 ? 1 : 0,
         transform: `translate3d(${d.drift * p}px, ${d.fall * g}px, ${40 * p}px) rotate(${d.rot * p}deg)`,
-        transition: "transform 0.5s ease-in, opacity 0.2s",
+        transition: `transform ${fall} ease-in, opacity 0.2s`,
       }}
     >
       {Svg[d.kind]}
