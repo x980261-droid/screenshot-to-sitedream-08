@@ -125,4 +125,4 @@ export const SPARK_CROSSINGS: SparkPoint[] = [...SEAMS, CRACK_LOWER].flatMap((se
   }),
 );
 
-export const SPARK_INTERSECTIONS = SPARK_CROSSINGS.filter((_, i) => sparkRand(i + 4) < 0.25);
+export const SPARK_INTERSECTIONS = SPARK_CROSSINGS.filter((_, i) => sparkRand(i + 4) < 0.25).slice(0, Math.round(SPARK_CROSSINGS.length * 0.25));
