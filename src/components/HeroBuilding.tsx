@@ -160,6 +160,17 @@ function Piece({ f, k, nx, ny }: { f: Frag; k: number; nx: number; ny: number })
 export function HeroBuilding() {
   const ref = useRef<HTMLDivElement>(null);
   const [s, setS] = useState({ k: 0, nx: 0, ny: 0 });
+  const [sc, setSc] = useState(1);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => setSc(el.clientWidth / W);
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const desktop = window.matchMedia("(hover: hover) and (min-width: 1024px)");
@@ -186,7 +197,9 @@ export function HeroBuilding() {
   }, []);
 
   return (
-    <div ref={ref} className="relative mx-auto w-[760px] max-w-full" style={{ height: IMG_H, perspective: 900 }}>
+    <div ref={ref} className="relative mx-auto w-full max-w-[760px]" style={{ aspectRatio: `${W} / ${IMG_H}` }}>
+      <div className="absolute left-0 top-0 origin-top-left" style={{ width: W, height: IMG_H, transform: `scale(${sc})` }}>
+      <div className="relative" style={{ width: W, height: IMG_H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
           {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
