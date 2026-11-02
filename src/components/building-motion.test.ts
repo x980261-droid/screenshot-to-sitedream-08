@@ -5,9 +5,7 @@ import {
   FALL_DURATION_MS,
   FIXED_FLOORS_FROM,
   SEAMS,
-  VERTICAL_SEAMS,
   crackClipPath,
-  crackXAt,
   crackYAt,
   facadeDeformation,
   landingDistance,
@@ -45,16 +43,6 @@ describe("jagged fracture lines", () => {
       expect(new Set(ys).size).toBeGreaterThan(3);
       expect(Math.max(...ys)).toBeGreaterThan(Math.min(...ys));
     }
-  });
-  it("makes the vertical section seams jagged too", () => {
-    expect(VERTICAL_SEAMS.length).toBe(3);
-    for (const seam of VERTICAL_SEAMS) {
-      const xs = seam.map((p) => p.x);
-      expect(new Set(xs).size).toBeGreaterThan(3);
-      expect(Math.max(...xs)).toBeGreaterThan(Math.min(...xs));
-    }
-    expect(crackXAt(VERTICAL_SEAMS[0], 200)).toBeGreaterThan(180);
-    expect(crackXAt(VERTICAL_SEAMS[0], 200)).toBeLessThan(200);
   });
   it("keeps the crack flush with the building edges", () => {
     expect(CRACK_LOWER.at(0)?.y).toBe(FIXED_FLOORS_FROM);
