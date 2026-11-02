@@ -3,6 +3,7 @@ import building from "@/assets/building.jpg";
 
 const W = 380;
 const H = 570;
+const IMG_H = 623; // displayed image height: building (H) + lawn strip below
 const MID_FROM = 245;
 const MID_TO = 353;
 const SHOP_FROM = 462; // ground floor with the shop stays fixed
@@ -105,7 +106,7 @@ function DebrisItem({ d, k }: { d: Debris; k: number }) {
         left: d.x,
         top: d.y,
         opacity: p > 0 ? 1 : 0,
-        transform: `translate3d(${d.drift * p}px, ${d.fall * g}px, ${40 * p}px) rotate(${d.rot * p}deg) scale(${p})`,
+        transform: `translate3d(${d.drift * p}px, ${(IMG_H - 30 - d.y) * g}px, ${40 * p}px) rotate(${d.rot * p}deg) scale(${p})`,
         transformOrigin: "center",
         transition: `transform ${fall} ease-in, opacity 0.2s`,
       }}
@@ -132,9 +133,9 @@ function Piece({ f, k, nx, ny }: { f: Frag; k: number; nx: number; ny: number })
         transformOrigin: "center",
       }}
     >
-      <img src={building} alt="" width={W} height={H} draggable={false}
+      <img src={building} alt="" width={W} height={IMG_H} draggable={false}
         className="absolute block max-w-none select-none"
-        style={{ left: -f.x, top: -f.y, width: W, height: H }} />
+        style={{ left: -f.x, top: -f.y, width: W, height: IMG_H }} />
     </div>
   );
 }
@@ -170,7 +171,7 @@ export function HeroBuilding() {
   }, []);
 
   return (
-    <div ref={ref} className="relative mx-auto w-[380px] max-w-full" style={{ height: H, perspective: 900 }}>
+    <div ref={ref} className="relative mx-auto w-[380px] max-w-full" style={{ height: IMG_H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
           {TOP.map((f, i) => <Piece key={`t${i}`} f={f} {...s} />)}
@@ -181,8 +182,8 @@ export function HeroBuilding() {
 
         {/* Stable controlled floor */}
         <div className="absolute left-0 z-10 overflow-hidden" style={{ top: MID_FROM, width: W, height: MID_TO - MID_FROM }}>
-          <img src={building} alt="Жилой дом под строительным контролем" width={W} height={H} draggable={false}
-            className="absolute left-0 block max-w-none select-none" style={{ top: -MID_FROM, width: W, height: H }} />
+          <img src={building} alt="Жилой дом под строительным контролем" width={W} height={IMG_H} draggable={false}
+            className="absolute left-0 block max-w-none select-none" style={{ top: -MID_FROM, width: W, height: IMG_H }} />
           <div className="absolute inset-0 flex items-center gap-3 px-5">
             {["СТРОИТЕЛЬНЫЙ КОНТРОЛЬ", "ТЕХНИЧЕСКИЙ АУДИТ"].map((l) => (
               <div key={l} className="flex h-20 flex-1 items-center justify-center border-2 border-foreground bg-background/80 p-2 text-center text-xs font-bold leading-tight tracking-wide backdrop-blur-sm">
@@ -194,8 +195,8 @@ export function HeroBuilding() {
 
         {/* Stable shop ground floor */}
         <div className="absolute left-0 z-10 overflow-hidden" style={{ top: SHOP_FROM, width: W, height: H - SHOP_FROM }}>
-          <img src={building} alt="" width={W} height={H} draggable={false}
-            className="absolute left-0 block max-w-none select-none" style={{ top: -SHOP_FROM, width: W, height: H }} />
+          <img src={building} alt="" width={W} height={IMG_H} draggable={false}
+            className="absolute left-0 block max-w-none select-none" style={{ top: -SHOP_FROM, width: W, height: IMG_H }} />
         </div>
       </div>
     </div>
