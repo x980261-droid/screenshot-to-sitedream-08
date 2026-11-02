@@ -29,12 +29,27 @@ export const SEAMS: CrackPoint[][] = [1, 2, 3, 4, 5].map((r) =>
   crackLine((r * 353) / TOP_ROWS, 4.5, 760, 72, r * 2 + 1),
 );
 
+// Jagged vertical cracks between facade sections (column boundaries of the grid).
+export const VERTICAL_SEAMS: CrackPoint[][] = [190, 380, 570].map((x, i) =>
+  crackLineV(x, 4, 440, 36, i + 5),
+);
+
 export function crackLine(centerY: number, amplitude: number, width: number, segments: number, seed: number): CrackPoint[] {
   const points: CrackPoint[] = [];
   for (let i = 0; i <= segments; i++) {
     const jitter = Math.sin(i * 12.9898 + seed * 78.233) * 0.5 + 0.5; // deterministic 0..1
     const edge = i === 0 || i === segments ? 0 : i % 2 === 1 ? 1 : -1;
     points.push({ x: (i / segments) * width, y: Math.round(centerY + edge * amplitude * (0.55 + 0.45 * jitter)) });
+  }
+  return points;
+}
+
+export function crackLineV(centerX: number, amplitude: number, height: number, segments: number, seed: number): CrackPoint[] {
+  const points: CrackPoint[] = [];
+  for (let i = 0; i <= segments; i++) {
+    const jitter = Math.sin(i * 12.9898 + seed * 78.233) * 0.5 + 0.5; // deterministic 0..1
+    const edge = i === 0 || i === segments ? 0 : i % 2 === 1 ? 1 : -1;
+    points.push({ x: Math.round(centerX + edge * amplitude * (0.55 + 0.45 * jitter)), y: (i / segments) * height });
   }
   return points;
 }
@@ -51,6 +66,21 @@ export function crackYAt(crack: CrackPoint[], x: number) {
     if (a && b && x <= b.x) return a.y + ((b.y - a.y) * (x - a.x)) / (b.x - a.x);
   }
   return last.y;
+}
+
+// vertical crack (points sorted by y): x of the crack at a given y
+export function crackXAt(crack: CrackPoint[], y: number) {
+  const first = crack.at(0);
+  const last = crack.at(-1);
+  if (!first || !last) return 0;
+  if (y <= first.y) return first.x;
+  if (y >= last.y) return last.x;
+  for (let i = 1; i < crack.length; i++) {
+    const a = crack.at(i - 1);
+    const b = crack.at(i);
+    if (a && b && y <= b.y) return a.x + ((b.x - a.x) * (y - a.y)) / (b.y - a.y);
+  }
+  return last.x;
 }
 
 // clip-path polygon for a fragment bounded above and/or below by a crack line;
