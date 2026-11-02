@@ -125,4 +125,8 @@ export const SPARK_CROSSINGS: SparkPoint[] = [...SEAMS, CRACK_LOWER].flatMap((se
   }),
 );
 
-export const SPARK_INTERSECTIONS = SPARK_CROSSINGS.filter((_, i) => sparkRand(i + 4) < 0.25).slice(0, Math.round(SPARK_CROSSINGS.length * 0.25));
+// exactly 5% of the crossings spark; at least one so the effect stays visible
+export const SPARK_INTERSECTIONS = SPARK_CROSSINGS.map((p, i) => ({ p, r: sparkRand(i + 4) }))
+  .sort((a, b) => a.r - b.r)
+  .slice(0, Math.max(1, Math.round(SPARK_CROSSINGS.length * 0.05)))
+  .map((e) => e.p);

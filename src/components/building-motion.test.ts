@@ -73,8 +73,8 @@ describe("jagged fracture lines", () => {
 });
 
 describe("electrical spark crossings", () => {
-  it("sparks at a quarter of the moving-part crossings", () => {
-    expect(SPARK_INTERSECTIONS.length).toBe(Math.round(SPARK_CROSSINGS.length * 0.25));
+  it("sparks at 5% of the moving-part crossings", () => {
+    expect(SPARK_INTERSECTIONS.length).toBe(Math.max(1, Math.round(SPARK_CROSSINGS.length * 0.05)));
   });
   it("places sparks only on real crossings of seams and vertical breaks", () => {
     const key = (p: { x: number; y: number }) => `${p.x}:${p.y}`;
