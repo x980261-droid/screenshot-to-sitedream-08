@@ -140,7 +140,7 @@
   100% { transform: translate(var(--dx), var(--dy)) rotate(var(--angle)) scaleX(0.3); opacity: 0; }
 }
 
-/* Facade neon sign: blinks blue -> green -> black, with quick neon flickers */
+/* Facade neon sign: bright white neon, blinking on and off with quick flickers */
 .sign-neon {
   font-family: "Times New Roman", Georgia, serif;
   font-weight: 700;
