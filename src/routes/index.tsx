@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
+import { DraftingCompass, FolderOpen, Stamp } from "lucide-react";
 import { HeroBuilding } from "@/components/HeroBuilding";
 
 export const Route = createFileRoute("/")({
@@ -169,6 +170,46 @@ function Index() {
               Отдельное направление — верификация инженерных и механических систем: от вентиляции и отопления до
               технологических трубопроводов. Каждое замечание подтверждается протоколом и фотофиксацией.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Stage 0 */}
+      <section id="stage-0" className="scroll-mt-20 border-t bg-blueprint">
+        <div className="mx-auto max-w-7xl px-5 py-24">
+          <SectionHead index="Этап 0" title="Предварительная экспертиза и верификация исходных данных" />
+          <div className="border bg-card">
+            <div className="border-b px-8 py-8">
+              <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-safe">
+                <span className="inline-block h-2 w-2 bg-safe" />
+                Проверки до начала инструментального контроля
+              </div>
+              <h3 className="mt-4 max-w-3xl text-2xl font-bold leading-tight tracking-tight md:text-3xl">
+                Входной аудит и экспертиза проектно-сметной документации
+              </h3>
+              <p className="mt-4 max-w-3xl text-sm text-muted-foreground">
+                До выезда инженеров на объект эксперты компании «Термин» проводят детальный анализ
+                исходно-разрешительной и технической документации, которую застройщик обязан предоставить заказчику.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3">
+              {stage0.map((s, i) => (
+                <div key={s.title} className="relative border-b px-8 py-8 md:border-r md:border-b-0 md:last:border-r-0">
+                  <div className="flex items-center justify-between">
+                    <div className="flex h-12 w-12 items-center justify-center border border-safe/40 text-safe">
+                      <s.icon size={22} strokeWidth={1.5} />
+                    </div>
+                    <span className="font-mono text-sm text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h4 className="mt-6 text-lg font-semibold leading-snug">{s.title}</h4>
+                  <p className="mt-3 text-sm text-muted-foreground">{s.text}</p>
+                </div>
+              ))}
+            </div>
+            <a href="#directions" className="group flex items-center justify-between border-t px-8 py-5 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:bg-muted hover:text-safe">
+              <span>Результат этапа 0 — основа для выбора направления контроля</span>
+              <span className="transition-transform group-hover:translate-x-1">К четырем направлениям →</span>
+            </a>
           </div>
         </div>
       </section>
