@@ -6,7 +6,6 @@ const H = 570;
 const IMG_H = 623; // displayed image height: building (H) + lawn strip below
 const MID_FROM = 245;
 const MID_TO = 353;
-const SHOP_FROM = 462; // ground floor with the shop stays fixed
 const COLS = 3;
 
 type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number };
@@ -45,7 +44,6 @@ function makeFrags(from: number, to: number, rows: number, side: -1 | 1, seed: n
 }
 
 const TOP = makeFrags(0, MID_FROM, 3, -1, 1);
-const BOTTOM = makeFrags(MID_TO, SHOP_FROM, 2, 1, 100);
 
 
 const Svg = {
