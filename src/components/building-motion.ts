@@ -105,3 +105,24 @@ export function withJaggedLeft(frag: { x: number; y: number; w: number; h: numbe
   const jag = [...left].reverse().map(pct);
   return `polygon(${[...body, ...jag].join(", ")})`;
 }
+
+// Electrical sparks at the crossings of moving facade parts: horizontal fracture
+// seams × vertical breaks between columns. Only 25% of the crossings spark.
+export type SparkPoint = { x: number; y: number };
+
+const SPARK_WIDTH = 760;
+const SPARK_COL_COUNT = 4;
+
+function sparkRand(seed: number) {
+  const s = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
+  return s - Math.floor(s);
+}
+
+export const SPARK_CROSSINGS: SparkPoint[] = [...SEAMS, CRACK_LOWER].flatMap((seam) =>
+  Array.from({ length: SPARK_COL_COUNT - 1 }, (_, c) => {
+    const x = ((c + 1) * SPARK_WIDTH) / SPARK_COL_COUNT;
+    return { x, y: crackYAt(seam, x) };
+  }),
+);
+
+export const SPARK_INTERSECTIONS = SPARK_CROSSINGS.filter((_, i) => sparkRand(i + 4) < 0.25);
