@@ -197,19 +197,15 @@ function Index() {
       <section id="directions" className="scroll-mt-20 border-t bg-blueprint">
         <div className="mx-auto max-w-7xl px-5 py-24">
           <SectionHead index="02" title="Основные направления деятельности" />
-          <div className="mb-8 flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-safe">
-            <span className="inline-block h-2 w-2 bg-safe" />
-            Проверки до начала инструментального контроля
-          </div>
           <div className="mb-16">
             <div className="border bg-card">
               <div className="border-b px-8 py-8">
-                <p className="mb-3 text-lg font-bold leading-tight tracking-tight md:text-[22.5px]">
-                  Этап 0 — Предварительная экспертиза и верификация исходных данных
-                </p>
-                <h3 className="max-w-3xl text-lg font-bold leading-tight tracking-tight md:text-[22.5px]">
-                  Входной аудит и экспертиза проектно-сметной документации
+                <h3 className="max-w-3xl text-xl font-bold leading-tight tracking-tight md:text-2xl">
+                  Этап 0. Проверки до начала инструментального контроля
                 </h3>
+                <p className="mt-3 max-w-3xl text-lg font-semibold leading-tight tracking-tight text-muted-foreground md:text-xl">
+                  Входной аудит и экспертиза проектно-сметной документации
+                </p>
                 <p className="mt-4 max-w-3xl text-sm text-muted-foreground">
                   До выезда инженеров на объект эксперты компании «Термин» проводят детальный анализ
                   исходно-разрешительной и технической документации, которую застройщик обязан предоставить заказчику.
