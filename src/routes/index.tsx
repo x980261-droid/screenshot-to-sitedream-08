@@ -104,7 +104,7 @@ function Index() {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-blueprint">
-        <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+        <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <HeroBuilding />
         </div>
         <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-background via-background/60 to-transparent" />

@@ -165,7 +165,7 @@ export function HeroBuilding() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const fit = () => setSc(el.clientWidth / W);
+    const fit = () => setSc(Math.max(el.clientWidth / W, el.clientHeight / IMG_H));
     fit();
     const ro = new ResizeObserver(fit);
     ro.observe(el);
@@ -197,8 +197,8 @@ export function HeroBuilding() {
   }, []);
 
   return (
-    <div ref={ref} className="relative mx-auto w-full max-w-[760px]" style={{ aspectRatio: `${W} / ${IMG_H}` }}>
-      <div className="absolute left-0 top-0 origin-top-left" style={{ width: W, height: IMG_H, transform: `scale(${sc})` }}>
+    <div ref={ref} className="absolute inset-0 overflow-hidden">
+      <div className="absolute" style={{ left: "50%", top: "50%", width: W, height: IMG_H, transform: `translate(-50%, -50%) scale(${sc})` }}>
       <div className="relative" style={{ width: W, height: IMG_H, perspective: 900 }}>
       <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
         <div className="absolute inset-0">
