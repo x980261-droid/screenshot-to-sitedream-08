@@ -362,7 +362,7 @@ export function HeroBuilding() {
         </svg>
         </a>
 
-        <a href="#services" className="sign-frame sign-bricks pointer-events-auto absolute z-10" style={{ left: SIGN2.x - 7, top: SIGN2.y - 5 }}>
+        <a href="#services" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN2.x - 7, top: SIGN2.y - 5 }}>
         <svg className="pointer-events-none select-none" style={{ overflow: "visible" }}
           width={SIGN2.w} height={SIGN2.h} viewBox={`0 0 ${SIGN2.w} ${SIGN2.h}`}>
           <defs>
