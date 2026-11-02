@@ -142,7 +142,7 @@
 
 /* Facade neon sign: steady bright white neon, no blinking */
 .sign-neon {
-  font-family: "Times New Roman", Georgia, serif;
+  font-family: var(--font-sans);
   font-weight: 700;
   font-size: 11px;
   fill: #ffffff;
