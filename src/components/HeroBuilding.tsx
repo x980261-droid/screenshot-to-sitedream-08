@@ -6,6 +6,7 @@ const H = 570;
 const IMG_H = 623; // displayed image height: building (H) + lawn strip below
 const MID_FROM = 245;
 const MID_TO = 353;
+const SHOP_FROM = 410; // floors 1-2 (shop + first residential floor) stay fixed
 const COLS = 4;
 const SX = W / 380; // debris x-coords were tuned for the single-section building
 
