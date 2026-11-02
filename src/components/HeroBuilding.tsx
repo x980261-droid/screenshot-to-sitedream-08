@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building-wide.jpg";
-import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, VERTICAL_SEAMS, crackClipPath, facadeDeformation } from "./building-motion";
+import { CRACK_LOWER, CRACK_UPPER, FALL_DURATION_MS, FIXED_FLOORS_FROM, SEAMS, crackClipPath, facadeDeformation } from "./building-motion";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -11,7 +11,7 @@ const SHOP_FROM = FIXED_FLOORS_FROM; // floors 1-2 stay fixed
 const COLS = 4;
 const SX = W / 380; // debris x-coords were tuned for the single-section building
 
-type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number; clip?: string | undefined };
+type Frag = { x: number; y: number; w: number; h: number; dx: number; dy: number; dz: number; rx: number; ry: number; rz: number; clip?: string };
 
 // Deterministic pseudo-random so SSR and client match
 function rand(seed: number) {
@@ -59,31 +59,19 @@ const seamMax = (r: number) => {
   return seam ? Math.max(...seam.map((p) => p.y)) : CRACK_UPPER_MAX;
 };
 const topFrags = makeFrags(0, MID_TO, 6, -1, 1);
-const bottomFrags = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100);
 const TOP: Frag[] = [];
-const BOTTOM: Frag[] = [];
 for (let r = 0; r < 6; r++) {
   for (let c = 0; c < COLS; c++) {
     const f = topFrags.at(r * COLS + c);
     if (!f) continue;
-    // reach over the crack below and the vertical crack on the right, so the
-    // neighbouring piece can clip along them and paint over — no gaps at rest
-    const ext = { ...f, h: seamMax(r) - f.y, w: c < COLS - 1 ? f.w + 5 : f.w };
-    TOP.push({
-      ...ext,
-      clip: crackClipPath(ext, r > 0 ? SEAMS[r - 1] : undefined, undefined, c > 0 ? VERTICAL_SEAMS[c - 1] : undefined),
-    });
+    const ext = { ...f, h: seamMax(r) - f.y };
+    const seam = r > 0 ? SEAMS.at(r - 1) : undefined;
+    TOP.push(seam ? { ...ext, clip: crackClipPath(ext, seam, undefined) } : ext);
   }
 }
-for (let c = 0; c < COLS; c++) {
-  const f = bottomFrags.at(c);
-  if (!f) continue;
-  const ext = { ...f, h: CRACK_BOTTOM_MAX - f.y, w: c < COLS - 1 ? f.w + 5 : f.w };
-  BOTTOM.push({
-    ...ext,
-    clip: crackClipPath(ext, CRACK_UPPER, undefined, c > 0 ? VERTICAL_SEAMS[c - 1] : undefined),
-  });
-}
+const BOTTOM = makeFrags(MID_TO, SHOP_FROM, 1, 1, 100)
+  .map((f) => ({ ...f, h: CRACK_BOTTOM_MAX - f.y }))
+  .map((f) => ({ ...f, clip: crackClipPath(f, CRACK_UPPER, undefined) }));
 
 
 const Svg = {
@@ -188,6 +176,8 @@ function Piece({ f, k }: { f: Frag; k: number }) {
         opacity: damage.opacity,
         transition: `transform ${FALL_DURATION_MS}ms cubic-bezier(0.55,0,1,0.45)`,
         transformOrigin: "center",
+        animationDelay: `${-(f.x + f.y) / 100}s`,
+        animationDuration: `${6 + (f.y % 4)}s`,
       }}
     >
       <img src={building} alt="" width={W} height={IMG_H} draggable={false}

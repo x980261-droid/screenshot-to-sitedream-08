@@ -5,9 +5,7 @@ import {
   FALL_DURATION_MS,
   FIXED_FLOORS_FROM,
   SEAMS,
-  VERTICAL_SEAMS,
   crackClipPath,
-  crackXAt,
   crackYAt,
   facadeDeformation,
   landingDistance,
@@ -46,16 +44,6 @@ describe("jagged fracture lines", () => {
       expect(Math.max(...ys)).toBeGreaterThan(Math.min(...ys));
     }
   });
-  it("makes the vertical section seams jagged too", () => {
-    expect(VERTICAL_SEAMS.length).toBe(3);
-    for (const seam of VERTICAL_SEAMS) {
-      const xs = seam.map((p) => p.x);
-      expect(new Set(xs).size).toBeGreaterThan(3);
-      expect(Math.max(...xs)).toBeGreaterThan(Math.min(...xs));
-    }
-    expect(crackXAt(VERTICAL_SEAMS.at(0) ?? [], 200)).toBeGreaterThan(180);
-    expect(crackXAt(VERTICAL_SEAMS.at(0) ?? [], 200)).toBeLessThan(200);
-  });
   it("keeps the crack flush with the building edges", () => {
     expect(CRACK_LOWER.at(0)?.y).toBe(FIXED_FLOORS_FROM);
     expect(CRACK_LOWER.at(-1)?.y).toBe(FIXED_FLOORS_FROM);
@@ -73,9 +61,8 @@ describe("jagged fracture lines", () => {
     const low = Math.min(...CRACK_LOWER.map((p) => p.y));
     const high = Math.max(...CRACK_LOWER.map((p) => p.y));
     const clip = crackClipPath({ x: 190, y: 353, w: 190, h: high - 353 }, CRACK_UPPER, CRACK_LOWER);
-    expect(clip).toBeTruthy();
-    expect(clip?.startsWith("polygon(")).toBe(true);
-    expect(clip?.includes("%")).toBe(true);
+    expect(clip.startsWith("polygon(")).toBe(true);
+    expect(clip).toContain("%");
     // sampled crack height between nodes stays inside the torn band
     const mid = crackYAt(CRACK_LOWER, 380);
     expect(mid).toBeGreaterThan(low);
