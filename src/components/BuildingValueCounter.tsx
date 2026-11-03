@@ -4,7 +4,7 @@ export function BuildingValueCounter({ elapsedSeconds }: { elapsedSeconds: numbe
   const value = buildingValueAt(elapsedSeconds);
   const price = value.price === 0 ? "0 ₽" : `${(value.price / 1_000_000).toFixed(2).replace(/0$/, "").replace(".", ",")} млн ₽`;
   return (
-    <div data-building-value className="absolute bottom-24 right-4 z-20 max-w-[calc(100%-2rem)] text-foreground md:bottom-6 md:right-6">
+    <div data-building-value className="absolute bottom-[4.75rem] right-4 z-20 max-w-[calc(100%-2rem)] text-foreground md:bottom-[0.25rem] md:right-6">
       <div className="flex flex-wrap justify-end gap-x-5 gap-y-1 font-mono tabular-nums">
         <div>
           <time data-value-date className="whitespace-nowrap text-lg md:text-xl" dateTime={`${value.year}-${String(value.month).padStart(2, "0")}-${String(value.day).padStart(2, "0")}`}>
