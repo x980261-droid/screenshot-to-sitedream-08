@@ -38,7 +38,23 @@ export function BuildingCracks() {
     };
 
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+
+    // Restart the 30-second cycle from the beginning whenever the building
+    // re-enters the viewport, so the animation is always fresh when visible.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          startedAt = performance.now();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(svg);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+    };
   }, []);
 
   return (
