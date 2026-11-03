@@ -12,8 +12,11 @@ export function BuildingCracks() {
 
   useEffect(() => {
     const svg = rectsRef.current[0]?.ownerSVGElement;
-    const host = svg?.parentElement;
-    if (!svg || !host) return;
+    if (!svg) return;
+    // The building layer is pointer-events-none (only the signs are clickable),
+    // so hover is tracked on the hero section against the building's on-screen rect.
+    const section = svg.closest("section") ?? svg.parentElement;
+    if (!section) return;
 
     const start = performance.now();
     let boost = 1;
@@ -23,11 +26,19 @@ export function BuildingCracks() {
     let hovering = false;
     let raf = 0;
 
-    const onEnter = () => {
-      hovering = true;
-      boostFrom = boost;
-      boostTo = boost * CRACK_HOVER_BOOST;
-      boostStart = performance.now();
+    const onMove = (event: MouseEvent) => {
+      const rect = svg.getBoundingClientRect();
+      const inside =
+        event.clientX >= rect.left && event.clientX <= rect.right &&
+        event.clientY >= Math.max(0, rect.top) && event.clientY <= rect.bottom;
+      if (inside && !hovering) {
+        hovering = true;
+        boostFrom = boost;
+        boostTo = boost * CRACK_HOVER_BOOST;
+        boostStart = performance.now();
+      } else if (!inside) {
+        hovering = false;
+      }
     };
     const onLeave = () => {
       hovering = false;
