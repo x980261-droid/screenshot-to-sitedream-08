@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildingValueAt } from "@/lib/building-value";
+import { buildingValueAt, lifeAgeLabel } from "@/lib/building-value";
 
 describe("Apartment date and value", () => {
   it("starts on 1 January 2008", () => {
