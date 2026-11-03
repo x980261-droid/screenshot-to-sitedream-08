@@ -33,20 +33,20 @@ describe("Building crack rules", () => {
   it("creates exactly seven cracks", () => {
     expect(BUILDING_CRACKS).toHaveLength(7);
   });
-  it("reveals all 13 cracks sequentially by 24 seconds, leaving them visible until the 30-second loop restarts", () => {
+  it("reveals all 25 cracks sequentially by 24 seconds, leaving them visible until the 30-second loop restarts", () => {
     const cracks = [...BUILDING_CRACKS, ...BALCONY_CRACKS];
-    expect(cracks).toHaveLength(13);
+    expect(cracks).toHaveLength(25);
     expect(CRACK_SEQUENCE_SECONDS).toBe(30);
     for (const { index } of cracks) {
       const start = crackStartSeconds(index);
-      expect(start).toBeCloseTo(index * 24 / 13);
+      expect(start).toBeCloseTo(index * 24 / 25);
       expect(crackProgress(index, start)).toBeCloseTo(0);
       expect(crackProgress(index, start + CRACK_DURATION_SECONDS / 2)).toBeCloseTo(0.5);
       expect(crackProgress(index, start + CRACK_DURATION_SECONDS)).toBeCloseTo(1);
-      if (index < 12) expect(crackProgress(index + 1, start + CRACK_DURATION_SECONDS / 2)).toBe(0);
+      if (index < 24) expect(crackProgress(index + 1, start + CRACK_DURATION_SECONDS / 2)).toBe(0);
       expect(crackProgress(index, 30)).toBeCloseTo(1);
     }
-    expect(crackStartSeconds(12) + CRACK_DURATION_SECONDS).toBeCloseTo(24);
+    expect(crackStartSeconds(24) + CRACK_DURATION_SECONDS).toBeCloseTo(24);
     for (const { index } of cracks) expect(crackProgress(index, 24)).toBeCloseTo(1);
   });
   it("starts at the third-floor slab without extending below it", () => {
@@ -60,10 +60,10 @@ describe("Building crack rules", () => {
 });
 
 describe("Balcony crack rules", () => {
-  it("starts balcony cracks only on the third floor, without separate fourth- or fifth-floor cracks", () => {
-    expect(BALCONY_CRACK_FLOORS).toEqual([3]);
-    expect(BALCONY_CRACKS).toHaveLength(6);
-    expect(new Set(BALCONY_CRACKS.map(crack => crack.floor))).toEqual(new Set([3]));
+  it("puts a crack on every balcony of the third, fourth and fifth floors", () => {
+    expect(BALCONY_CRACK_FLOORS).toEqual([3, 4, 5]);
+    expect(BALCONY_CRACKS).toHaveLength(18);
+    for (const floor of [3, 4, 5]) expect(BALCONY_CRACKS.filter(crack => crack.floor === floor)).toHaveLength(6);
   });
   it("makes every balcony crack half as wide as a main crack", () => {
     expect(BALCONY_CRACK_WIDTH_SCALE).toBe(0.5);
@@ -78,13 +78,13 @@ describe("Balcony crack rules", () => {
       }
     }
   });
-  it("extends every balcony crack from the third-floor slab to the roof", () => {
+  it("starts each balcony crack at its own floor slab", () => {
     for (const crack of BALCONY_CRACKS) {
-      expect(crack.startY).toBe(434);
-      expect(crack.topY).toBe(12);
+      expect(crack.startY).toBe(434 - (crack.floor - 3) * 54);
+      expect(crack.topY).toBe(crack.startY - 20);
       const ys = [...crack.path.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map(match => Number(match[2]));
-      expect(Math.max(...ys)).toBe(434);
-      expect(Math.min(...ys)).toBe(12);
+      expect(Math.max(...ys)).toBe(crack.startY);
+      expect(Math.min(...ys)).toBe(crack.topY);
     }
   });
   it("reveals balcony cracks in their shared sequence slot and never resets", () => {
