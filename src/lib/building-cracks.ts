@@ -23,6 +23,13 @@ export const CRACK_HOVER_WIDEN_SECONDS = 3;
 export const CRACK_HOVER_SHRINK_SECONDS = 1;
 export const CRACK_CENTER_X = [61, 146, 224, 310, 410, 495, 577, 671];
 
+export function crackWidthScale(from: number, hovering: boolean, elapsedSeconds: number) {
+  const target = hovering ? CRACK_HOVER_WIDEN : 1;
+  const duration = hovering ? CRACK_HOVER_WIDEN_SECONDS : CRACK_HOVER_SHRINK_SECONDS;
+  const progress = Math.min(1, Math.max(0, elapsedSeconds / duration));
+  return from + (target - from) * progress;
+}
+
 // Deterministic, irregular fissures in the same component coordinates as the facade.
 export const BUILDING_CRACKS = Array.from({ length: CRACK_COUNT }, (_, index) => {
   const baseX = [61, 146, 224, 310, 410, 495, 577, 671][index] ?? 61;

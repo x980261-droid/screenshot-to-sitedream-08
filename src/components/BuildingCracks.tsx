@@ -3,12 +3,10 @@ import {
   BUILDING_CRACKS,
   CRACK_CENTER_X,
   CRACK_DURATION_SECONDS,
-  CRACK_HOVER_SHRINK_SECONDS,
-  CRACK_HOVER_WIDEN,
-  CRACK_HOVER_WIDEN_SECONDS,
   CRACK_START_Y,
   CRACK_TOP_Y,
   crackStartSeconds,
+  crackWidthScale,
 } from "@/lib/building-cracks";
 
 export function BuildingCracks() {
@@ -24,46 +22,48 @@ export function BuildingCracks() {
 
     let widen = 1;
     let widenFrom = 1;
-    let widenTo = 1;
     let widenStart = 0;
-    let shrinkFrom = 1;
-    let shrinkStart = 0;
     let hovering = false;
+    let pointer: { x: number; y: number } | null = null;
     let raf = 0;
 
-    const startShrink = () => {
-      shrinkFrom = widen;
-      shrinkStart = performance.now();
+    const setHovering = (inside: boolean) => {
+      if (inside === hovering) return;
+      const now = performance.now();
+      widen = crackWidthScale(widenFrom, hovering, (now - widenStart) / 1000);
+      widenFrom = widen;
+      widenStart = now;
+      hovering = inside;
     };
 
-    const onMove = (event: MouseEvent) => {
+    const checkPointer = () => {
+      if (!pointer) return;
       const rect = svg.getBoundingClientRect();
+      const visible = section.getBoundingClientRect();
       const inside =
-        event.clientX >= rect.left && event.clientX <= rect.right &&
-        event.clientY >= Math.max(0, rect.top) && event.clientY <= rect.bottom;
-      if (inside && !hovering) {
-        hovering = true;
-        widenFrom = widen;
-        widenTo = widen * CRACK_HOVER_WIDEN;
-        widenStart = performance.now();
-      } else if (!inside && hovering) {
-        hovering = false;
-        startShrink();
-      }
+        pointer.x >= Math.max(0, rect.left, visible.left) &&
+        pointer.x <= Math.min(window.innerWidth, rect.right, visible.right) &&
+        pointer.y >= Math.max(0, rect.top, visible.top) &&
+        pointer.y <= Math.min(window.innerHeight, rect.bottom, visible.bottom);
+      setHovering(inside);
+    };
+    const onMove = (event: PointerEvent) => {
+      pointer = { x: event.clientX, y: event.clientY };
+      checkPointer();
     };
     const onLeave = () => {
-      if (hovering) startShrink();
-      hovering = false;
+      pointer = null;
+      setHovering(false);
+    };
+    const onPointerOut = (event: PointerEvent) => {
+      if (!event.relatedTarget) onLeave();
+    };
+    const onVisibility = () => {
+      if (document.hidden) onLeave();
     };
 
     const tick = (now: number) => {
-      if (hovering) {
-        const t = Math.min(1, (now - widenStart) / (CRACK_HOVER_WIDEN_SECONDS * 1000));
-        widen = widenFrom + (widenTo - widenFrom) * t;
-      } else if (widen > 1) {
-        const t = Math.min(1, (now - shrinkStart) / (CRACK_HOVER_SHRINK_SECONDS * 1000));
-        widen = Math.max(1, shrinkFrom + (1 - shrinkFrom) * t);
-      }
+      widen = crackWidthScale(widenFrom, hovering, (now - widenStart) / 1000);
       BUILDING_CRACKS.forEach(({ index }, i) => {
         const path = pathsRef.current[i];
         if (!path) return;
@@ -74,12 +74,20 @@ export function BuildingCracks() {
     };
 
     raf = requestAnimationFrame(tick);
-    section.addEventListener("mousemove", onMove);
-    section.addEventListener("mouseleave", onLeave);
+    document.addEventListener("pointermove", onMove);
+    document.addEventListener("pointerout", onPointerOut);
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("blur", onLeave);
+    window.addEventListener("scroll", checkPointer, true);
+    window.addEventListener("resize", checkPointer);
     return () => {
       cancelAnimationFrame(raf);
-      section.removeEventListener("mousemove", onMove);
-      section.removeEventListener("mouseleave", onLeave);
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerout", onPointerOut);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("blur", onLeave);
+      window.removeEventListener("scroll", checkPointer, true);
+      window.removeEventListener("resize", checkPointer);
     };
   }, []);
 
