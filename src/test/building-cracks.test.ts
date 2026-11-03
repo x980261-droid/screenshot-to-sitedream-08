@@ -4,7 +4,6 @@ import {
   BALCONY_CRACK_FLOORS,
   BALCONY_CRACK_WIDTH_SCALE,
   BUILDING_CRACKS,
-  CRACK_FLOOR_HEIGHT,
   CRACK_START_Y,
   CRACK_SEQUENCE_SECONDS,
   CRACK_DURATION_SECONDS,
@@ -34,20 +33,20 @@ describe("Building crack rules", () => {
   it("creates exactly seven cracks", () => {
     expect(BUILDING_CRACKS).toHaveLength(7);
   });
-  it("reveals all 25 cracks sequentially from first to last within 30 seconds", () => {
+  it("reveals all 13 cracks sequentially from first to last within 30 seconds", () => {
     const cracks = [...BUILDING_CRACKS, ...BALCONY_CRACKS];
-    expect(cracks).toHaveLength(25);
+    expect(cracks).toHaveLength(13);
     expect(CRACK_SEQUENCE_SECONDS).toBe(30);
     for (const { index } of cracks) {
       const start = crackStartSeconds(index);
-      expect(start).toBeCloseTo(index * 1.2);
+      expect(start).toBeCloseTo(index * 30 / 13);
       expect(crackProgress(index, start)).toBeCloseTo(0);
-      expect(crackProgress(index, start + 0.6)).toBeCloseTo(0.5);
+      expect(crackProgress(index, start + CRACK_DURATION_SECONDS / 2)).toBeCloseTo(0.5);
       expect(crackProgress(index, start + CRACK_DURATION_SECONDS)).toBeCloseTo(1);
-      if (index < 24) expect(crackProgress(index + 1, start + 0.6)).toBe(0);
+      if (index < 12) expect(crackProgress(index + 1, start + CRACK_DURATION_SECONDS / 2)).toBe(0);
       expect(crackProgress(index, 30)).toBeCloseTo(1);
     }
-    expect(crackStartSeconds(24) + CRACK_DURATION_SECONDS).toBeCloseTo(30);
+    expect(crackStartSeconds(12) + CRACK_DURATION_SECONDS).toBeCloseTo(30);
   });
   it("starts at the third-floor slab without extending below it", () => {
     expect(CRACK_START_Y).toBe(434);
@@ -60,35 +59,38 @@ describe("Building crack rules", () => {
 });
 
 describe("Balcony crack rules", () => {
-  it("places balcony cracks only on floors 3, 4 and 5", () => {
-    expect(BALCONY_CRACK_FLOORS).toEqual([3, 4, 5]);
-    expect(new Set(BALCONY_CRACKS.map(crack => crack.floor))).toEqual(new Set([3, 4, 5]));
+  it("starts balcony cracks only on the third floor, without separate fourth- or fifth-floor cracks", () => {
+    expect(BALCONY_CRACK_FLOORS).toEqual([3]);
+    expect(BALCONY_CRACKS).toHaveLength(6);
+    expect(new Set(BALCONY_CRACKS.map(crack => crack.floor))).toEqual(new Set([3]));
   });
   it("makes every balcony crack half as wide as a main crack", () => {
     expect(BALCONY_CRACK_WIDTH_SCALE).toBe(0.5);
     for (const crack of BALCONY_CRACKS) {
       const coordinates = [...crack.path.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map(match => Number(match[1]));
-      for (let step = 0; step <= 8; step++) {
+      for (let step = 0; step <= 32; step++) {
         const left = coordinates[step];
-        const right = coordinates[17 - step];
+        const right = coordinates[65 - step];
         if (left === undefined || right === undefined) throw new Error("Missing balcony crack edge");
         const mainFullWidth = 2 * (2.5 + (Math.sin(step * 1.6 + crack.index) + 1) * 1.8) * 0.5;
         expect(right - left).toBeCloseTo(mainFullWidth * 0.5, 8);
       }
     }
   });
-  it("keeps each balcony crack inside its own floor band", () => {
+  it("extends every balcony crack from the third-floor slab to the roof", () => {
     for (const crack of BALCONY_CRACKS) {
-      const floorIndex = crack.floor - 3;
-      expect(crack.startY).toBe(CRACK_START_Y - floorIndex * CRACK_FLOOR_HEIGHT);
-      expect(crack.topY).toBeGreaterThan(crack.startY - CRACK_FLOOR_HEIGHT);
+      expect(crack.startY).toBe(434);
+      expect(crack.topY).toBe(12);
+      const ys = [...crack.path.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map(match => Number(match[2]));
+      expect(Math.max(...ys)).toBe(434);
+      expect(Math.min(...ys)).toBe(12);
     }
   });
   it("reveals balcony cracks in their shared sequence slot and never resets", () => {
     for (const crack of BALCONY_CRACKS) {
       const start = crackStartSeconds(crack.index);
       expect(balconyCrackTipY(crack, start)).toBe(crack.startY);
-      expect(balconyCrackTipY(crack, start + 0.6)).toBeCloseTo((crack.startY + crack.topY) / 2);
+      expect(balconyCrackTipY(crack, start + CRACK_DURATION_SECONDS / 2)).toBeCloseTo((crack.startY + crack.topY) / 2);
       expect(balconyCrackTipY(crack, 30)).toBe(crack.topY);
       expect(balconyCrackTipY(crack, 1000)).toBe(crack.topY);
     }

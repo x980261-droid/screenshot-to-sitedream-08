@@ -85,7 +85,7 @@ export function BuildingCracks() {
           <g clipPath={`url(#floor-clip-${floor})`}>
             <image href={building} x="0" y="0" width="760" height="623" preserveAspectRatio="none" />
             {BUILDING_CRACKS.map(({ index }) => <use key={index} href={`#crack-shape-${index}`} />)}
-            {BALCONY_CRACKS.filter(crack => crack.floor === floor).map(({ index }) => <use key={index} href={`#crack-shape-${index}`} />)}
+            {BALCONY_CRACKS.map(({ index }) => <use key={index} href={`#crack-shape-${index}`} />)}
           </g>
         </g>
       ))}
