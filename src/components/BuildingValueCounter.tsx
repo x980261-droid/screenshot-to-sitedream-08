@@ -10,8 +10,10 @@ export function BuildingValueCounter({ elapsedSeconds }: { elapsedSeconds: numbe
           <time data-value-date className="whitespace-nowrap text-lg md:text-xl" dateTime={`${value.year}-${String(value.month).padStart(2, "0")}-${String(value.day).padStart(2, "0")}`}>
             {String(value.day).padStart(2, "0")}.{String(value.month).padStart(2, "0")}.{value.year}
           </time>
-          <div data-value-deformation className="mt-1 whitespace-nowrap text-sm md:text-base">
-            Динамика деформаций {value.deformationPercent}%
+          <div data-value-status className="mt-1 whitespace-nowrap text-sm md:text-base">
+            {value.emergency
+              ? <span className="font-semibold uppercase text-danger">Здание признано аварийным</span>
+              : `Динамика деформаций ${value.deformationPercent}%`}
           </div>
         </div>
         <div className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1">
@@ -19,7 +21,6 @@ export function BuildingValueCounter({ elapsedSeconds }: { elapsedSeconds: numbe
           <div data-value-price className={`whitespace-nowrap text-lg md:text-xl ${value.emergency ? "text-safe" : "text-foreground"}`}>{price}</div>
         </div>
       </div>
-      <div data-value-status className="mt-2 h-5 text-right text-sm font-semibold uppercase text-danger">{value.emergency ? "Здание признано аварийным" : ""}</div>
     </div>
   );
 }
