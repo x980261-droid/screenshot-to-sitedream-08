@@ -190,7 +190,7 @@ function Index() {
       {/* Directions */}
       <section id="directions" className="scroll-mt-20 border-t bg-blueprint">
         <div className="mx-auto max-w-7xl px-5 py-24">
-          <SectionHead index="" title="Основные направления деятельности" />
+          <SectionHead title="Основные направления деятельности" />
           <div className="mb-16">
             <div className="border bg-card">
               <div className="border-b px-8 py-8">
