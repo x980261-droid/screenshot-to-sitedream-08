@@ -14,8 +14,8 @@ export function crackCycleSeconds(elapsedSeconds: number) {
 }
 
 // Alternating order: the rightmost crack (index 6) starts first, then every other
-// crack moving left (4, 2, 0), and finally the remaining ones (5, 3, 1).
-export const CRACK_START_ORDER = [6, 4, 2, 0, 5, 3, 1];
+// crack moving left (4, 2, 0), and finally the remaining ones from left to right (1, 3, 5).
+export const CRACK_START_ORDER = [6, 4, 2, 0, 1, 3, 5];
 
 export function crackStartSeconds(index: number) {
   const order = CRACK_START_ORDER.indexOf(index);
