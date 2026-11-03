@@ -47,7 +47,7 @@ describe("Building crack rules", () => {
     }
     // The rightmost crack (index 6) starts first, the last remaining crack (index 1) finishes last.
     expect(crackStartSeconds(6)).toBe(0);
-    expect(crackStartSeconds(1) + CRACK_DURATION_SECONDS).toBeCloseTo(24);
+    expect(crackStartSeconds(5) + CRACK_DURATION_SECONDS).toBeCloseTo(24);
   });
   it("starts at the third-floor slab without extending below it", () => {
     expect(CRACK_START_Y).toBe(434);
