@@ -1,11 +1,15 @@
 import { useEffect, useRef } from "react";
-import { BALCONY_CRACKS, BUILDING_CRACKS, CRACK_START_Y, balconyCrackTipY, crackTipY } from "@/lib/building-cracks";
+import building from "@/assets/building-wide.jpg";
+import { BALCONY_CRACKS, BUILDING_CRACKS, CRACK_START_Y, CRACK_SEQUENCE_SECONDS, UPPER_FLOORS, balconyCrackTipY, crackTipY, floorOffsetY } from "@/lib/building-cracks";
 
 export function BuildingCracks() {
   const clipsRef = useRef<(SVGRectElement | null)[]>([]);
+  const floorsRef = useRef<(SVGGElement | null)[]>([]);
 
   useEffect(() => {
     const startedAt = performance.now();
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) return;
     let raf = 0;
 
     const tick = (now: number) => {
@@ -24,7 +28,10 @@ export function BuildingCracks() {
         rect.setAttribute("y", String(tipY));
         rect.setAttribute("height", String(crack.startY - tipY));
       });
-      raf = requestAnimationFrame(tick);
+      UPPER_FLOORS.forEach(({ floor }) => {
+        floorsRef.current[floor]?.setAttribute("transform", `translate(0 ${floorOffsetY(floor, elapsed)})`);
+      });
+      if (elapsed < CRACK_SEQUENCE_SECONDS) raf = requestAnimationFrame(tick);
     };
 
     raf = requestAnimationFrame(tick);
@@ -60,12 +67,27 @@ export function BuildingCracks() {
             />
           </clipPath>
         ))}
+        {UPPER_FLOORS.map(({ floor, topY, bottomY }) => (
+          <clipPath key={floor} id={`floor-clip-${floor}`}>
+            <rect x="0" y={topY} width="760" height={bottomY - topY} />
+          </clipPath>
+        ))}
+        {BUILDING_CRACKS.map(({ index, path }) => (
+          <path key={index} id={`crack-shape-${index}`} data-crack={index} d={path} clipPath={`url(#crack-clip-${index})`} />
+        ))}
+        {BALCONY_CRACKS.map((crack) => (
+          <path key={crack.index} id={`crack-shape-${crack.index}`} data-crack={crack.index} data-balcony-crack={crack.floor} d={crack.path} clipPath={`url(#crack-clip-${crack.index})`} />
+        ))}
       </defs>
-      {BUILDING_CRACKS.map(({ index, path }) => (
-        <path key={index} data-crack={index} d={path} clipPath={`url(#crack-clip-${index})`} />
-      ))}
-      {BALCONY_CRACKS.map((crack) => (
-        <path key={crack.index} data-crack={crack.index} data-balcony-crack={crack.floor} d={crack.path} clipPath={`url(#crack-clip-${crack.index})`} />
+      <rect x="0" y="0" width="760" height={CRACK_START_Y} />
+      {UPPER_FLOORS.map(({ floor }) => (
+        <g key={floor} data-moving-floor={floor} ref={(el) => { floorsRef.current[floor] = el; }}>
+          <g clipPath={`url(#floor-clip-${floor})`}>
+            <image href={building} x="0" y="0" width="760" height="623" preserveAspectRatio="none" />
+            {BUILDING_CRACKS.map(({ index }) => <use key={index} href={`#crack-shape-${index}`} />)}
+            {BALCONY_CRACKS.filter(crack => crack.floor === floor).map(({ index }) => <use key={index} href={`#crack-shape-${index}`} />)}
+          </g>
+        </g>
       ))}
     </svg>
   );
