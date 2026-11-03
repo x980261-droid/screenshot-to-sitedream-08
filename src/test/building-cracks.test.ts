@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BUILDING_CRACKS, CRACK_CENTER_X, CRACK_HOVER_WIDEN, CRACK_HOVER_WIDEN_SECONDS, CRACK_START_Y, crackStartSeconds, crackTipY } from "@/lib/building-cracks";
+import { BUILDING_CRACKS, CRACK_CENTER_X, CRACK_HOVER_SHRINK_SECONDS, CRACK_HOVER_WIDEN, CRACK_HOVER_WIDEN_SECONDS, CRACK_START_Y, crackStartSeconds, crackTipY } from "@/lib/building-cracks";
 
 describe("Building crack rules", () => {
   it("halves the width of every crack without moving its centerline", () => {
@@ -36,5 +36,8 @@ describe("Building crack rules", () => {
     expect(CRACK_HOVER_WIDEN).toBe(1.5);
     expect(CRACK_HOVER_WIDEN_SECONDS).toBe(3);
     expect(CRACK_CENTER_X).toHaveLength(BUILDING_CRACKS.length);
+  });
+  it("returns to the original width over one second when the cursor leaves", () => {
+    expect(CRACK_HOVER_SHRINK_SECONDS).toBe(1);
   });
 });

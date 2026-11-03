@@ -25,8 +25,15 @@ export function BuildingCracks() {
     let widenFrom = 1;
     let widenTo = 1;
     let widenStart = 0;
+    let shrinkFrom = 1;
+    let shrinkStart = 0;
     let hovering = false;
     let raf = 0;
+
+    const startShrink = () => {
+      shrinkFrom = widen;
+      shrinkStart = performance.now();
+    };
 
     const onMove = (event: MouseEvent) => {
       const rect = svg.getBoundingClientRect();
@@ -38,11 +45,13 @@ export function BuildingCracks() {
         widenFrom = widen;
         widenTo = widen * CRACK_HOVER_WIDEN;
         widenStart = performance.now();
-      } else if (!inside) {
+      } else if (!inside && hovering) {
         hovering = false;
+        startShrink();
       }
     };
     const onLeave = () => {
+      if (hovering) startShrink();
       hovering = false;
     };
 
@@ -50,6 +59,9 @@ export function BuildingCracks() {
       if (hovering) {
         const t = Math.min(1, (now - widenStart) / (CRACK_HOVER_WIDEN_SECONDS * 1000));
         widen = widenFrom + (widenTo - widenFrom) * t;
+      } else if (widen > 1) {
+        const t = Math.min(1, (now - shrinkStart) / (CRACK_HOVER_SHRINK_SECONDS * 1000));
+        widen = Math.max(1, shrinkFrom + (1 - shrinkFrom) * t);
       }
       BUILDING_CRACKS.forEach(({ index }, i) => {
         const path = pathsRef.current[i];
