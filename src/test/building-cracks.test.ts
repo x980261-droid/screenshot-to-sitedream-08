@@ -2,6 +2,18 @@ import { describe, expect, it } from "vitest";
 import { BUILDING_CRACKS, CRACK_START_Y, crackStartSeconds, crackTipY } from "@/lib/building-cracks";
 
 describe("Building crack rules", () => {
+  it("halves the width of every crack without moving its centerline", () => {
+    for (const crack of BUILDING_CRACKS) {
+      const coordinates = [...crack.path.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map(match => Number(match[1]));
+      for (let step = 0; step <= 32; step++) {
+        const left = coordinates[step];
+        const right = coordinates[65 - step];
+        if (left === undefined || right === undefined) throw new Error("Missing crack edge");
+        const originalFullWidth = 2 * (2.5 + (Math.sin(step * 1.6 + crack.index) + 1) * 1.8);
+        expect(right - left).toBeCloseTo(originalFullWidth * 0.5, 8);
+      }
+    }
+  });
   it("creates exactly eight cracks", () => {
     expect(BUILDING_CRACKS).toHaveLength(8);
   });

@@ -23,7 +23,7 @@ export const BUILDING_CRACKS = Array.from({ length: CRACK_COUNT }, (_, index) =>
   for (let step = 0; step <= 32; step++) {
     const y = CRACK_START_Y - (CRACK_START_Y - CRACK_TOP_Y) * step / 32;
     const x = baseX + Math.sin(step * 2.7 + index * 1.9) * 9 + Math.sin(step * 0.8 + index) * 6;
-    points.push({ x, y, width: 2.5 + (Math.sin(step * 1.6 + index) + 1) * 1.8 });
+    points.push({ x, y, width: (2.5 + (Math.sin(step * 1.6 + index) + 1) * 1.8) * 0.5 });
   }
   const left = points.map(({ x, y, width }) => `${x - width},${y}`);
   const right = [...points].reverse().map(({ x, y, width }) => `${x + width},${y}`);
