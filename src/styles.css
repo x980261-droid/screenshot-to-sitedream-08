@@ -30,6 +30,7 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-safe: var(--safe);
+  --color-danger: var(--danger);
   --color-slate: var(--slate);
 }
 
@@ -50,6 +51,7 @@
   --accent: oklch(0.82 0.2 155);         /* #00e673 */
   --accent-foreground: oklch(0.17 0.012 255);
   --safe: oklch(0.82 0.2 155);
+  --danger: oklch(0.62 0.22 25);         /* bright red */
   --slate: oklch(0.55 0.02 255);
   --facade-crack: #000000;
   --spark-white: oklch(0.98 0.015 235);
