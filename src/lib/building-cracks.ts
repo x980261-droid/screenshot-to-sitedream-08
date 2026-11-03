@@ -33,10 +33,10 @@ export const BUILDING_CRACKS = Array.from({ length: CRACK_COUNT }, (_, index) =>
 });
 
 // Thin secondary cracks on the balcony fronts of floors 3, 4 and 5.
-// They are half as wide as the main pier cracks and grow at the same speed,
-// starting after the main cracks, one every CRACK_INTERVAL_SECONDS.
+// They are half as wide as the main pier cracks and all reveal in the first five seconds.
 export const BALCONY_CRACK_FLOORS = [3, 4, 5];
 export const BALCONY_CRACK_WIDTH_SCALE = 0.5;
+export const BALCONY_CRACK_REVEAL_SECONDS = 5;
 export const BALCONY_CRACK_HEIGHT = 20;
 export const BALCONY_CRACK_BASE_X = [95, 200, 312, 450, 566, 672];
 
@@ -58,6 +58,6 @@ export const BALCONY_CRACKS = BALCONY_CRACK_FLOORS.flatMap((floor, floorIndex) =
 });
 
 export function balconyCrackTipY(crack: { index: number; startY: number; topY: number }, elapsedSeconds: number) {
-  const activeSeconds = Math.max(0, elapsedSeconds - crackStartSeconds(crack.index));
-  return Math.max(crack.topY, crack.startY - activeSeconds * CRACK_FLOOR_HEIGHT / CRACK_SECONDS_PER_FLOOR);
+  const progress = Math.min(1, Math.max(0, elapsedSeconds / BALCONY_CRACK_REVEAL_SECONDS));
+  return crack.startY - (crack.startY - crack.topY) * progress;
 }

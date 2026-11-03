@@ -69,17 +69,12 @@ describe("Balcony crack rules", () => {
       expect(crack.topY).toBeGreaterThan(crack.startY - CRACK_FLOOR_HEIGHT);
     }
   });
-  it("starts balcony cracks after the main cracks, one every five seconds", () => {
-    const first = BALCONY_CRACKS[0];
-    const last = BALCONY_CRACKS[BALCONY_CRACKS.length - 1];
-    if (!first || !last) throw new Error("Missing balcony cracks");
-    expect(crackStartSeconds(first.index)).toBe(35);
-    expect(crackStartSeconds(last.index)).toBe(35 + (BALCONY_CRACKS.length - 1) * 5);
-  });
-  it("grows balcony cracks upward from their floor slab and freezes at the top", () => {
-    const crack = BALCONY_CRACKS[0];
-    if (!crack) throw new Error("Missing balcony crack");
-    expect(balconyCrackTipY(crack, 30)).toBe(crack.startY);
-    expect(balconyCrackTipY(crack, 1000)).toBe(crack.topY);
+  it("reveals every balcony crack fully within the first five seconds", () => {
+    for (const crack of BALCONY_CRACKS) {
+      expect(balconyCrackTipY(crack, 0)).toBe(crack.startY);
+      expect(balconyCrackTipY(crack, 2.5)).toBe((crack.startY + crack.topY) / 2);
+      expect(balconyCrackTipY(crack, 5)).toBe(crack.topY);
+      expect(balconyCrackTipY(crack, 1000)).toBe(crack.topY);
+    }
   });
 });
