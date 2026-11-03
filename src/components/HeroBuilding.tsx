@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building-wide.jpg";
 import { BuildingCracks } from "@/components/BuildingCracks";
+import { CRACK_START_ORDER } from "@/lib/building-cracks";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -38,7 +39,7 @@ export function HeroBuilding() {
         {/* Original facade with an SVG crack overlay drawn on the piers. */}
         <img src={building} alt="" width={W} height={IMG_H} draggable={false}
           className="absolute left-0 top-0 block max-w-none select-none" style={{ width: W, height: IMG_H }} />
-        <BuildingCracks />
+        <BuildingCracks key={CRACK_START_ORDER.join("-")} />
 
         {/* Sign under the shade: light wave sweeps white -> yellow -> blue every 10s. */}
         <a href="#dir-docs" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN.x - 7, top: SIGN.y - 5 }}>
