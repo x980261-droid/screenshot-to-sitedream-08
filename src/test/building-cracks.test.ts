@@ -78,10 +78,10 @@ describe("Balcony crack rules", () => {
       }
     }
   });
-  it("starts each balcony crack at its own floor slab", () => {
+  it("starts each balcony crack at its own floor slab and spans the full floor height", () => {
     for (const crack of BALCONY_CRACKS) {
       expect(crack.startY).toBe(434 - (crack.floor - 3) * 54);
-      expect(crack.topY).toBe(crack.startY - 20);
+      expect(crack.topY).toBe(crack.startY - 54);
       const ys = [...crack.path.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map(match => Number(match[2]));
       expect(Math.max(...ys)).toBe(crack.startY);
       expect(Math.min(...ys)).toBe(crack.topY);
