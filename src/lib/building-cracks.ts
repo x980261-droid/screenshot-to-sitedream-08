@@ -17,8 +17,10 @@ export function crackTipY(index: number, elapsedSeconds: number) {
 }
 
 // Deterministic, irregular fissures in the same component coordinates as the facade.
+// Centers sit on the white facade piers, never on the balconies.
+export const CRACK_BASE_X = [32, 160, 245, 371, 391, 517, 600, 731];
 export const BUILDING_CRACKS = Array.from({ length: CRACK_COUNT }, (_, index) => {
-  const baseX = [61, 146, 224, 310, 410, 495, 577, 671][index] ?? 61;
+  const baseX = CRACK_BASE_X[index] ?? 32;
   const points: { x: number; y: number; width: number }[] = [];
   for (let step = 0; step <= 32; step++) {
     const y = CRACK_START_Y - (CRACK_START_Y - CRACK_TOP_Y) * step / 32;
