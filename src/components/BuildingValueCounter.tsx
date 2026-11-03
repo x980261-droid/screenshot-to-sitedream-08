@@ -11,7 +11,8 @@ export function BuildingValueCounter({ elapsedSeconds }: { elapsedSeconds: numbe
             {String(value.day).padStart(2, "0")}.{String(value.month).padStart(2, "0")}.{value.year}
           </time>
         </div>
-        <div>
+        <div className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1">
+          <span className="text-sm">Стоимость квартиры</span>
           <div data-value-price className={`whitespace-nowrap text-lg md:text-xl ${value.emergency ? "text-safe" : "text-foreground"}`}>{price}</div>
         </div>
       </div>
