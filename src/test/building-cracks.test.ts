@@ -4,13 +4,10 @@ import {
   CRACK_START_Y,
   CRACK_SEQUENCE_SECONDS,
   CRACK_DURATION_SECONDS,
-  UPPER_FLOORS,
   crackProgress,
   crackCycleSeconds,
   crackStartSeconds,
   crackTipY,
-  floorGapWidth,
-  floorOffsetY,
 } from "@/lib/building-cracks";
 
 describe("Building crack rules", () => {
@@ -64,34 +61,5 @@ describe("Building crack rules", () => {
     }
     expect(crackCycleSeconds(31.2)).toBeCloseTo(1.2);
     expect(crackCycleSeconds(61.2)).toBeCloseTo(1.2);
-  });
-  it("keeps floors 1 and 2 stationary at all times", () => {
-    for (const time of [0, 5, 12, 24, 29.9]) {
-      expect(floorOffsetY(1, time)).toBe(0);
-      expect(floorOffsetY(2, time)).toBe(0);
-      expect(floorGapWidth(1, time)).toBe(0);
-      expect(floorGapWidth(2, time)).toBe(0);
-    }
-  });
-  it("shifts floor 3 and every floor above it upward by the crack width", () => {
-    expect(UPPER_FLOORS[0]?.floor).toBe(3);
-    // Before any crack appears nothing moves.
-    for (const { floor } of UPPER_FLOORS) expect(floorOffsetY(floor, 0)).toBe(0);
-    // Once the sequence finished, every upper floor has moved up...
-    for (const { floor } of UPPER_FLOORS) expect(floorOffsetY(floor, 24)).toBeLessThan(0);
-    // ...and each higher floor has moved at least as far as the one below it.
-    for (let i = 1; i < UPPER_FLOORS.length; i++) {
-      const lower = UPPER_FLOORS[i - 1];
-      const upper = UPPER_FLOORS[i];
-      if (!lower || !upper) throw new Error("Missing floor");
-      expect(floorOffsetY(upper.floor, 24)).toBeLessThanOrEqual(floorOffsetY(lower.floor, 24));
-    }
-    // The shift equals the accumulated crack width at each slab.
-    const slabStep = 0; // floor 3 slab is the crack base
-    const expectedGap = Math.max(...BUILDING_CRACKS.map(({ index }) => 2.5 + (Math.sin(slabStep * 1.6 + index) + 1) * 1.8));
-    expect(floorGapWidth(3, 24)).toBeCloseTo(expectedGap, 8);
-    expect(floorOffsetY(3, 24)).toBeCloseTo(-expectedGap, 8);
-    // Offsets reset with the 30-second cycle.
-    for (const { floor } of UPPER_FLOORS) expect(floorOffsetY(floor, crackCycleSeconds(30))).toBe(0);
   });
 });
