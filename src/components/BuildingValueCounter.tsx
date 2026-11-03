@@ -20,7 +20,7 @@ export function BuildingValueCounter({ elapsedSeconds }: { elapsedSeconds: numbe
         <span className="text-sm">Возраст</span>
         <div data-value-age className="whitespace-nowrap text-lg md:text-xl">{lifeAgeLabel(value.ageYears)}</div>
       </div>
-      <div data-value-status className="mt-2 h-5 text-right text-sm font-semibold uppercase text-safe">{value.emergency ? "Дом аварийный" : ""}</div>
+      <div data-value-status className="mt-2 h-5 text-right text-sm font-semibold uppercase text-danger">{value.emergency ? "Здание признано аварийным" : ""}</div>
     </div>
   );
 }
