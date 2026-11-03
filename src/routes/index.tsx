@@ -220,7 +220,7 @@ function Index() {
                 ))}
               </div>
               <a href="#directions" className="group flex items-center justify-between border-t px-8 py-5 font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:bg-muted hover:text-safe">
-                <span>Результат этапа 0 — основа для выбора направления контроля</span>
+                <span />
                 <span className="transition-transform group-hover:translate-x-1">К четырем направлениям →</span>
               </a>
             </div>
