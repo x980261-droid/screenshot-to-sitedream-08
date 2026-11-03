@@ -35,7 +35,7 @@ export function HeroBuilding() {
       <div className="absolute" style={{ left: "50%", bottom: 0, width: W, height: IMG_H, transform: `translateX(-50%) scale(${sc})`, transformOrigin: "bottom center" }}>
       <div className="relative" style={{ width: W, height: IMG_H }}>
       <div className="absolute inset-0">
-        {/* Original facade holds the lower floors fixed; the overlay separates upper-floor slices. */}
+        {/* Original facade with an SVG crack overlay drawn on the piers. */}
         <img src={building} alt="" width={W} height={IMG_H} draggable={false}
           className="absolute left-0 top-0 block max-w-none select-none" style={{ width: W, height: IMG_H }} />
         <BuildingCracks />
