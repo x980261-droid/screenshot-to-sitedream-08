@@ -14,7 +14,8 @@ export function crackCycleSeconds(elapsedSeconds: number) {
 }
 
 export function crackStartSeconds(index: number) {
-  return index * CRACK_INTERVAL_SECONDS;
+  // Reversed order: the last crack appears first, the first crack last.
+  return (TOTAL_CRACK_COUNT - 1 - index) * CRACK_INTERVAL_SECONDS;
 }
 
 export function crackTipY(index: number, elapsedSeconds: number) {
