@@ -33,25 +33,25 @@ describe("Building crack rules", () => {
       expect(Math.max(...xs)).toBeLessThan(760);
     }
   });
-  it("reveals the center crack first, then all others outward from the center by 24 seconds, visible until the 30-second loop restarts", () => {
-    expect(CRACK_SEQUENCE_SECONDS).toBe(30);
+  it("reveals all cracks in three minutes then holds the result for six seconds", () => {
+    expect(CRACK_SEQUENCE_SECONDS).toBe(186);
     const startOrder = [...BUILDING_CRACKS].sort((a, b) => crackStartSeconds(a.index) - crackStartSeconds(b.index)).map(c => c.index);
     expect(startOrder).toEqual([3, 2, 4, 1, 5, 0, 6]);
     for (const { index } of BUILDING_CRACKS) {
       const start = crackStartSeconds(index);
-      expect(start).toBeCloseTo(startOrder.indexOf(index) * 24 / 7);
+      expect(start).toBeCloseTo(startOrder.indexOf(index) * 180 / 7);
       expect(crackProgress(index, start)).toBeCloseTo(0);
       expect(crackProgress(index, start + CRACK_DURATION_SECONDS / 2)).toBeCloseTo(0.5);
       expect(crackProgress(index, start + CRACK_DURATION_SECONDS)).toBeCloseTo(1);
-      expect(crackProgress(index, 30)).toBeCloseTo(1);
+      expect(crackProgress(index, 180)).toBeCloseTo(1);
     }
     // The center crack (index 3) starts first, the rightmost crack (index 6) finishes last.
     expect(crackStartSeconds(3)).toBe(0);
-    expect(crackStartSeconds(6) + CRACK_DURATION_SECONDS).toBeCloseTo(24);
+    expect(crackStartSeconds(6) + CRACK_DURATION_SECONDS).toBeCloseTo(180);
   });
   it("shows only the central crack during the first interval", () => {
     expect(BUILDING_CRACKS.filter(({ index }) => crackProgress(index, 1) > 0).map(({ index }) => index)).toEqual([3]);
-    expect(crackProgress(3, 1)).toBeCloseTo(7 / 24);
+    expect(crackProgress(3, 1)).toBeCloseTo(7 / 180);
   });
   it("starts at the third-floor slab without extending below it", () => {
     expect(CRACK_START_Y).toBe(434);
@@ -61,13 +61,13 @@ describe("Building crack rules", () => {
     expect(crackTipY(6, 200)).toBe(12);
     expect(crackTipY(6, 400)).toBe(12);
   });
-  it("restarts the whole sequence every 30 seconds", () => {
-    expect(crackCycleSeconds(29.9)).toBeCloseTo(29.9);
-    for (const time of [30, 60, 90]) {
+  it("restarts after three minutes and the final six-second hold", () => {
+    expect(crackCycleSeconds(185.9)).toBeCloseTo(185.9);
+    for (const time of [186, 372, 558]) {
       expect(crackCycleSeconds(time)).toBe(0);
       expect(crackProgress(0, crackCycleSeconds(time))).toBe(0);
     }
-    expect(crackCycleSeconds(31.2)).toBeCloseTo(1.2);
-    expect(crackCycleSeconds(61.2)).toBeCloseTo(1.2);
+    expect(crackCycleSeconds(187.2)).toBeCloseTo(1.2);
+    expect(crackCycleSeconds(373.2)).toBeCloseTo(1.2);
   });
 });
