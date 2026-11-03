@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BUILDING_CRACKS, CRACK_START_Y, crackStartSeconds, crackTipY } from "@/lib/building-cracks";
+import { BUILDING_CRACKS, CRACK_HOVER_BOOST, CRACK_HOVER_BOOST_SECONDS, CRACK_START_Y, CRACK_TOP_Y, crackBoostedTipY, crackStartSeconds, crackTipY } from "@/lib/building-cracks";
 
 describe("Building crack rules", () => {
   it("halves the width of every crack without moving its centerline", () => {
