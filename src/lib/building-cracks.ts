@@ -1,6 +1,6 @@
 export const CRACK_COUNT = 7;
 export const CRACK_SEQUENCE_SECONDS = 30;
-export const TOTAL_CRACK_COUNT = 25;
+export const TOTAL_CRACK_COUNT = 13;
 export const CRACK_INTERVAL_SECONDS = CRACK_SEQUENCE_SECONDS / TOTAL_CRACK_COUNT;
 export const CRACK_START_Y = 434;
 export const CRACK_TOP_Y = 12;
@@ -39,11 +39,11 @@ export const BUILDING_CRACKS = Array.from({ length: CRACK_COUNT }, (_, index) =>
   return { index, path: `M ${left.join(" L ")} L ${right.join(" L ")} Z` };
 });
 
-// Thin secondary cracks on the balcony fronts of floors 3, 4 and 5.
+// Thin secondary cracks start on third-floor balconies and extend to the roof.
 // They are half as wide as the main pier cracks and follow them in the shared sequence.
-export const BALCONY_CRACK_FLOORS = [3, 4, 5];
+export const BALCONY_CRACK_FLOORS = [3];
 export const BALCONY_CRACK_WIDTH_SCALE = 0.5;
-export const BALCONY_CRACK_HEIGHT = 20;
+export const BALCONY_CRACK_HEIGHT = CRACK_START_Y - CRACK_TOP_Y;
 export const BALCONY_CRACK_BASE_X = [95, 200, 312, 450, 566, 672];
 
 export const BALCONY_CRACKS = BALCONY_CRACK_FLOORS.flatMap((floor, floorIndex) => {
@@ -52,8 +52,8 @@ export const BALCONY_CRACKS = BALCONY_CRACK_FLOORS.flatMap((floor, floorIndex) =
   return BALCONY_CRACK_BASE_X.map((baseX, columnIndex) => {
     const index = CRACK_COUNT + floorIndex * BALCONY_CRACK_BASE_X.length + columnIndex;
     const points: { x: number; y: number; width: number }[] = [];
-    for (let step = 0; step <= 8; step++) {
-      const y = startY - (startY - topY) * step / 8;
+    for (let step = 0; step <= 32; step++) {
+      const y = startY - (startY - topY) * step / 32;
       const x = baseX + Math.sin(step * 2.1 + index * 1.3) * 3;
       points.push({ x, y, width: (2.5 + (Math.sin(step * 1.6 + index) + 1) * 1.8) * 0.5 * BALCONY_CRACK_WIDTH_SCALE });
     }
