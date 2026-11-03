@@ -4,10 +4,13 @@ import {
   CRACK_START_Y,
   CRACK_SEQUENCE_SECONDS,
   CRACK_DURATION_SECONDS,
+  UPPER_FLOORS,
   crackProgress,
   crackCycleSeconds,
   crackStartSeconds,
   crackTipY,
+  floorGapWidth,
+  floorOffsetY,
 } from "@/lib/building-cracks";
 
 describe("Building crack rules", () => {
