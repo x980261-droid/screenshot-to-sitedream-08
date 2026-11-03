@@ -17,6 +17,11 @@ describe("Apartment date and value", () => {
     expect(buildingValueAt(179.9).emergency).toBe(false);
     expect(buildingValueAt(180).emergency).toBe(true);
   });
+  it("shows deformation from 0 to 100 percent in sync with the dates", () => {
+    expect(buildingValueAt(0).deformationPercent).toBe(0);
+    expect(buildingValueAt(90).deformationPercent).toBe(50);
+    expect(buildingValueAt(180).deformationPercent).toBe(100);
+  });
   it("ages from 30 to 50 years over the cycle", () => {
     expect(buildingValueAt(0).ageYears).toBe(30);
     expect(lifeAgeLabel(buildingValueAt(0).ageYears)).toBe("30 лет");
