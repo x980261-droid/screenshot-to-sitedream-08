@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { BUILDING_CRACKS, CRACK_START_Y, crackTipY } from "@/lib/building-cracks";
+import { BALCONY_CRACKS, BUILDING_CRACKS, CRACK_START_Y, balconyCrackTipY, crackTipY } from "@/lib/building-cracks";
 
 export function BuildingCracks() {
   const clipsRef = useRef<(SVGRectElement | null)[]>([]);
@@ -16,6 +16,13 @@ export function BuildingCracks() {
         const tipY = crackTipY(index, elapsed);
         rect.setAttribute("y", String(tipY));
         rect.setAttribute("height", String(CRACK_START_Y - tipY));
+      });
+      BALCONY_CRACKS.forEach((crack) => {
+        const rect = clipsRef.current[crack.index];
+        if (!rect) return;
+        const tipY = balconyCrackTipY(crack, elapsed);
+        rect.setAttribute("y", String(tipY));
+        rect.setAttribute("height", String(crack.startY - tipY));
       });
       raf = requestAnimationFrame(tick);
     };
@@ -40,9 +47,25 @@ export function BuildingCracks() {
             />
           </clipPath>
         ))}
+        {BALCONY_CRACKS.map((crack) => (
+          <clipPath key={crack.index} id={`crack-clip-${crack.index}`}>
+            <rect
+              ref={(el) => {
+                clipsRef.current[crack.index] = el;
+              }}
+              x="0"
+              y={crack.startY}
+              width="760"
+              height="0"
+            />
+          </clipPath>
+        ))}
       </defs>
       {BUILDING_CRACKS.map(({ index, path }) => (
         <path key={index} data-crack={index} d={path} clipPath={`url(#crack-clip-${index})`} />
+      ))}
+      {BALCONY_CRACKS.map((crack) => (
+        <path key={crack.index} data-crack={crack.index} data-balcony-crack={crack.floor} d={crack.path} clipPath={`url(#crack-clip-${crack.index})`} />
       ))}
     </svg>
   );

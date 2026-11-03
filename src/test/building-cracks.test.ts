@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { BUILDING_CRACKS, CRACK_START_Y, crackStartSeconds, crackTipY } from "@/lib/building-cracks";
+import {
+  BALCONY_CRACKS,
+  BALCONY_CRACK_FLOORS,
+  BALCONY_CRACK_WIDTH_SCALE,
+  BUILDING_CRACKS,
+  CRACK_FLOOR_HEIGHT,
+  CRACK_START_Y,
+  balconyCrackTipY,
+  crackStartSeconds,
+  crackTipY,
+} from "@/lib/building-cracks";
 
 describe("Building crack rules", () => {
   it("halves the width of every crack without moving its centerline", () => {
@@ -31,5 +41,45 @@ describe("Building crack rules", () => {
   it("stops at the roof and never resets", () => {
     expect(crackTipY(6, 200)).toBe(12);
     expect(crackTipY(6, 400)).toBe(12);
+  });
+});
+
+describe("Balcony crack rules", () => {
+  it("places balcony cracks only on floors 3, 4 and 5", () => {
+    expect(BALCONY_CRACK_FLOORS).toEqual([3, 4, 5]);
+    expect(new Set(BALCONY_CRACKS.map(crack => crack.floor))).toEqual(new Set([3, 4, 5]));
+  });
+  it("makes every balcony crack half as wide as a main crack", () => {
+    expect(BALCONY_CRACK_WIDTH_SCALE).toBe(0.5);
+    for (const crack of BALCONY_CRACKS) {
+      const coordinates = [...crack.path.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map(match => Number(match[1]));
+      for (let step = 0; step <= 8; step++) {
+        const left = coordinates[step];
+        const right = coordinates[17 - step];
+        if (left === undefined || right === undefined) throw new Error("Missing balcony crack edge");
+        const mainFullWidth = 2 * (2.5 + (Math.sin(step * 1.6 + crack.index) + 1) * 1.8) * 0.5;
+        expect(right - left).toBeCloseTo(mainFullWidth * 0.5, 8);
+      }
+    }
+  });
+  it("keeps each balcony crack inside its own floor band", () => {
+    for (const crack of BALCONY_CRACKS) {
+      const floorIndex = crack.floor - 3;
+      expect(crack.startY).toBe(CRACK_START_Y - floorIndex * CRACK_FLOOR_HEIGHT);
+      expect(crack.topY).toBeGreaterThan(crack.startY - CRACK_FLOOR_HEIGHT);
+    }
+  });
+  it("starts balcony cracks after the main cracks, one every five seconds", () => {
+    const first = BALCONY_CRACKS[0];
+    const last = BALCONY_CRACKS[BALCONY_CRACKS.length - 1];
+    if (!first || !last) throw new Error("Missing balcony cracks");
+    expect(crackStartSeconds(first.index)).toBe(35);
+    expect(crackStartSeconds(last.index)).toBe(35 + (BALCONY_CRACKS.length - 1) * 5);
+  });
+  it("grows balcony cracks upward from their floor slab and freezes at the top", () => {
+    const crack = BALCONY_CRACKS[0];
+    if (!crack) throw new Error("Missing balcony crack");
+    expect(balconyCrackTipY(crack, 30)).toBe(crack.startY);
+    expect(balconyCrackTipY(crack, 1000)).toBe(crack.topY);
   });
 });
