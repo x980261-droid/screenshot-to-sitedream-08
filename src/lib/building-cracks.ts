@@ -42,10 +42,10 @@ export const BUILDING_CRACKS = Array.from({ length: CRACK_COUNT }, (_, index) =>
 });
 
 // Thin secondary cracks sit on every balcony of floors 3-5, each rising from its own slab
-// through the full height of its floor band.
+// through three floor heights.
 export const BALCONY_CRACK_FLOORS = [3, 4, 5];
 export const BALCONY_CRACK_WIDTH_SCALE = 0.5;
-export const BALCONY_CRACK_HEIGHT = CRACK_FLOOR_HEIGHT;
+export const BALCONY_CRACK_HEIGHT = 3 * CRACK_FLOOR_HEIGHT;
 export const BALCONY_CRACK_BASE_X = [95, 200, 312, 450, 566, 672];
 
 export const BALCONY_CRACKS = BALCONY_CRACK_FLOORS.flatMap((floor, floorIndex) => {
