@@ -45,9 +45,13 @@ describe("Building crack rules", () => {
       expect(crackProgress(index, start + CRACK_DURATION_SECONDS)).toBeCloseTo(1);
       expect(crackProgress(index, 30)).toBeCloseTo(1);
     }
-    // The center crack (index 3) starts first, the leftmost crack (index 6) finishes last.
+    // The center crack (index 3) starts first, the rightmost crack (index 6) finishes last.
     expect(crackStartSeconds(3)).toBe(0);
     expect(crackStartSeconds(6) + CRACK_DURATION_SECONDS).toBeCloseTo(24);
+  });
+  it("shows only the central crack during the first interval", () => {
+    expect(BUILDING_CRACKS.filter(({ index }) => crackProgress(index, 1) > 0).map(({ index }) => index)).toEqual([3]);
+    expect(crackProgress(3, 1)).toBeCloseTo(7 / 24);
   });
   it("starts at the third-floor slab without extending below it", () => {
     expect(CRACK_START_Y).toBe(434);

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { BUILDING_CRACKS, CRACK_START_Y, crackCycleSeconds, crackTipY } from "@/lib/building-cracks";
+import { BUILDING_CRACKS, CRACK_START_ORDER, CRACK_START_Y, crackCycleSeconds, crackTipY } from "@/lib/building-cracks";
 
 export function BuildingCracks() {
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -8,6 +8,13 @@ export function BuildingCracks() {
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
+    const resetClips = () => {
+      clipsRef.current.forEach((rect) => {
+        rect?.setAttribute("y", String(CRACK_START_Y));
+        rect?.setAttribute("height", "0");
+      });
+    };
+    resetClips();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) return;
     let startedAt = performance.now();
@@ -33,6 +40,7 @@ export function BuildingCracks() {
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
           startedAt = performance.now();
+          resetClips();
         }
       },
       { threshold: 0.3 },
@@ -43,7 +51,7 @@ export function BuildingCracks() {
       cancelAnimationFrame(raf);
       observer.disconnect();
     };
-  }, []);
+  }, [CRACK_START_ORDER]);
 
   return (
     <svg ref={svgRef} aria-hidden="true" className="building-cracks pointer-events-none absolute inset-0" width="760" height="623" viewBox="0 0 760 623">
