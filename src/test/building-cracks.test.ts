@@ -33,17 +33,19 @@ describe("Building crack rules", () => {
       expect(Math.max(...xs)).toBeLessThan(760);
     }
   });
-  it("reveals all 7 cracks sequentially by 24 seconds, leaving them visible until the 30-second loop restarts", () => {
+  it("reveals all 7 cracks sequentially in reverse order by 24 seconds, leaving them visible until the 30-second loop restarts", () => {
     expect(CRACK_SEQUENCE_SECONDS).toBe(30);
     for (const { index } of BUILDING_CRACKS) {
       const start = crackStartSeconds(index);
-      expect(start).toBeCloseTo(index * 24 / 7);
+      expect(start).toBeCloseTo((6 - index) * 24 / 7);
       expect(crackProgress(index, start)).toBeCloseTo(0);
       expect(crackProgress(index, start + CRACK_DURATION_SECONDS / 2)).toBeCloseTo(0.5);
       expect(crackProgress(index, start + CRACK_DURATION_SECONDS)).toBeCloseTo(1);
       expect(crackProgress(index, 30)).toBeCloseTo(1);
     }
-    expect(crackStartSeconds(6) + CRACK_DURATION_SECONDS).toBeCloseTo(24);
+    // The last crack (index 6) starts first, the first crack (index 0) finishes last.
+    expect(crackStartSeconds(6)).toBe(0);
+    expect(crackStartSeconds(0) + CRACK_DURATION_SECONDS).toBeCloseTo(24);
   });
   it("starts at the third-floor slab without extending below it", () => {
     expect(CRACK_START_Y).toBe(434);
