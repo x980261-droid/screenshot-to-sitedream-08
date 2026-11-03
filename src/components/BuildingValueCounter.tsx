@@ -1,4 +1,4 @@
-import { buildingValueAt, lifeAgeLabel } from "@/lib/building-value";
+import { buildingValueAt } from "@/lib/building-value";
 
 export function BuildingValueCounter({ elapsedSeconds }: { elapsedSeconds: number }) {
   const value = buildingValueAt(elapsedSeconds);
