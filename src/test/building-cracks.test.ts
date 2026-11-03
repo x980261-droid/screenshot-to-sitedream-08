@@ -14,11 +14,11 @@ describe("Building crack rules", () => {
       }
     }
   });
-  it("creates exactly eight cracks", () => {
-    expect(BUILDING_CRACKS).toHaveLength(8);
+  it("creates exactly seven cracks", () => {
+    expect(BUILDING_CRACKS).toHaveLength(7);
   });
   it("starts a new crack every five seconds", () => {
-    expect(BUILDING_CRACKS.map(({ index }) => crackStartSeconds(index))).toEqual([0, 5, 10, 15, 20, 25, 30, 35]);
+    expect(BUILDING_CRACKS.map(({ index }) => crackStartSeconds(index))).toEqual([0, 5, 10, 15, 20, 25, 30]);
   });
   it("advances upward by one 54-pixel storey in fifteen seconds", () => {
     expect(crackTipY(0, 15)).toBe(CRACK_START_Y - 54);
