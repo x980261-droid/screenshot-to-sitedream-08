@@ -16,6 +16,11 @@ export function crackTipY(index: number, elapsedSeconds: number) {
   return Math.max(CRACK_TOP_Y, CRACK_START_Y - activeSeconds * CRACK_FLOOR_HEIGHT / CRACK_SECONDS_PER_FLOOR);
 }
 
+// Hovering the building widens every crack by 50% over 3 seconds (around its own centerline).
+export const CRACK_HOVER_WIDEN = 1.5;
+export const CRACK_HOVER_WIDEN_SECONDS = 3;
+export const CRACK_CENTER_X = [61, 146, 224, 310, 410, 495, 577, 671];
+
 // Deterministic, irregular fissures in the same component coordinates as the facade.
 export const BUILDING_CRACKS = Array.from({ length: CRACK_COUNT }, (_, index) => {
   const baseX = [61, 146, 224, 310, 410, 495, 577, 671][index] ?? 61;
