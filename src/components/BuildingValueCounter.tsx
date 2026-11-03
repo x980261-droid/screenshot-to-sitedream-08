@@ -16,10 +16,6 @@ export function BuildingValueCounter({ elapsedSeconds }: { elapsedSeconds: numbe
           <div data-value-price className={`whitespace-nowrap text-lg md:text-xl ${value.emergency ? "text-safe" : "text-foreground"}`}>{price}</div>
         </div>
       </div>
-      <div className="mt-1 flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1 font-mono tabular-nums">
-        <span className="text-sm">Возраст</span>
-        <div data-value-age className="whitespace-nowrap text-lg md:text-xl">{lifeAgeLabel(value.ageYears)}</div>
-      </div>
       <div data-value-status className="mt-2 h-5 text-right text-sm font-semibold uppercase text-danger">{value.emergency ? "Здание признано аварийным" : ""}</div>
     </div>
   );
