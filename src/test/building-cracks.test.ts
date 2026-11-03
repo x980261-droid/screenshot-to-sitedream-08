@@ -51,7 +51,7 @@ describe("Building crack rules", () => {
   });
   it("starts at the third-floor slab without extending below it", () => {
     expect(CRACK_START_Y).toBe(434);
-    expect(crackTipY(6, 7)).toBe(434);
+    expect(crackTipY(6, crackStartSeconds(6))).toBe(434);
   });
   it("stops at the roof and never resets", () => {
     expect(crackTipY(6, 200)).toBe(12);
