@@ -17,13 +17,13 @@ describe("Apartment date and value", () => {
     expect(buildingValueAt(179.9).emergency).toBe(false);
     expect(buildingValueAt(180).emergency).toBe(true);
   });
-  it("ages from 30 to 48 years over the cycle", () => {
+  it("ages from 30 to 50 years over the cycle", () => {
     expect(buildingValueAt(0).ageYears).toBe(30);
     expect(lifeAgeLabel(buildingValueAt(0).ageYears)).toBe("30 лет");
-    expect(buildingValueAt(90).ageYears).toBe(39);
-    expect(lifeAgeLabel(buildingValueAt(90).ageYears)).toBe("39 лет");
-    expect(buildingValueAt(180).ageYears).toBe(48);
-    expect(lifeAgeLabel(buildingValueAt(180).ageYears)).toBe("48 лет");
+    expect(buildingValueAt(90).ageYears).toBe(40);
+    expect(lifeAgeLabel(buildingValueAt(90).ageYears)).toBe("40 лет");
+    expect(buildingValueAt(180).ageYears).toBe(50);
+    expect(lifeAgeLabel(buildingValueAt(180).ageYears)).toBe("50 лет");
     expect(lifeAgeLabel(31)).toBe("31 год");
     expect(lifeAgeLabel(34)).toBe("34 года");
   });
