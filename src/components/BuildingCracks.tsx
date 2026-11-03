@@ -3,13 +3,16 @@ import building from "@/assets/building-wide.jpg";
 import { BALCONY_CRACKS, BUILDING_CRACKS, CRACK_START_Y, UPPER_FLOORS, balconyCrackTipY, crackCycleSeconds, crackTipY, floorOffsetY } from "@/lib/building-cracks";
 
 export function BuildingCracks() {
+  const svgRef = useRef<SVGSVGElement | null>(null);
   const clipsRef = useRef<(SVGRectElement | null)[]>([]);
   const floorsRef = useRef<(SVGGElement | null)[]>([]);
 
   useEffect(() => {
-    const startedAt = performance.now();
+    const svg = svgRef.current;
+    if (!svg) return;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) return;
+    let startedAt = performance.now();
     let raf = 0;
 
     const tick = (now: number) => {
