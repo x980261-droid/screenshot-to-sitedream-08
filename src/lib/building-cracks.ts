@@ -1,8 +1,8 @@
 export const CRACK_COUNT = 7;
-export const CRACK_SEQUENCE_SECONDS = 30;
+export const CRACK_SEQUENCE_SECONDS = 186;
 export const TOTAL_CRACK_COUNT = CRACK_COUNT;
-// All cracks finish by this point, then the fully cracked house holds until the 30s loop restarts.
-export const CRACK_REVEAL_SECONDS = 24;
+// Three minutes of reveal, then six seconds holding the final emergency state.
+export const CRACK_REVEAL_SECONDS = 180;
 export const CRACK_INTERVAL_SECONDS = CRACK_REVEAL_SECONDS / TOTAL_CRACK_COUNT;
 export const CRACK_START_Y = 434;
 export const CRACK_TOP_Y = 12;
