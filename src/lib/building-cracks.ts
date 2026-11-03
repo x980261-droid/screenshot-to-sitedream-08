@@ -40,3 +40,28 @@ export const BUILDING_CRACKS = Array.from({ length: CRACK_COUNT }, (_, index) =>
   const right = [...points].reverse().map(({ x, y, width }) => `${x + width},${y}`);
   return { index, path: `M ${left.join(" L ")} L ${right.join(" L ")} Z` };
 });
+
+// Floors 1-2 stay fixed; every floor from the third up is sliced and shifted
+// upward by the accumulated width of the cracks below it.
+export const UPPER_FLOORS = Array.from({ length: Math.ceil(CRACK_START_Y / CRACK_FLOOR_HEIGHT) }, (_, index) => ({
+  floor: index + 3,
+  bottomY: CRACK_START_Y - index * CRACK_FLOOR_HEIGHT,
+  topY: Math.max(0, CRACK_START_Y - (index + 1) * CRACK_FLOOR_HEIGHT),
+}));
+
+export function floorGapWidth(floor: number, elapsedSeconds: number) {
+  if (floor <= 2) return 0;
+  const bottomY = CRACK_START_Y - (floor - 3) * CRACK_FLOOR_HEIGHT;
+  const step = (CRACK_START_Y - bottomY) / (CRACK_START_Y - CRACK_TOP_Y) * 32;
+  return Math.max(0, ...BUILDING_CRACKS.map(({ index }) => {
+    if (crackTipY(index, elapsedSeconds) >= bottomY) return 0;
+    const width = 2.5 + (Math.sin(step * 1.6 + index) + 1) * 1.8;
+    return width * crackProgress(index, elapsedSeconds);
+  }));
+}
+
+export function floorOffsetY(floor: number, elapsedSeconds: number) {
+  let offset = 0;
+  for (let current = 3; current <= floor; current++) offset -= floorGapWidth(current, elapsedSeconds);
+  return offset;
+}
