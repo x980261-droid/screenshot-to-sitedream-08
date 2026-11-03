@@ -32,4 +32,14 @@ describe("Building crack rules", () => {
     expect(crackTipY(7, 200)).toBe(12);
     expect(crackTipY(7, 400)).toBe(12);
   });
+  it("lengthens every crack by 50% of its current length on hover", () => {
+    expect(CRACK_HOVER_BOOST).toBe(1.5);
+    expect(CRACK_HOVER_BOOST_SECONDS).toBe(5);
+    // At 15s crack 0 is one storey (54px) long; boosted it reaches 81px.
+    expect(crackBoostedTipY(0, 15, 1.5)).toBe(CRACK_START_Y - 81);
+  });
+  it("keeps boosted cracks above the roof line and never shorter than the base", () => {
+    expect(crackBoostedTipY(7, 400, 1.5)).toBe(CRACK_TOP_Y);
+    expect(crackBoostedTipY(3, 40, 1)).toBe(crackTipY(3, 40));
+  });
 });
