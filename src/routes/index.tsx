@@ -91,10 +91,10 @@ const news = [
   ["21.09.2026", "Поправки ГОСТ", "Уточнены методы ультразвукового контроля прочности бетона по ГОСТ 17624."],
 ];
 
-function SectionHead({ index, title }: { index: string; title: string }) {
+function SectionHead({ index, title }: { index?: string; title: string }) {
   return (
     <div className="mb-10 flex items-end gap-4 border-b pb-4">
-      <span className="font-mono text-sm text-primary">{index}</span>
+      {index ? <span className="font-mono text-sm text-primary">{index}</span> : null}
       <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">{title}</h2>
     </div>
   );
