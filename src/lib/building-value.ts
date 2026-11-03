@@ -13,6 +13,7 @@ export function buildingValueAt(elapsedSeconds: number) {
     month: date.getUTCMonth() + 1,
     year: date.getUTCFullYear(),
     price: Math.round(APARTMENT_INITIAL_PRICE * (1 - progress)),
+    deformationPercent: Math.round(progress * 100),
     emergency: progress === 1,
     ageYears: 30 + 20 * progress,
   };
