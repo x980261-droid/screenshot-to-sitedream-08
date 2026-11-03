@@ -7,6 +7,10 @@ export const CRACK_TOP_Y = 12;
 export const CRACK_FLOOR_HEIGHT = 54;
 export const CRACK_DURATION_SECONDS = CRACK_INTERVAL_SECONDS;
 
+export function crackCycleSeconds(elapsedSeconds: number) {
+  return Math.max(0, elapsedSeconds) % CRACK_SEQUENCE_SECONDS;
+}
+
 export function crackStartSeconds(index: number) {
   return index * CRACK_INTERVAL_SECONDS;
 }
