@@ -3,13 +3,16 @@ import building from "@/assets/building-wide.jpg";
 import { BALCONY_CRACKS, BUILDING_CRACKS, CRACK_START_Y, UPPER_FLOORS, balconyCrackTipY, crackCycleSeconds, crackTipY, floorOffsetY } from "@/lib/building-cracks";
 
 export function BuildingCracks() {
+  const svgRef = useRef<SVGSVGElement | null>(null);
   const clipsRef = useRef<(SVGRectElement | null)[]>([]);
   const floorsRef = useRef<(SVGGElement | null)[]>([]);
 
   useEffect(() => {
-    const startedAt = performance.now();
+    const svg = svgRef.current;
+    if (!svg) return;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) return;
+    let startedAt = performance.now();
     let raf = 0;
 
     const tick = (now: number) => {
@@ -35,11 +38,27 @@ export function BuildingCracks() {
     };
 
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+
+    // Restart the 30-second cycle from the beginning whenever the building
+    // re-enters the viewport, so the animation is always fresh when visible.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          startedAt = performance.now();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(svg);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+    };
   }, []);
 
   return (
-    <svg aria-hidden="true" className="building-cracks pointer-events-none absolute inset-0" width="760" height="623" viewBox="0 0 760 623">
+    <svg ref={svgRef} aria-hidden="true" className="building-cracks pointer-events-none absolute inset-0" width="760" height="623" viewBox="0 0 760 623">
       <defs>
         {BUILDING_CRACKS.map(({ index }) => (
           <clipPath key={index} id={`crack-clip-${index}`}>
