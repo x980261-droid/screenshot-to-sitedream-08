@@ -58,7 +58,7 @@ export function BuildingCracks() {
   }, []);
 
   return (
-    <svg aria-hidden="true" className="building-cracks pointer-events-none absolute inset-0" width="760" height="623" viewBox="0 0 760 623">
+    <svg ref={svgRef} aria-hidden="true" className="building-cracks pointer-events-none absolute inset-0" width="760" height="623" viewBox="0 0 760 623">
       <defs>
         {BUILDING_CRACKS.map(({ index }) => (
           <clipPath key={index} id={`crack-clip-${index}`}>
