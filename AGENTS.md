@@ -9,4 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Keep the hero facade a single stationary image with no collapse, drift, debris or sparks; use a separate SVG overlay for upward-growing cracks so the original image and signs remain unchanged. Geometry uses component pixels mapped from the source by 760/1536 (x) and 623/1264 (y); crack scheduling and geometry live in building-cracks.ts for direct rule tests.
+- Keep the hero facade a single stationary image; render cracks in a separate SVG overlay so the original image and signs remain unchanged. Geometry uses component pixels mapped from the source by 760/1536 (x) and 623/1264 (y); crack geometry and width interpolation live in building-cracks.ts for direct rule tests.
