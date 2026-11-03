@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import building from "@/assets/building-wide.jpg";
 import { BuildingCracks } from "@/components/BuildingCracks";
 import { CRACK_START_ORDER } from "@/lib/building-cracks";
+import { BuildingValueCounter } from "@/components/BuildingValueCounter";
 
 const W = 760; // two building sections side by side (two entrances)
 const H = 570;
@@ -20,6 +21,7 @@ const SIGN4 = { x: 408.7, y: 485.5, w: 98.9, h: 19 };
 export function HeroBuilding() {
   const ref = useRef<HTMLDivElement>(null);
   const [sc, setSc] = useState(1);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   useEffect(() => {
     const el = ref.current;
@@ -39,7 +41,7 @@ export function HeroBuilding() {
         {/* Original facade with an SVG crack overlay drawn on the piers. */}
         <img src={building} alt="" width={W} height={IMG_H} draggable={false}
           className="absolute left-0 top-0 block max-w-none select-none" style={{ width: W, height: IMG_H }} />
-        <BuildingCracks key={CRACK_START_ORDER.join("-")} />
+        <BuildingCracks key={CRACK_START_ORDER.join("-")} onTimeChange={setElapsedSeconds} />
 
         {/* Sign under the shade: light wave sweeps white -> yellow -> blue every 10s. */}
         <a href="#dir-docs" className="sign-frame pointer-events-auto absolute z-10" style={{ left: SIGN.x - 7, top: SIGN.y - 5 }}>
@@ -194,6 +196,7 @@ export function HeroBuilding() {
           <text className="sign-neon" fill="url(#signWaveH)" x={SIGN4.w / 2} y="17.2" textAnchor="middle" textLength="94" lengthAdjust="spacingAndGlyphs">КОММЕРЧЕСКИХ ПОМЕЩЕНИЙ</text>
         </svg>
       </div>
+      <BuildingValueCounter elapsedSeconds={elapsedSeconds} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef } from "react";
 import { BUILDING_CRACKS, CRACK_START_ORDER, CRACK_START_Y, crackCycleSeconds, crackTipY } from "@/lib/building-cracks";
 
-export function BuildingCracks() {
+export function BuildingCracks({ onTimeChange }: { onTimeChange?: (seconds: number) => void }) {
   const clipPrefix = useId().replace(/:/g, "");
   const orderedCracks = CRACK_START_ORDER.flatMap((index) => BUILDING_CRACKS.filter((crack) => crack.index === index));
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -17,13 +17,19 @@ export function BuildingCracks() {
       });
     };
     resetClips();
+    onTimeChange?.(0);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) return;
     let startedAt = performance.now();
     let raf = 0;
+    let lastCounterUpdate = 0;
 
     const tick = (now: number) => {
       const elapsed = crackCycleSeconds((now - startedAt) / 1000);
+      if (now - lastCounterUpdate >= 100) {
+        onTimeChange?.(elapsed);
+        lastCounterUpdate = now;
+      }
       BUILDING_CRACKS.forEach(({ index }) => {
         const rect = clipsRef.current[index];
         if (!rect) return;
@@ -43,6 +49,7 @@ export function BuildingCracks() {
         if (entries.some((entry) => entry.isIntersecting)) {
           startedAt = performance.now();
           resetClips();
+          onTimeChange?.(0);
         }
       },
       { threshold: 0.3 },
@@ -53,7 +60,7 @@ export function BuildingCracks() {
       cancelAnimationFrame(raf);
       observer.disconnect();
     };
-  }, [CRACK_START_ORDER]);
+  }, [CRACK_START_ORDER, onTimeChange]);
 
   return (
     <svg ref={svgRef} data-crack-order={CRACK_START_ORDER.join(",")} aria-hidden="true" className="building-cracks pointer-events-none absolute inset-0" width="760" height="623" viewBox="0 0 760 623">
