@@ -14,12 +14,12 @@ export function buildingValueAt(elapsedSeconds: number) {
     year: date.getUTCFullYear(),
     price: Math.round(APARTMENT_INITIAL_PRICE * (1 - progress)),
     emergency: progress === 1,
-    ageYears: 30 + 18 * progress,
+    ageYears: 30 + 20 * progress,
   };
 }
 
 export function lifeAgeLabel(ageYears: number) {
-  const age = Math.min(48, Math.floor(ageYears));
+  const age = Math.min(50, Math.floor(ageYears));
   const mod10 = age % 10;
   const mod100 = age % 100;
   const unit = mod10 === 1 && mod100 !== 11 ? "год" : mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? "года" : "лет";
