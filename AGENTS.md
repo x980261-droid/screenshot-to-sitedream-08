@@ -9,4 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- The hero building is a single static image (no collapse, drift, debris, or spark effects); only the four SVG sign overlays animate. Sign positions are component-pixel constants in HeroBuilding.tsx, mapped from the source image by 760/1536 (x) and 623/1264 (y).
+- Keep the hero facade a single stationary image with no collapse, drift, debris or sparks; use a separate SVG overlay for upward-growing cracks so the original image and signs remain unchanged. Geometry uses component pixels mapped from the source by 760/1536 (x) and 623/1264 (y); crack scheduling and geometry live in building-cracks.ts for direct rule tests.
