@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { BUILDING_CRACKS, CRACK_CENTER_X, CRACK_HOVER_SHRINK_SECONDS, CRACK_HOVER_WIDEN, CRACK_HOVER_WIDEN_SECONDS, CRACK_START_Y, crackStartSeconds, crackTipY } from "@/lib/building-cracks";
+import { BUILDING_CRACKS, CRACK_CENTER_X, CRACK_HOVER_SHRINK_SECONDS, CRACK_HOVER_WIDEN, CRACK_HOVER_WIDEN_SECONDS, CRACK_START_Y, crackStartSeconds, crackTipY, crackWidthScale } from "@/lib/building-cracks";
 
 describe("Building crack rules", () => {
   it("halves the width of every crack without moving its centerline", () => {
@@ -39,5 +39,15 @@ describe("Building crack rules", () => {
   });
   it("returns to the original width over one second when the cursor leaves", () => {
     expect(CRACK_HOVER_SHRINK_SECONDS).toBe(1);
+    expect(crackWidthScale(1.5, false, 0)).toBe(1.5);
+    expect(crackWidthScale(1.5, false, 0.5)).toBe(1.25);
+    expect(crackWidthScale(1.5, false, 1)).toBe(1);
+    expect(crackWidthScale(1.5, false, 2)).toBe(1);
+  });
+  it("does not accumulate widening when the cursor reenters during shrinking", () => {
+    const halfwayBack = crackWidthScale(1.5, false, 0.5);
+    expect(crackWidthScale(halfwayBack, true, 3)).toBe(1.5);
+    expect(crackWidthScale(1, true, 1.5)).toBe(1.25);
+    expect(crackWidthScale(1.25, false, 1)).toBe(1);
   });
 });
