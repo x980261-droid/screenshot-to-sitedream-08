@@ -76,7 +76,7 @@ export function BuildingCracks() {
           <path key={index} id={`crack-shape-${index}`} data-crack={index} d={path} clipPath={`url(#crack-clip-${index})`} />
         ))}
         {BALCONY_CRACKS.map((crack) => (
-          <path key={crack.index} id={`crack-shape-${crack.index}`} data-crack={crack.index} data-balcony-crack={crack.floor} d={crack.path} clipPath={`url(#crack-clip-${crack.index})`} />
+          <path key={crack.index} id={`crack-shape-${crack.index}`} data-crack={crack.index} data-balcony-crack={crack.floor} className="balcony-crack" d={crack.path} clipPath={`url(#crack-clip-${crack.index})`} />
         ))}
       </defs>
       {/* Let the original facade show through between moving slices instead of black bands. */}

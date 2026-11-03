@@ -54,7 +54,7 @@ export const BALCONY_CRACKS = BALCONY_CRACK_FLOORS.flatMap((floor, floorIndex) =
     const points: { x: number; y: number; width: number }[] = [];
     for (let step = 0; step <= 32; step++) {
       const y = startY - (startY - topY) * step / 32;
-      const x = baseX + Math.sin(step * 2.1 + index * 1.3) * 3;
+      const x = baseX + Math.sin(step * 2.7 + index * 1.9) * 6 + Math.sin(step * 0.8 + index) * 4;
       points.push({ x, y, width: (2.5 + (Math.sin(step * 1.6 + index) + 1) * 1.8) * 0.5 * BALCONY_CRACK_WIDTH_SCALE });
     }
     const left = points.map(({ x, y, width }) => `${x - width},${y}`);
