@@ -61,12 +61,12 @@ export function BuildingCracks() {
     };
 
     raf = requestAnimationFrame(tick);
-    host.addEventListener("mouseenter", onEnter);
-    host.addEventListener("mouseleave", onLeave);
+    section.addEventListener("mousemove", onMove);
+    section.addEventListener("mouseleave", onLeave);
     return () => {
       cancelAnimationFrame(raf);
-      host.removeEventListener("mouseenter", onEnter);
-      host.removeEventListener("mouseleave", onLeave);
+      section.removeEventListener("mousemove", onMove);
+      section.removeEventListener("mouseleave", onLeave);
     };
   }, []);
 
