@@ -9,5 +9,4 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Keep facade slice coordinates and collapse timing in the browser-safe building-motion module so fixed floors align with the source image and animation rules can be tested independently.
-- Keep spark burst lifetime in building-motion and use a terminal spent state in the visual effect so further pointer movement cannot restart an exhausted crossing.
+- The hero building is a single static image (no collapse, drift, debris, or spark effects); only the four SVG sign overlays animate. Sign positions are component-pixel constants in HeroBuilding.tsx, mapped from the source image by 760/1536 (x) and 623/1264 (y).
