@@ -12,7 +12,7 @@ export function BuildingValueCounter({ elapsedSeconds }: { elapsedSeconds: numbe
           </time>
         </div>
         <div className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1">
-          <span className="text-sm">Стоимость квартиры</span>
+          <span className="text-sm">Стоимость недвижимости</span>
           <div data-value-price className={`whitespace-nowrap text-lg md:text-xl ${value.emergency ? "text-safe" : "text-foreground"}`}>{price}</div>
         </div>
       </div>
