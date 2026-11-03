@@ -9,4 +9,6 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
+- Render crack paths and clips in the configured reveal order with instance-unique SVG IDs, so overlays cannot bind to another animation's clipping definitions.
+
 - Keep the original facade asset unchanged with stationary lower floors and signs; render upper-floor image slices and cracks in a synchronized SVG overlay so separation never moves floors 1-2. Geometry uses component pixels mapped from the source by 760/1536 (x) and 623/1264 (y); timing, crack geometry and floor displacement live in building-cracks.ts for direct rule tests.
