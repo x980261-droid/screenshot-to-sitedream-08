@@ -73,74 +73,7 @@
 @utility shadow-safe {
   box-shadow: var(--glow-safe);
 }
-@utility layer-move {
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: transform;
-}
-
-@keyframes facade-drift {
-  0%, 100% { translate: 0 0; }
-  30% { translate: 3px 2px; }
-  60% { translate: -3px 1px; }
-}
-
-.facade-drift {
-  animation: facade-drift 6s ease-in-out infinite;
-}
-
-/* Finite white-blue streaks emitted from a point, without a luminous ball. */
-.spark-weld {
-  position: absolute;
-  z-index: 30;
-  pointer-events: none;
-  mix-blend-mode: plus-lighter;
-  filter: drop-shadow(0 0 2px var(--spark-white)) drop-shadow(0 0 4px var(--spark-blue)) drop-shadow(0 0 8px var(--spark-blue));
-}
-.spark-star {
-  position: absolute;
-  left: -12px;
-  top: -12px;
-  width: 24px;
-  height: 24px;
-  background: var(--spark-white);
-  clip-path: polygon(50% 0%, 52% 43%, 83% 17%, 57% 48%, 100% 50%, 57% 52%, 83% 83%, 52% 57%, 50% 100%, 48% 57%, 17% 83%, 43% 52%, 0% 50%, 43% 48%, 17% 17%, 48% 43%);
-  animation: spark-star-flash 2.4s linear both;
-}
-.spark-star::before, .spark-star::after {
-  content: "";
-  position: absolute;
-  left: -8px;
-  top: 11px;
-  width: 40px;
-  height: 2px;
-  background: var(--spark-rays);
-}
-.spark-star::after { rotate: 90deg; }
-.spark-mote {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: var(--trail);
-  height: 1.5px;
-  transform-origin: left center;
-  background: var(--spark-trail);
-  box-shadow: var(--spark-glow);
-  animation: spark-spray 0.7s ease-out both;
-}
-@keyframes spark-star-flash {
-  0%, 100% { opacity: 0; scale: 0.35; }
-  5%, 24%, 47%, 69% { opacity: 1; scale: 1; }
-  16%, 38%, 58% { opacity: 0.5; scale: 0.7; }
-  82% { opacity: 0; scale: 0.5; }
-}
-@keyframes spark-spray {
-  0% { transform: translate(0, 0) rotate(var(--angle)) scaleX(0.1); opacity: 0; }
-  8% { opacity: 1; }
-  65% { opacity: 0.9; }
-  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--angle)) scaleX(0.3); opacity: 0; }
-}
-
-/* Facade sign lettering: color driven by the signWave gradient (white -> yellow -> black). */
+/* Facade sign lettering: color driven by the signWave gradient (white -> yellow -> blue). */
 .sign-neon {
   font-family: var(--font-sans);
   font-weight: 700;
@@ -170,10 +103,6 @@
     repeating-linear-gradient(0deg, rgba(42, 12, 7, 0.85) 0 1.5px, transparent 1.5px 9px),
     repeating-linear-gradient(90deg, rgba(42, 12, 7, 0.85) 0 1.5px, transparent 1.5px 18px);
   background-position: 0 0, 9px 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .facade-drift { animation: none; }
 }
 
 @layer base {
