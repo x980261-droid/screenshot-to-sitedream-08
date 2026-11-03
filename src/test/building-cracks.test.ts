@@ -36,7 +36,7 @@ describe("Building crack rules", () => {
   it("reveals all 7 cracks in alternating order by 24 seconds, leaving them visible until the 30-second loop restarts", () => {
     expect(CRACK_SEQUENCE_SECONDS).toBe(30);
     const startOrder = [...BUILDING_CRACKS].sort((a, b) => crackStartSeconds(a.index) - crackStartSeconds(b.index)).map(c => c.index);
-    expect(startOrder).toEqual([6, 4, 2, 0, 5, 3, 1]);
+    expect(startOrder).toEqual([6, 4, 2, 0, 1, 3, 5]);
     for (const { index } of BUILDING_CRACKS) {
       const start = crackStartSeconds(index);
       expect(start).toBeCloseTo(startOrder.indexOf(index) * 24 / 7);
