@@ -10,6 +10,7 @@ import {
   CRACK_DURATION_SECONDS,
   UPPER_FLOORS,
   crackProgress,
+  crackCycleSeconds,
   floorGapWidth,
   floorOffsetY,
   balconyCrackTipY,
@@ -95,6 +96,16 @@ describe("Balcony crack rules", () => {
 });
 
 describe("Floor separation rules", () => {
+  it("restarts cracks and floor separation every 30 seconds", () => {
+    expect(crackCycleSeconds(29.9)).toBeCloseTo(29.9);
+    for (const time of [30, 60, 90]) {
+      expect(crackCycleSeconds(time)).toBe(0);
+      expect(crackProgress(0, crackCycleSeconds(time))).toBe(0);
+      expect(floorOffsetY(3, crackCycleSeconds(time))).toBe(0);
+    }
+    expect(crackCycleSeconds(31.2)).toBeCloseTo(1.2);
+    expect(crackCycleSeconds(61.2)).toBeCloseTo(1.2);
+  });
   it("keeps the first and second floors stationary throughout the sequence", () => {
     expect(UPPER_FLOORS.map(({ floor }) => floor)).not.toContain(1);
     expect(UPPER_FLOORS.map(({ floor }) => floor)).not.toContain(2);

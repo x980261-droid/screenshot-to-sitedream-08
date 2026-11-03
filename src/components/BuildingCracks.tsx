@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import building from "@/assets/building-wide.jpg";
-import { BALCONY_CRACKS, BUILDING_CRACKS, CRACK_START_Y, CRACK_SEQUENCE_SECONDS, UPPER_FLOORS, balconyCrackTipY, crackTipY, floorOffsetY } from "@/lib/building-cracks";
+import { BALCONY_CRACKS, BUILDING_CRACKS, CRACK_START_Y, UPPER_FLOORS, balconyCrackTipY, crackCycleSeconds, crackTipY, floorOffsetY } from "@/lib/building-cracks";
 
 export function BuildingCracks() {
   const clipsRef = useRef<(SVGRectElement | null)[]>([]);
@@ -13,7 +13,7 @@ export function BuildingCracks() {
     let raf = 0;
 
     const tick = (now: number) => {
-      const elapsed = (now - startedAt) / 1000;
+      const elapsed = crackCycleSeconds((now - startedAt) / 1000);
       BUILDING_CRACKS.forEach(({ index }) => {
         const rect = clipsRef.current[index];
         if (!rect) return;
@@ -31,7 +31,7 @@ export function BuildingCracks() {
       UPPER_FLOORS.forEach(({ floor }) => {
         floorsRef.current[floor]?.setAttribute("transform", `translate(0 ${floorOffsetY(floor, elapsed)})`);
       });
-      if (elapsed < CRACK_SEQUENCE_SECONDS) raf = requestAnimationFrame(tick);
+      raf = requestAnimationFrame(tick);
     };
 
     raf = requestAnimationFrame(tick);
