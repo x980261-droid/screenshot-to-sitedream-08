@@ -76,6 +76,8 @@
 }
 /* Facade sign lettering: color driven by the signWave gradient (white -> yellow -> blue). */
 .building-cracks { fill: var(--facade-crack); }
+/* Pale broken-concrete edge keeps thin black balcony cracks readable over dark glass. */
+.building-cracks .balcony-crack { stroke: oklch(0.92 0.01 80 / 0.7); stroke-width: 0.7px; paint-order: stroke; }
 @media (prefers-reduced-motion: reduce) {
   .building-cracks { display: none; }
 }

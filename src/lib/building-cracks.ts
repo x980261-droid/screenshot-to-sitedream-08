@@ -1,7 +1,9 @@
 export const CRACK_COUNT = 7;
 export const CRACK_SEQUENCE_SECONDS = 30;
-export const TOTAL_CRACK_COUNT = 13;
-export const CRACK_INTERVAL_SECONDS = CRACK_SEQUENCE_SECONDS / TOTAL_CRACK_COUNT;
+export const TOTAL_CRACK_COUNT = 25;
+// All cracks finish by this point, then the fully cracked house holds until the 30s loop restarts.
+export const CRACK_REVEAL_SECONDS = 24;
+export const CRACK_INTERVAL_SECONDS = CRACK_REVEAL_SECONDS / TOTAL_CRACK_COUNT;
 export const CRACK_START_Y = 434;
 export const CRACK_TOP_Y = 12;
 export const CRACK_FLOOR_HEIGHT = 54;
@@ -39,11 +41,11 @@ export const BUILDING_CRACKS = Array.from({ length: CRACK_COUNT }, (_, index) =>
   return { index, path: `M ${left.join(" L ")} L ${right.join(" L ")} Z` };
 });
 
-// Thin secondary cracks start on third-floor balconies and extend to the roof.
+// Thin secondary cracks sit on every balcony of floors 3-5, each rising from its own slab.
 // They are half as wide as the main pier cracks and follow them in the shared sequence.
-export const BALCONY_CRACK_FLOORS = [3];
+export const BALCONY_CRACK_FLOORS = [3, 4, 5];
 export const BALCONY_CRACK_WIDTH_SCALE = 0.5;
-export const BALCONY_CRACK_HEIGHT = CRACK_START_Y - CRACK_TOP_Y;
+export const BALCONY_CRACK_HEIGHT = 20;
 export const BALCONY_CRACK_BASE_X = [95, 200, 312, 450, 566, 672];
 
 export const BALCONY_CRACKS = BALCONY_CRACK_FLOORS.flatMap((floor, floorIndex) => {
