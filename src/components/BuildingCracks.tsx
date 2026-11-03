@@ -1,7 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useId, useRef } from "react";
 import { BUILDING_CRACKS, CRACK_START_ORDER, CRACK_START_Y, crackCycleSeconds, crackTipY } from "@/lib/building-cracks";
 
 export function BuildingCracks() {
+  const clipPrefix = useId().replace(/:/g, "");
+  const orderedCracks = CRACK_START_ORDER.flatMap((index) => BUILDING_CRACKS.filter((crack) => crack.index === index));
   const svgRef = useRef<SVGSVGElement | null>(null);
   const clipsRef = useRef<(SVGRectElement | null)[]>([]);
 
@@ -54,10 +56,10 @@ export function BuildingCracks() {
   }, [CRACK_START_ORDER]);
 
   return (
-    <svg ref={svgRef} aria-hidden="true" className="building-cracks pointer-events-none absolute inset-0" width="760" height="623" viewBox="0 0 760 623">
+    <svg ref={svgRef} data-crack-order={CRACK_START_ORDER.join(",")} aria-hidden="true" className="building-cracks pointer-events-none absolute inset-0" width="760" height="623" viewBox="0 0 760 623">
       <defs>
-        {BUILDING_CRACKS.map(({ index }) => (
-          <clipPath key={index} id={`crack-clip-${index}`}>
+        {orderedCracks.map(({ index }) => (
+          <clipPath key={index} id={`${clipPrefix}-crack-clip-${index}`}>
             <rect
               ref={(el) => {
                 clipsRef.current[index] = el;
@@ -70,8 +72,8 @@ export function BuildingCracks() {
           </clipPath>
         ))}
       </defs>
-      {BUILDING_CRACKS.map(({ index, path }) => (
-        <path key={index} data-crack={index} d={path} clipPath={`url(#crack-clip-${index})`} />
+      {orderedCracks.map(({ index, path }) => (
+        <path key={index} data-crack={index} d={path} clipPath={`url(#${clipPrefix}-crack-clip-${index})`} />
       ))}
     </svg>
   );
