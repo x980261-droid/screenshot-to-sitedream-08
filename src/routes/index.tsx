@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
 import { DraftingCompass, FolderOpen, Stamp } from "lucide-react";
 import { HeroBuilding } from "@/components/HeroBuilding";
+import { InspectionRequestForm } from "@/components/InspectionRequestForm";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -103,11 +103,6 @@ function SectionHead({ index, title }: { index?: string; title: string }) {
 const btn = "inline-flex items-center justify-center bg-primary px-6 py-3 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/85";
 
 function Index() {
-  const [sent, setSent] = useState(false);
-  const submit = (e: FormEvent) => {
-    e.preventDefault();
-    setSent(true);
-  };
 
   return (
     <div id="top" className="min-h-screen">
@@ -264,27 +259,7 @@ function Index() {
         <div className="mx-auto max-w-2xl px-5 py-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">Оставить заявку</h2>
           <p className="mt-4 text-muted-foreground">Инженер свяжется с вами в течение рабочего дня и предложит формат проверки.</p>
-          {sent ? (
-            <div className="mt-10 border-2 border-safe p-8 shadow-safe">
-              <div className="font-semibold">Запрос принят.</div>
-              <div className="mt-1 text-sm text-muted-foreground">Мы свяжемся с вами в ближайшее время.</div>
-            </div>
-          ) : (
-            <form onSubmit={submit} className="mt-10 grid gap-4 text-left">
-              {[
-                ["name", "Имя", "text"],
-                ["phone", "Телефон", "tel"],
-                ["object", "Объект", "text"],
-              ].map(([n, l, type]) => (
-                <label key={n} className="block">
-                  <span className="mb-2 block font-mono text-xs uppercase text-muted-foreground">{l}</span>
-                  <input required name={n} type={type} maxLength={120}
-                    className="w-full border bg-card px-4 py-3 outline-none transition-colors focus:border-safe" />
-                </label>
-              ))}
-              <button type="submit" className={`${btn} mt-2 w-full`}>Отправить запрос</button>
-            </form>
-          )}
+          <InspectionRequestForm />
         </div>
       </section>
 

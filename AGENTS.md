@@ -13,3 +13,4 @@
 - Drive the apartment date/value overlay from the crack animation clock, with pure UTC date and price calculations in building-value.ts to keep resets synchronized and rules testable.
 
 - Keep the original facade asset unchanged with stationary lower floors and signs; render upper-floor image slices and cracks in a synchronized SVG overlay so separation never moves floors 1-2. Geometry uses component pixels mapped from the source by 760/1536 (x) and 623/1264 (y); timing, crack geometry and floor displacement live in building-cracks.ts for direct rule tests.
+- Inspection requests insert straight from the browser (anonymous insert-only access); visitors see taken slots only through the get_booked_slots database function, so personal data stays unreadable. A unique (date, time) pair prevents double booking.
