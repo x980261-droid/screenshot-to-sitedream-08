@@ -57,7 +57,7 @@
   --danger: oklch(0.62 0.22 25);         /* bright red */
   --slate: oklch(0.55 0.02 255);
   --service-overlay: #000000;
-  --service-glass: #18181b;
+  --service-glass: #09090b;
   --service-border: #ffffff;
   --facade-crack: #000000;
   --spark-white: oklch(0.98 0.015 235);
