@@ -14,3 +14,4 @@
 
 - Keep the original facade asset unchanged with stationary lower floors and signs; render upper-floor image slices and cracks in a synchronized SVG overlay so separation never moves floors 1-2. Geometry uses component pixels mapped from the source by 760/1536 (x) and 623/1264 (y); timing, crack geometry and floor displacement live in building-cracks.ts for direct rule tests.
 - Bookings insert straight from the browser (anonymous insert-only access); visitors see taken slots only through the get_taken_slots database function, so addresses and phones stay unreadable. A unique (date, slot) pair prevents double booking.
+- Admin access is the has_role(admin) check backed by row access rules on bookings/blocked_slots; /admin only hides UI. Blocked slots feed get_taken_slots so the public form needs no changes.
