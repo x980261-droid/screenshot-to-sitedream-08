@@ -1,5 +1,14 @@
 import "@testing-library/jest-dom/vitest";
 
+// jsdom has no ResizeObserver, but Radix primitives (Checkbox) rely on it.
+if (!("ResizeObserver" in globalThis)) {
+  (globalThis as { ResizeObserver?: unknown }).ResizeObserver = class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}
+
 Object.defineProperty(window, "scrollTo", {
   writable: true,
   value: () => {},

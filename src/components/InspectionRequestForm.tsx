@@ -3,6 +3,7 @@ import { addDays, endOfMonth, format, startOfMonth } from "date-fns";
 import { ru } from "date-fns/locale";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { BOOKING_SLOTS, isFullyBooked, isPastDay, takenOn, toDateKey, type BookingSlotId, type TakenSlot } from "@/lib/inspection-slots";
 
@@ -18,6 +19,7 @@ export function InspectionRequestForm() {
   const [sent, setSent] = useState<string | null>(null);
   const [availabilityLoading, setAvailabilityLoading] = useState(true);
   const [availabilityError, setAvailabilityError] = useState(false);
+  const [consent, setConsent] = useState(false);
 
   const loadTaken = useCallback(async (m: Date) => {
     // include neighbouring-month days shown in the grid
@@ -50,6 +52,7 @@ export function InspectionRequestForm() {
     e.preventDefault();
     if (!date || !slot || availabilityLoading || availabilityError || dayTaken.includes(slot)) return;
     setError(null);
+    if (!consent) return setError("Отметьте согласие с офертой, политикой конфиденциальности и обработкой данных.");
     const f = new FormData(e.currentTarget);
     const address = String(f.get("address") ?? "").trim();
     const phone = String(f.get("phone") ?? "").trim();
@@ -124,6 +127,18 @@ export function InspectionRequestForm() {
             </label>
           ))}
         </>
+      )}
+      {date && (
+        <div className={`flex items-start gap-3 border bg-card p-4 text-sm transition-colors ${error && !consent ? "border-danger" : "border-input"}`}>
+          <Checkbox id="booking-consent" checked={consent} onCheckedChange={(v) => setConsent(v === true)}
+            className="mt-0.5 h-5 w-5 shrink-0 border-input data-[state=checked]:border-safe data-[state=checked]:bg-safe data-[state=checked]:text-primary-foreground" />
+          <label htmlFor="booking-consent" className="cursor-pointer text-foreground">
+            Принимаю условия{" "}
+            <a href="/offer" className="font-semibold underline underline-offset-4 hover:text-accent">Публичная оферта</a>,{" "}
+            <a href="/privacy" className="font-semibold underline underline-offset-4 hover:text-accent">Политика конфиденциальности</a>{" "}
+            и согласен на обработку данных заказа.
+          </label>
+        </div>
       )}
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       {date && slot && (

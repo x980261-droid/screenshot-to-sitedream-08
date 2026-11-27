@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { DraftingCompass, FolderOpen, Stamp } from "lucide-react";
 import { HeroBuilding } from "@/components/HeroBuilding";
 import { InspectionRequestForm } from "@/components/InspectionRequestForm";
@@ -331,7 +331,12 @@ function Index() {
         <div className="border-t">
           <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-4 px-5 py-6 font-mono text-xs text-muted-foreground">
             <span>© Компания Термин, 2011–2026</span>
-            <span>Политика конфиденциальности · Согласие на обработку персональных данных</span>
+            <span>
+              <Link to="/offer" className="underline underline-offset-4 transition-colors hover:text-foreground">Публичная оферта</Link>
+              {" · "}
+              <Link to="/privacy" className="underline underline-offset-4 transition-colors hover:text-foreground">Политика конфиденциальности</Link>
+              {" · "}Согласие на обработку персональных данных
+            </span>
             <span>Информация на сайте не является публичной офертой</span>
           </div>
         </div>
