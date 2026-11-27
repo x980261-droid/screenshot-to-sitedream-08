@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { addDays, endOfMonth, format, startOfMonth } from "date-fns";
 import { ru } from "date-fns/locale";
 import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { BOOKING_SLOTS, isFullyBooked, isPastDay, takenOn, toDateKey, type BookingSlotId, type TakenSlot } from "@/lib/inspection-slots";
 
@@ -15,21 +16,39 @@ export function InspectionRequestForm() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
+  const [availabilityLoading, setAvailabilityLoading] = useState(true);
+  const [availabilityError, setAvailabilityError] = useState(false);
 
   const loadTaken = useCallback(async (m: Date) => {
     // include neighbouring-month days shown in the grid
     const from = addDays(startOfMonth(m), -7), to = addDays(endOfMonth(m), 14);
-    const { data } = await supabase.rpc("get_taken_slots", { _from: toDateKey(from), _to: toDateKey(to) });
-    setTaken((data as TakenSlot[] | null) ?? []);
+    const { data, error: loadError } = await supabase.rpc("get_taken_slots", { _from: toDateKey(from), _to: toDateKey(to) });
+    setAvailabilityError(Boolean(loadError));
+    if (!loadError) setTaken((data as TakenSlot[] | null) ?? []);
+    setAvailabilityLoading(false);
   }, []);
 
-  useEffect(() => { void loadTaken(month); }, [month, loadTaken]);
+  useEffect(() => {
+    setAvailabilityLoading(true);
+    void loadTaken(month);
+    const refresh = () => { if (document.visibilityState === "visible") void loadTaken(month); };
+    const timer = window.setInterval(refresh, 10000);
+    window.addEventListener("focus", refresh);
+    document.addEventListener("visibilitychange", refresh);
+    return () => { window.clearInterval(timer); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
+  }, [month, loadTaken]);
 
   const dayTaken = date ? takenOn(taken, toDateKey(date)) : [];
+  useEffect(() => {
+    if (date && slot && takenOn(taken, toDateKey(date)).includes(slot)) {
+      setSlot(null);
+      setError("Это время уже занято — выберите другое.");
+    }
+  }, [date, slot, taken]);
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!date || !slot) return;
+    if (!date || !slot || availabilityLoading || availabilityError || dayTaken.includes(slot)) return;
     setError(null);
     const f = new FormData(e.currentTarget);
     const address = String(f.get("address") ?? "").trim();
@@ -47,7 +66,9 @@ export function InspectionRequestForm() {
       void loadTaken(month);
       return;
     }
-    const s = BOOKING_SLOTS.find((b) => b.id === slot)!;
+    const s = BOOKING_SLOTS.find((b) => b.id === slot);
+    if (!s) return;
+    void loadTaken(month);
     setSent(`${format(date, "d MMMM yyyy", { locale: ru })}, ${s.label.toLowerCase()} (${s.hours})`);
   };
 
@@ -65,8 +86,8 @@ export function InspectionRequestForm() {
       <span className="block font-mono text-xs uppercase text-muted-foreground">Выберите дату приемки</span>
       <div className="grid gap-4 border bg-card p-4 sm:grid-cols-[auto_1fr]">
         <Calendar mode="single" locale={ru} month={month} onMonthChange={setMonth} selected={date}
-          onSelect={(d) => { setDate(d); setSlot(null); setError(null); }}
-          disabled={(d) => isPastDay(d) || isFullyBooked(taken, toDateKey(d))}
+          onSelect={(d) => { setDate(d); setSlot(null); setError(null); setAvailabilityLoading(true); void loadTaken(month); }}
+          disabled={(d) => availabilityLoading || availabilityError || isPastDay(d) || isFullyBooked(taken, toDateKey(d))}
           modifiers={{ full: (d) => !isPastDay(d) && isFullyBooked(taken, toDateKey(d)) }}
           modifiersClassNames={{ full: "!text-destructive line-through" }}
           className="pointer-events-auto p-0" />
@@ -80,11 +101,11 @@ export function InspectionRequestForm() {
                 {BOOKING_SLOTS.map((s) => {
                   const busy = dayTaken.includes(s.id);
                   return (
-                    <button key={s.id} type="button" disabled={busy} aria-pressed={slot === s.id} onClick={() => setSlot(s.id)}
-                      className={`border px-4 py-3 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${slot === s.id ? "border-safe bg-safe/15" : "hover:border-safe"}`}>
+                    <Button key={s.id} variant="outline" type="button" disabled={busy || availabilityLoading || availabilityError} aria-pressed={slot === s.id} onClick={() => setSlot(s.id)}
+                      className={`h-auto flex-col items-start whitespace-normal px-4 py-3 text-left disabled:cursor-not-allowed disabled:opacity-40 ${slot === s.id ? "border-safe bg-safe/15" : "hover:border-safe"}`}>
                       <span className="block font-semibold">{s.label} <span className="font-mono text-sm font-normal">{s.hours}</span></span>
                       <span className="block text-xs text-muted-foreground">{busy ? "Занято" : s.note}</span>
-                    </button>
+                    </Button>
                   );
                 })}
               </div>
@@ -92,6 +113,7 @@ export function InspectionRequestForm() {
           )}
         </div>
       </div>
+      {availabilityError && <p role="alert" className="text-sm text-destructive">Не удалось проверить свободное время. <Button type="button" variant="link" onClick={() => { setAvailabilityLoading(true); void loadTaken(month); }}>Повторить</Button></p>}
       {date && slot && (
         <>
           {([["address", "Адрес дома", "text", 200], ["phone", "Номер телефона", "tel", 30], ["client_name", "Имя", "text", 100]] as const).map(([n, l, type, max]) => (
@@ -105,7 +127,7 @@ export function InspectionRequestForm() {
       )}
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       {date && slot && (
-        <button type="submit" disabled={submitting} className={`${btn} mt-2 w-full`}>{submitting ? "Отправка…" : "Записаться"}</button>
+        <Button type="submit" disabled={submitting || availabilityLoading || availabilityError} className={`${btn} mt-2 h-auto w-full`}>{submitting ? "Отправка…" : "Записаться"}</Button>
       )}
     </form>
   );

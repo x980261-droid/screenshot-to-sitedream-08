@@ -1,6 +1,7 @@
 export const BOOKING_SLOTS = [
   { id: "morning", label: "Утро", hours: "с 8:00 до 10:00", note: "Приемка 2 часа" },
-  { id: "afternoon", label: "После обеда", hours: "с 14:00 до 22:00", note: "Приемка 2 часа" },
+  { id: "afternoon", label: "После обеда", hours: "с 14:00 до 16:00", note: "Приемка 2 часа" },
+  { id: "evening", label: "Вечер", hours: "с 18:00 до 20:00", note: "Приемка 2 часа" },
 ] as const;
 export type BookingSlotId = (typeof BOOKING_SLOTS)[number]["id"];
 export type TakenSlot = { date: string; slot: string };

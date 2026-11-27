@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { ru } from "date-fns/locale";
-import { BOOKING_SLOTS, toDateKey } from "@/lib/inspection-slots";
+import { BOOKING_SLOTS, isFullyBooked, isPastDay, takenOn, toDateKey } from "@/lib/inspection-slots";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -91,24 +91,35 @@ function Dashboard() {
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [day, setDay] = useState<Date | undefined>();
   const [err, setErr] = useState("");
+  const [saving, setSaving] = useState(false);
+  const taken = [...bookings, ...blocks.flatMap((b) => b.slot ? [{ date: b.date, slot: b.slot }] : BOOKING_SLOTS.map((s) => ({ date: b.date, slot: s.id })))];
+  const dayTaken = day ? takenOn(taken, toDateKey(day)) : [];
   const load = useCallback(async () => {
     const [b, bl] = await Promise.all([
       supabase.from("bookings").select("id,date,slot,address,phone,client_name").order("date").order("slot", { ascending: false }),
       supabase.from("blocked_slots").select("id,date,slot").order("date"),
     ]);
+    if (b.error || bl.error) setErr("Не удалось загрузить заявки или блокировки. Обновите страницу.");
     setBookings(b.data ?? []);
     setBlocks(bl.data ?? []);
   }, []);
   useEffect(() => { void load(); }, [load]);
 
   const block = async (slot: string | null) => {
-    if (!day) return;
+    if (!day || saving) return;
     setErr("");
+    setSaving(true);
     const { error } = await supabase.from("blocked_slots").insert({ date: toDateKey(day), slot });
     if (error) setErr(error.code === "23505" ? "Уже заблокировано." : error.message);
-    void load();
+    await load();
+    setSaving(false);
   };
-  const unblock = async (id: string) => { await supabase.from("blocked_slots").delete().eq("id", id); void load(); };
+  const unblock = async (id: string) => {
+    setErr("");
+    const { error } = await supabase.from("blocked_slots").delete().eq("id", id);
+    if (error) setErr("Не удалось снять блокировку.");
+    await load();
+  };
 
   return (
     <div className="space-y-12">
@@ -137,11 +148,12 @@ function Dashboard() {
       <section className="grid gap-8 md:grid-cols-2">
         <div>
           <h2 className="mb-4 text-lg font-semibold">Заблокировать дату или слот</h2>
-          <Calendar mode="single" locale={ru} selected={day} onSelect={setDay} className="rounded-md border border-border" />
+          <Calendar mode="single" locale={ru} selected={day} onSelect={setDay} disabled={isPastDay}
+            modifiers={{ full: (d) => isFullyBooked(taken, toDateKey(d)) }} modifiersClassNames={{ full: "text-destructive line-through" }} className="rounded-md border border-border" />
           {day && (
             <div className="mt-4 flex flex-wrap gap-2">
-              <Button onClick={() => void block(null)}>Весь день</Button>
-              {BOOKING_SLOTS.map((s) => <Button key={s.id} variant="outline" onClick={() => void block(s.id)}>{s.label}</Button>)}
+              <Button disabled={saving || BOOKING_SLOTS.every((s) => dayTaken.includes(s.id))} onClick={() => void block(null)}>Весь день</Button>
+              {BOOKING_SLOTS.map((s) => <Button key={s.id} disabled={saving || dayTaken.includes(s.id)} variant="outline" onClick={() => void block(s.id)}>{s.label}{dayTaken.includes(s.id) ? " — Занято" : ""}</Button>)}
             </div>
           )}
           {err && <p className="mt-2 text-sm text-destructive">{err}</p>}
