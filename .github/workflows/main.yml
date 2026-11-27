@@ -11,13 +11,13 @@ jobs:
         with:
           node-version: 22
       - run: yarn install && yarn build
-      - name: Upload to server
+      - name: Upload and start server
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh -o StrictHostKeyChecking=no root@135.106.163.106 "mkdir -p /var/www/termin-expert/dist"
-          scp -o StrictHostKeyChecking=no -r .output/public/* root@135.106.163.106:/var/www/termin-expert/dist/ || true
-          scp -o StrictHostKeyChecking=no -r dist/* root@135.106.163.106:/var/www/termin-expert/dist/ || true
+          ssh -o StrictHostKeyChecking=no root@135.106.163.106 "rm -rf /var/www/termin-expert/.output && mkdir -p /var/www/termin-expert/.output"
+          scp -o StrictHostKeyChecking=no -r .output/* root@135.106.163.106:/var/www/termin-expert/.output/
+          ssh -o StrictHostKeyChecking=no root@135.106.163.106 "pm2 delete termin-expert 2>/dev/null || true; PORT=3000 pm2 start /var/www/termin-expert/.output/server/index.mjs --name termin-expert && pm2 save"
