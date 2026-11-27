@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { DraftingCompass, FolderOpen, Stamp } from "lucide-react";
 import { HeroBuilding } from "@/components/HeroBuilding";
 import { InspectionRequestForm } from "@/components/InspectionRequestForm";
+import directionsBg from "@/assets/wireframe-background.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -180,8 +181,14 @@ function Index() {
 
 
       {/* Directions */}
-      <section id="directions" className="scroll-mt-20 border-t bg-blueprint">
-        <div className="mx-auto max-w-7xl px-5 py-24">
+      <section id="directions" className="relative isolate scroll-mt-20 border-t bg-blueprint">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${directionsBg.url})` }}
+        />
+        <div aria-hidden className="absolute inset-0 bg-black/85 backdrop-blur-xs" />
+        <div className="relative mx-auto max-w-7xl px-5 py-24">
           <SectionHead title="Основные направления деятельности" />
           <div className="mb-16">
             <div className="border bg-card">
