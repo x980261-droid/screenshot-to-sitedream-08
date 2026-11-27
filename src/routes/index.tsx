@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const PHONE = "+7-495-648-62-98";
+const PHONE = "+7 977 875 76 87";
 const EMAIL = "termin.info@yandex.ru";
 
 const nav = [
