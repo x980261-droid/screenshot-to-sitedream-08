@@ -224,7 +224,7 @@ function Index() {
               </a>
             </div>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-6 py-20 md:grid-cols-2 xl:grid-cols-4">
             {directions.map((d, i) => (
               <article key={d.id} id={d.id} className="relative flex scroll-mt-24 flex-col border border-service-border/15 bg-service-glass/90 p-8 backdrop-blur-md transition-colors hover:border-safe/60">
                 <div className="absolute inset-x-0 top-0 h-[2px] bg-safe shadow-safe" />
