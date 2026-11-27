@@ -261,7 +261,7 @@ function Index() {
 
       {/* Request */}
       <section id="request" className="border-t bg-blueprint">
-        <div className="mx-auto max-w-2xl px-5 py-24 text-center">
+        <div className="mx-auto max-w-2xl px-5 pb-24 text-center">
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">Оставить заявку</h2>
           <p className="mt-4 text-muted-foreground">Инженер свяжется с вами в течение рабочего дня и предложит формат проверки.</p>
           <InspectionRequestForm />
