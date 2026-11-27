@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install && npm run build
+      - run: yarn install && yarn build
       - name: Upload to server
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
