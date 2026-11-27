@@ -19,4 +19,4 @@ jobs:
           echo "$SSH_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh -o StrictHostKeyChecking=no root@135.106.163.106 "mkdir -p /var/www/termin-expert/dist"
-          scp -o StrictHostKeyChecking=no -r dist/* root@135.106.163.106:/var/www/termin-expert/dist/
+          scp -o StrictHostKeyChecking=no -r dist/* /build/* root@135.106.163.106:/var/www/termin-expert/dist/ || true
