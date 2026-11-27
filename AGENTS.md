@@ -10,7 +10,6 @@
 <!-- LOVABLE:END -->
 
 - Render crack paths and clips in the configured reveal order with instance-unique SVG IDs, so overlays cannot bind to another animation's clipping definitions.
-- Keep the engineering-practices background in a browser-safe SVG component with shared isometric projection, so ducts, pipes and coordinate lines remain crisp at every size.
 - Drive the apartment date/value overlay from the crack animation clock, with pure UTC date and price calculations in building-value.ts to keep resets synchronized and rules testable.
 - Keep hero copy in normal layout flow and counters in reserved grid tracks outside the scaled facade so fullscreen resizing and changing values cannot clip or shift text.
 

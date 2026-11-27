@@ -35,7 +35,6 @@
   --color-service-overlay: var(--service-overlay);
   --color-service-glass: var(--service-glass);
   --color-service-border: var(--service-border);
-  --color-engineering-line: var(--engineering-line);
 }
 
 :root {
@@ -60,7 +59,6 @@
   --service-overlay: #000000;
   --service-glass: #09090b;
   --service-border: #ffffff;
-  --engineering-line: oklch(0.85 0 0);
   --facade-crack: #000000;
   --spark-white: oklch(0.98 0.015 235);
   --spark-blue: oklch(0.85 0.08 235);
