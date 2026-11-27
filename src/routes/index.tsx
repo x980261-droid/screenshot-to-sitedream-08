@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { DraftingCompass, FolderOpen, Stamp } from "lucide-react";
 import { HeroBuilding } from "@/components/HeroBuilding";
 import { InspectionRequestForm } from "@/components/InspectionRequestForm";
+import { DocumentationOrderForm } from "@/components/DocumentationOrderForm";
 import directionsBg from "@/assets/wireframe-background.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -264,6 +265,7 @@ function Index() {
           <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">Оставить заявку</h2>
           <p className="mt-4 text-muted-foreground">Инженер свяжется с вами в течение рабочего дня и предложит формат проверки.</p>
           <InspectionRequestForm />
+          <DocumentationOrderForm />
         </div>
       </section>
 

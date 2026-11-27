@@ -65,6 +65,39 @@ export type Database = {
         }
         Relationships: []
       }
+      documentation_orders: {
+        Row: {
+          client_name: string
+          consent: boolean
+          created_at: string
+          files: Json
+          id: string
+          phone: string
+          project_description: string
+          service: string
+        }
+        Insert: {
+          client_name: string
+          consent: boolean
+          created_at?: string
+          files?: Json
+          id: string
+          phone: string
+          project_description: string
+          service: string
+        }
+        Update: {
+          client_name?: string
+          consent?: boolean
+          created_at?: string
+          files?: Json
+          id?: string
+          phone?: string
+          project_description?: string
+          service?: string
+        }
+        Relationships: []
+      }
       inspection_requests: {
         Row: {
           created_at: string

@@ -128,6 +128,10 @@ export function InspectionRequestForm() {
           ))}
         </>
       )}
+      {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
+      {date && slot && (
+        <Button type="submit" disabled={submitting || availabilityLoading || availabilityError} className={`${btn} mt-2 h-auto w-full`}>{submitting ? "Отправка…" : "Записаться"}</Button>
+      )}
       {date && (
         <div className={`flex items-start gap-3 border bg-card p-4 text-sm transition-colors ${error && !consent ? "border-danger" : "border-input"}`}>
           <Checkbox id="booking-consent" checked={consent} onCheckedChange={(v) => setConsent(v === true)}
@@ -139,10 +143,6 @@ export function InspectionRequestForm() {
             и согласен на обработку данных заказа.
           </label>
         </div>
-      )}
-      {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-      {date && slot && (
-        <Button type="submit" disabled={submitting || availabilityLoading || availabilityError} className={`${btn} mt-2 h-auto w-full`}>{submitting ? "Отправка…" : "Записаться"}</Button>
       )}
     </form>
   );
