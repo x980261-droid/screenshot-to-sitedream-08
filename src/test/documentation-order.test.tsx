@@ -2,8 +2,12 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, expect, it, vi } from "vitest";
 import { documentationOrderSchema, validateDocuments } from "@/lib/documentation-order";
 
-const { insert, upload } = vi.hoisted(() => ({ insert: vi.fn(async () => ({ error: null })), upload: vi.fn(async () => ({ error: null })) }));
-vi.mock("@/lib/owner-notify.functions", () => ({ notifyOwner: vi.fn(async () => ({ sent: true })) }));
+const { insert, upload, notifyOwner } = vi.hoisted(() => ({
+  insert: vi.fn(async () => ({ error: null })),
+  upload: vi.fn(async () => ({ error: null })),
+  notifyOwner: vi.fn(async () => ({ sent: true })),
+}));
+vi.mock("@/lib/owner-notify.functions", () => ({ notifyOwner }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: { from: () => ({ insert }), storage: { from: () => ({ upload }) } } }));
 vi.mock("@tanstack/react-router", () => ({ Link: ({ children, to }: { children: React.ReactNode; to: string }) => <a href={to}>{children}</a> }));
 import { DocumentationOrderForm } from "@/components/DocumentationOrderForm";
@@ -49,5 +53,6 @@ it("uploads a PDF and saves a consented order without date or slot", async () =>
   await waitFor(() => expect(insert).toHaveBeenCalledTimes(1));
   expect(upload).toHaveBeenCalledTimes(1);
   expect(insert).toHaveBeenCalledWith({ ...valid, service: "working", id: "8dfe2c82-61a1-4a50-9db3-2a15c9538759", files: [{ name: "plans.pdf", path: "8dfe2c82-61a1-4a50-9db3-2a15c9538759/8dfe2c82-61a1-4a50-9db3-2a15c9538759.pdf" }] });
+  expect(notifyOwner).toHaveBeenCalledWith({ data: { kind: "documentation", id: "8dfe2c82-61a1-4a50-9db3-2a15c9538759" } });
   await screen.findByRole("status");
 });

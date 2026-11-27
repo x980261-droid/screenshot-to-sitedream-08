@@ -13,7 +13,7 @@ const SITE_NAME = "Термин"
 const SENDER_DOMAIN = "notify.termin-expert.pro"
 // FROM_DOMAIN is the domain shown in the From: header (e.g., "example.com").
 // Can be the root domain when display_from_root is enabled — this is cosmetic only.
-const FROM_DOMAIN = "notify.termin-expert.pro"
+const FROM_DOMAIN = "termin-expert.pro"
 
 export type SendTemplateEmailResult =
   | { sent: true }

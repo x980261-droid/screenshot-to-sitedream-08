@@ -2,12 +2,13 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { addDays } from "date-fns";
 import { beforeEach, expect, it, vi } from "vitest";
 
-const { insert, rpc } = vi.hoisted(() => ({
-  insert: vi.fn(async () => ({ error: null })),
+const { insert, rpc, notifyOwner } = vi.hoisted(() => ({
+  insert: vi.fn(async (_row: { id: string; [key: string]: unknown }) => ({ error: null })),
   rpc: vi.fn(async () => ({ data: [], error: null })),
+  notifyOwner: vi.fn(async () => ({ sent: true })),
 }));
 
-vi.mock("@/lib/owner-notify.functions", () => ({ notifyOwner: vi.fn(async () => ({ sent: true })) }));
+vi.mock("@/lib/owner-notify.functions", () => ({ notifyOwner }));
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: { rpc, from: () => ({ insert }) },
 }));
@@ -53,6 +54,7 @@ function fillContacts() {
 beforeEach(async () => {
   insert.mockClear();
   rpc.mockClear();
+  notifyOwner.mockClear();
   render(<InspectionRequestForm />);
   await flush();
 });
@@ -92,5 +94,8 @@ it("registers the booking once the consent box is ticked", async () => {
     phone: "+7 977 875 76 87",
     client_name: "Иван",
   });
+  const bookingId = insert.mock.calls[0]?.[0].id;
+  expect(bookingId).toEqual(expect.any(String));
+  await waitFor(() => expect(notifyOwner).toHaveBeenCalledWith({ data: { kind: "booking", id: bookingId } }));
   expect(await screen.findByText("Вы записаны.")).toBeInTheDocument();
 });
