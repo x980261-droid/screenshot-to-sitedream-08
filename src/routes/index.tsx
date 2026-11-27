@@ -3,7 +3,6 @@ import { DraftingCompass, FolderOpen, Stamp } from "lucide-react";
 import { HeroBuilding } from "@/components/HeroBuilding";
 import { InspectionRequestForm } from "@/components/InspectionRequestForm";
 import directionsBg from "@/assets/wireframe-background.jpg.asset.json";
-import servicesBg from "@/assets/building-section-pipes.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -244,18 +243,12 @@ function Index() {
       </section>
 
       {/* Services */}
-      <section id="services" className="relative isolate border-t bg-background">
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${servicesBg.url})` }}
-        />
-        <div aria-hidden className="absolute inset-0 bg-service-overlay/55" />
-        <div className="relative mx-auto max-w-7xl px-5 py-24">
+      <section id="services" className="border-t bg-card">
+        <div className="mx-auto max-w-7xl px-5 py-24">
           <SectionHead index="03" title="Специализированные экспертные практики" />
           <div className="grid border-l border-t sm:grid-cols-2 lg:grid-cols-3">
             {services.map(([t, d], i) => (
-              <div key={t} className="group border-b border-r bg-background/90 p-8 transition-colors hover:bg-muted">
+              <div key={t} className="group border-b border-r p-8 transition-colors hover:bg-muted">
                 <div className="font-mono text-sm text-primary">[{String(i + 1).padStart(2, "0")}]</div>
                 <h3 className="mt-4 text-lg font-semibold leading-snug">{t}</h3>
                 <p className="mt-3 text-sm text-muted-foreground">{d}</p>
