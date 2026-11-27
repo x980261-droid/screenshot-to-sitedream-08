@@ -10,7 +10,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: yarn install && yarn build
+      - run: yarn install && NITRO_PRESET=node-server yarn build
       - name: Upload and start server
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
