@@ -3,6 +3,7 @@ import { beforeEach, expect, it, vi } from "vitest";
 import { documentationOrderSchema, validateDocuments } from "@/lib/documentation-order";
 
 const { insert, upload } = vi.hoisted(() => ({ insert: vi.fn(async () => ({ error: null })), upload: vi.fn(async () => ({ error: null })) }));
+vi.mock("@/lib/owner-notify.functions", () => ({ notifyOwner: vi.fn(async () => ({ sent: true })) }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: { from: () => ({ insert }), storage: { from: () => ({ upload }) } } }));
 vi.mock("@tanstack/react-router", () => ({ Link: ({ children, to }: { children: React.ReactNode; to: string }) => <a href={to}>{children}</a> }));
 import { DocumentationOrderForm } from "@/components/DocumentationOrderForm";

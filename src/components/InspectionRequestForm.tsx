@@ -5,6 +5,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyOwner } from "@/lib/owner-notify.functions";
 import { BOOKING_SLOTS, isFullyBooked, isPastDay, takenOn, toDateKey, type BookingSlotId, type TakenSlot } from "@/lib/inspection-slots";
 
 const btn = "inline-flex items-center justify-center bg-primary px-6 py-3 text-sm font-semibold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/85 disabled:opacity-50";
@@ -61,7 +62,8 @@ export function InspectionRequestForm() {
     if (!/^[\d\s()+-]{5,30}$/.test(phone)) return setError("Проверьте номер телефона.");
     if (!client_name) return setError("Укажите имя.");
     setSubmitting(true);
-    const { error: err } = await supabase.from("bookings").insert({ date: toDateKey(date), slot, address, phone, client_name });
+    const id = crypto.randomUUID();
+    const { error: err } = await supabase.from("bookings").insert({ id, date: toDateKey(date), slot, address, phone, client_name });
     setSubmitting(false);
     if (err) {
       setError(err.code === "23505" ? "Этот слот только что заняли — выберите другой." : "Не удалось записаться. Попробуйте ещё раз.");
@@ -69,6 +71,7 @@ export function InspectionRequestForm() {
       void loadTaken(month);
       return;
     }
+    void notifyOwner({ data: { kind: "booking", id } }).catch(() => {});
     const s = BOOKING_SLOTS.find((b) => b.id === slot);
     if (!s) return;
     void loadTaken(month);

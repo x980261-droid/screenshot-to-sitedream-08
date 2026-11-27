@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
+import { notifyOwner } from "@/lib/owner-notify.functions";
 import { DOCUMENTATION_SERVICES, DOCUMENTS_BUCKET, documentationOrderSchema, documentExtension, validateDocuments } from "@/lib/documentation-order";
 
 const field = "w-full border border-input bg-card px-4 py-3 text-sm outline-none transition-colors focus:border-safe";
@@ -54,6 +55,7 @@ export function DocumentationOrderForm() {
       }
       const saved = await supabase.from("documentation_orders").insert({ id: order.id, ...result.data, files: attachments });
       if (saved.error) throw new Error("Не удалось отправить заказ. Попробуйте ещё раз.");
+      void notifyOwner({ data: { kind: "documentation", id: order.id } }).catch(() => {});
       setSent(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Не удалось отправить заказ. Попробуйте ещё раз.");

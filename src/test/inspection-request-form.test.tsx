@@ -7,6 +7,7 @@ const { insert, rpc } = vi.hoisted(() => ({
   rpc: vi.fn(async () => ({ data: [], error: null })),
 }));
 
+vi.mock("@/lib/owner-notify.functions", () => ({ notifyOwner: vi.fn(async () => ({ sent: true })) }));
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: { rpc, from: () => ({ insert }) },
 }));
@@ -84,7 +85,7 @@ it("registers the booking once the consent box is ticked", async () => {
   await clickWhenReady(() => screen.getByRole("button", { name: "Записаться" }));
 
   await waitFor(() => expect(insert).toHaveBeenCalledTimes(1));
-  expect(insert).toHaveBeenCalledWith({
+  expect(insert).toHaveBeenCalledWith({ id: expect.any(String),
     date: `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}`,
     slot: "morning",
     address: "Москва, ул. Строителей, 12",
