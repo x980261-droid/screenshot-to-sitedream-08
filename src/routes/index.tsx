@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
 });
 
 const PHONE = "+7-495-648-62-98";
-const EMAIL = "info@termin-audit.ru";
+const EMAIL = "termin.info@yandex.ru";
 
 const nav = [
   ["Главная", "#top"],
