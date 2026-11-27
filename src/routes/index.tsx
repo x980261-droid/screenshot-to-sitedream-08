@@ -184,10 +184,10 @@ function Index() {
       <section id="directions" className="relative isolate scroll-mt-20 border-t bg-blueprint">
         <div
           aria-hidden
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat grayscale"
           style={{ backgroundImage: `url(${directionsBg.url})` }}
         />
-        <div aria-hidden className="absolute inset-0 bg-black/85 backdrop-blur-xs" />
+        <div aria-hidden className="absolute inset-0 bg-service-overlay/65 backdrop-blur-xs" />
         <div className="relative mx-auto max-w-7xl px-5 py-24">
           <SectionHead title="Основные направления деятельности" />
           <div className="mb-16">
@@ -226,7 +226,7 @@ function Index() {
           </div>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             {directions.map((d, i) => (
-              <article key={d.id} id={d.id} className="relative flex scroll-mt-24 flex-col border bg-card p-8 transition-colors hover:border-safe/60">
+              <article key={d.id} id={d.id} className="relative flex scroll-mt-24 flex-col border border-service-border/15 bg-service-glass/75 p-8 backdrop-blur-md transition-colors hover:border-safe/60">
                 <div className="absolute inset-x-0 top-0 h-[2px] bg-safe shadow-safe" />
                 <div className="font-mono text-sm text-safe">{String(i + 1).padStart(2, "0")}</div>
                 <h3 className="mt-5 text-2xl font-bold leading-tight">{d.title}</h3>
