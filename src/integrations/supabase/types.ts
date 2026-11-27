@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          address: string
+          client_name: string
+          created_at: string
+          date: string
+          id: string
+          phone: string
+          slot: string
+        }
+        Insert: {
+          address: string
+          client_name: string
+          created_at?: string
+          date: string
+          id?: string
+          phone: string
+          slot: string
+        }
+        Update: {
+          address?: string
+          client_name?: string
+          created_at?: string
+          date?: string
+          id?: string
+          phone?: string
+          slot?: string
+        }
+        Relationships: []
+      }
       inspection_requests: {
         Row: {
           created_at: string
@@ -50,6 +80,13 @@ export type Database = {
     }
     Functions: {
       get_booked_slots: { Args: { _date: string }; Returns: string[] }
+      get_taken_slots: {
+        Args: { _from: string; _to: string }
+        Returns: {
+          date: string
+          slot: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
