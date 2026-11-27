@@ -132,7 +132,7 @@ function Index() {
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <HeroBuilding />
         </div>
-        <div className="pointer-events-none relative z-10 mx-auto grid min-h-[36rem] max-w-7xl gap-12 px-5 pb-40 pt-10 lg:min-h-[40rem] lg:grid-cols-2 lg:pb-28 lg:pt-12">
+        <div className="pointer-events-none relative z-10 mx-auto grid min-h-[36rem] max-w-7xl gap-12 px-5 pb-40 pt-10 lg:min-h-[max(34rem,44vw)] lg:grid-cols-2 lg:pb-28 lg:pt-12">
           <div className="flex min-w-0 flex-col justify-between gap-16">
             <h1 className="text-4xl font-bold leading-[1.05] md:text-6xl">
               Технический аудит и строительный контроль
