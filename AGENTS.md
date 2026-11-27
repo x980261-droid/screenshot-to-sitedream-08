@@ -11,6 +11,7 @@
 
 - Render crack paths and clips in the configured reveal order with instance-unique SVG IDs, so overlays cannot bind to another animation's clipping definitions.
 - Drive the apartment date/value overlay from the crack animation clock, with pure UTC date and price calculations in building-value.ts to keep resets synchronized and rules testable.
+- Keep hero copy in normal layout flow and counters in reserved grid tracks outside the scaled facade so fullscreen resizing and changing values cannot clip or shift text.
 
 - Keep the original facade asset unchanged with stationary lower floors and signs; render upper-floor image slices and cracks in a synchronized SVG overlay so separation never moves floors 1-2. Geometry uses component pixels mapped from the source by 760/1536 (x) and 623/1264 (y); timing, crack geometry and floor displacement live in building-cracks.ts for direct rule tests.
 - Bookings insert straight from the browser (anonymous insert-only access); visitors see taken slots only through the get_taken_slots database function, so addresses and phones stay unreadable. A unique (date, slot) pair prevents double booking.

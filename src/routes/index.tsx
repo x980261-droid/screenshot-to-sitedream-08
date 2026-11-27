@@ -132,12 +132,12 @@ function Index() {
         <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
           <HeroBuilding />
         </div>
-        <div className="pointer-events-none relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-2 lg:py-24">
-          <div>
-            <h1 style={{ transform: "translateY(-85px)" }} className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">
+        <div className="pointer-events-none relative z-10 mx-auto grid min-h-[36rem] max-w-7xl gap-12 px-5 pb-40 pt-10 lg:min-h-[40rem] lg:grid-cols-2 lg:pb-28 lg:pt-12">
+          <div className="flex min-w-0 flex-col justify-between gap-16">
+            <h1 className="text-4xl font-bold leading-[1.05] md:text-6xl">
               Технический аудит и строительный контроль
             </h1>
-            <p style={{ transform: "translateY(100%)" }} className="mt-6 max-w-xl text-lg text-muted-foreground">
+            <p className="max-w-xl text-lg text-muted-foreground">
               Контролируем каждый этап строительства на соответствие СП и ГОСТ, исключаем скрытые дефекты и
               оптимизируем затраты заказчика без потери качества.
             </p>
