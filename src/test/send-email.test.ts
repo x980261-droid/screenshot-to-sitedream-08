@@ -1,7 +1,7 @@
 import { afterAll, beforeEach, expect, it, vi } from "vitest";
 
 const { sendLovableEmail } = vi.hoisted(() => ({
-  sendLovableEmail: vi.fn(async (_payload: Record<string, unknown>, _options: Record<string, unknown>) => ({})),
+  sendLovableEmail: vi.fn(async (_payload: Record<string, unknown>, _options: Record<string, unknown>) => ({ success: true, message_id: "msg-123", status: "queued" } as Record<string, unknown>)),
 }));
 
 vi.mock("@lovable.dev/email-js", async (importOriginal) => {
@@ -47,4 +47,16 @@ it("always delivers the owner template to termin.info@yandex.ru instead of a cal
   const payload = sendLovableEmail.mock.calls[0]?.[0];
   expect(payload).toMatchObject({ to: "termin.info@yandex.ru" });
   expect(payload?.["to"]).not.toBe("visitor@example.com");
+});
+
+it("returns the gateway message id when the email is accepted", async () => {
+  const result = await sendTemplateEmail("owner-new-request", "termin.info@yandex.ru", {
+    templateData: { kind: "Новая заявка", name: "Иван", rows: [] },
+  });
+  expect(result).toEqual({ sent: true, messageId: "msg-123", status: "queued" });
+});
+
+it("throws instead of reporting sent when the gateway returns no message id", async () => {
+  sendLovableEmail.mockResolvedValueOnce({ success: false });
+  await expect(sendOwnerEmail()).rejects.toThrow("did not accept");
 });

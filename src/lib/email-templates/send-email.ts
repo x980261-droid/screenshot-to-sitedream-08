@@ -16,7 +16,7 @@ const SENDER_DOMAIN = "notify.termin-expert.pro"
 const FROM_DOMAIN = "notify.termin-expert.pro"
 
 export type SendTemplateEmailResult =
-  | { sent: true }
+  | { sent: true; messageId: string; status?: string }
   | { sent: false; reason: 'recipient_suppressed' }
 
 export interface SendTemplateEmailOptions {
@@ -66,8 +66,9 @@ export async function sendTemplateEmail(
       ? template.subject(templateData)
       : template.subject
 
+  let response
   try {
-    await sendLovableEmail(
+    response = await sendLovableEmail(
       {
         to: recipient,
         from: { name: SITE_NAME, address: `noreply@${FROM_DOMAIN}` },
@@ -89,5 +90,15 @@ export async function sendTemplateEmail(
     throw error
   }
 
-  return { sent: true }
+  // Report success only when the gateway accepted the message and returned its id.
+  if (!response?.success || !response.message_id) {
+    throw new Error(
+      `Email gateway did not accept the message${response?.status ? ` (status: ${response.status})` : ''}`
+    )
+  }
+  return {
+    sent: true,
+    messageId: response.message_id,
+    ...(response.status ? { status: response.status } : {}),
+  }
 }
