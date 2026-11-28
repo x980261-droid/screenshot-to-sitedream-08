@@ -1,4 +1,3 @@
-import nodemailer from "nodemailer";
 
 // Owner notifications go straight through Yandex SMTP; sender and recipient are fixed.
 export const OWNER_MAILBOX = "termin.info@yandex.ru";
@@ -20,12 +19,19 @@ export function buildOwnerMail(kind: string, name: string, rows: MailRow[]) {
 export async function sendOwnerMail(kind: string, name: string, rows: MailRow[]): Promise<string> {
   const pass = process.env["YANDEX_SMTP_PASS"];
   if (!pass) throw new Error("YANDEX_SMTP_PASS is not configured");
-  const transport = nodemailer.createTransport({
+  const { WorkerMailer } = await import("worker-mailer");
+  const m = buildOwnerMail(kind, name, rows);
+  const mailer = await WorkerMailer.connect({
+    credentials: { username: OWNER_MAILBOX, password: pass },
+    authType: "login",
     host: "smtp.yandex.ru",
     port: 465,
     secure: true,
-    auth: { user: OWNER_MAILBOX, pass },
   });
-  const info = await transport.sendMail(buildOwnerMail(kind, name, rows));
-  return info.messageId;
+  try {
+    await mailer.send({ from: { name: m.from.name, email: m.from.address }, to: { email: m.to }, subject: m.subject, text: m.text, html: m.html });
+  } finally {
+    await mailer.close().catch(() => {});
+  }
+  return `smtp.yandex.ru:${Date.now()}`;
 }
