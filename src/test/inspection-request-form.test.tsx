@@ -40,13 +40,15 @@ async function clickWhenReady(get: () => HTMLElement) {
 }
 
 async function pickTomorrow() {
-  const tomorrow = addDays(new Date(), 1);
+  let tomorrow = addDays(new Date(), 1);
+  while (![0, 1, 2].includes(tomorrow.getDay())) tomorrow = addDays(tomorrow, 1);
+  await act(async () => { fireEvent.click(screen.getByRole("button", { name: "Москва и МО" })); });
   await clickWhenReady(() => screen.getByRole("button", { name: dayLabel(tomorrow) }));
   return tomorrow;
 }
 
 function fillContacts() {
-  fireEvent.change(screen.getByLabelText("Адрес дома"), { target: { value: "Москва, ул. Строителей, 12" } });
+  fireEvent.change(screen.getByLabelText("Название ЖК / адрес объекта"), { target: { value: "Москва, ул. Строителей, 12" } });
   fireEvent.change(screen.getByLabelText("Номер телефона"), { target: { value: "+7 977 875 76 87" } });
   fireEvent.change(screen.getByLabelText("Имя"), { target: { value: "Иван" } });
 }
@@ -88,6 +90,7 @@ it("registers the booking once the consent box is ticked", async () => {
 
   await waitFor(() => expect(insert).toHaveBeenCalledTimes(1));
   expect(insert).toHaveBeenCalledWith({ id: expect.any(String),
+    city: "moscow",
     date: `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}`,
     slot: "morning",
     address: "Москва, ул. Строителей, 12",

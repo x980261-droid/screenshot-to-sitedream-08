@@ -37,31 +37,43 @@ export type Database = {
       }
       bookings: {
         Row: {
+          action_token: string
           address: string
+          city: string | null
           client_name: string
           created_at: string
           date: string
           id: string
           phone: string
+          queue_position: number | null
           slot: string
+          status: string
         }
         Insert: {
+          action_token?: string
           address: string
+          city?: string | null
           client_name: string
           created_at?: string
           date: string
           id?: string
           phone: string
+          queue_position?: number | null
           slot: string
+          status?: string
         }
         Update: {
+          action_token?: string
           address?: string
+          city?: string | null
           client_name?: string
           created_at?: string
           date?: string
           id?: string
           phone?: string
+          queue_position?: number | null
           slot?: string
+          status?: string
         }
         Relationships: []
       }
@@ -152,6 +164,15 @@ export type Database = {
     }
     Functions: {
       get_booked_slots: { Args: { _date: string }; Returns: string[] }
+      get_slot_queue: {
+        Args: { _from: string; _to: string }
+        Returns: {
+          closed: boolean
+          date: string
+          pending: number
+          slot: string
+        }[]
+      }
       get_taken_slots: {
         Args: { _from: string; _to: string }
         Returns: {

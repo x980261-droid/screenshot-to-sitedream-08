@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
 import { ru } from "date-fns/locale";
-import { BOOKING_SLOTS, isFullyBooked, isPastDay, takenOn, toDateKey } from "@/lib/inspection-slots";
+import { CITIES, BOOKING_SLOTS, isFullyBooked, isPastDay, takenOn, toDateKey } from "@/lib/inspection-slots";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -22,7 +22,8 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type Booking = { id: string; date: string; slot: string; address: string; phone: string; client_name: string };
+type Booking = { id: string; date: string; slot: string; address: string; phone: string; client_name: string; city: string | null; queue_position: number | null; status: string };
+const STATUS: Record<string, string> = { pending: "Ожидает", confirmed: "Подтверждена", rejected: "Отклонена" };
 type Block = { id: string; date: string; slot: string | null };
 const slotLabel = (s: string | null) => (s ? BOOKING_SLOTS.find((b) => b.id === s)?.label ?? s : "Весь день");
 const fmt = (d: string) => d.split("-").reverse().join(".");
@@ -92,11 +93,11 @@ function Dashboard() {
   const [day, setDay] = useState<Date | undefined>();
   const [err, setErr] = useState("");
   const [saving, setSaving] = useState(false);
-  const taken = [...bookings, ...blocks.flatMap((b) => b.slot ? [{ date: b.date, slot: b.slot }] : BOOKING_SLOTS.map((s) => ({ date: b.date, slot: s.id })))];
+  const taken = [...bookings.filter((b) => b.status !== "rejected"), ...blocks.flatMap((b) => b.slot ? [{ date: b.date, slot: b.slot }] : BOOKING_SLOTS.map((s) => ({ date: b.date, slot: s.id })))];
   const dayTaken = day ? takenOn(taken, toDateKey(day)) : [];
   const load = useCallback(async () => {
     const [b, bl] = await Promise.all([
-      supabase.from("bookings").select("id,date,slot,address,phone,client_name").order("date").order("slot", { ascending: false }),
+      supabase.from("bookings").select("id,date,slot,address,phone,client_name,city,queue_position,status").order("date").order("slot", { ascending: false }),
       supabase.from("blocked_slots").select("id,date,slot").order("date"),
     ]);
     if (b.error || bl.error) setErr("Не удалось загрузить заявки или блокировки. Обновите страницу.");
@@ -128,19 +129,22 @@ function Dashboard() {
         <div className="overflow-x-auto rounded-md border border-border">
           <table className="w-full text-sm">
             <thead className="bg-muted text-left">
-              <tr>{["Дата", "Слот", "Адрес дома", "Телефон", "Имя"].map((h) => <th key={h} className="px-3 py-2 font-medium">{h}</th>)}</tr>
+              <tr>{["Дата", "Слот", "Город", "Очередь", "Статус", "ЖК / адрес", "Телефон", "Имя"].map((h) => <th key={h} className="px-3 py-2 font-medium">{h}</th>)}</tr>
             </thead>
             <tbody>
               {bookings.map((b) => (
                 <tr key={b.id} className="border-t border-border">
                   <td className="px-3 py-2 whitespace-nowrap">{fmt(b.date)}</td>
                   <td className="px-3 py-2">{slotLabel(b.slot)}</td>
+                  <td className="px-3 py-2">{CITIES.find((c) => c.id === b.city)?.label ?? "—"}</td>
+                  <td className="px-3 py-2">{b.queue_position ?? "—"}</td>
+                  <td className="px-3 py-2">{STATUS[b.status] ?? b.status}</td>
                   <td className="px-3 py-2">{b.address}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{b.phone}</td>
                   <td className="px-3 py-2">{b.client_name}</td>
                 </tr>
               ))}
-              {bookings.length === 0 && <tr><td colSpan={5} className="px-3 py-6 text-center text-muted-foreground">Заявок пока нет</td></tr>}
+              {bookings.length === 0 && <tr><td colSpan={8} className="px-3 py-6 text-center text-muted-foreground">Заявок пока нет</td></tr>}
             </tbody>
           </table>
         </div>

@@ -29,3 +29,31 @@ export function isFullyBooked(taken: readonly TakenSlot[], dateKey: string): boo
   const s = takenOn(taken, dateKey);
   return BOOKING_SLOTS.every((b) => s.includes(b.id));
 }
+
+export const CITIES = [
+  { id: "moscow", label: "Москва и МО", days: [0, 1, 2] },
+  { id: "lipetsk", label: "Липецк", days: [3, 4, 5] },
+  { id: "voronezh", label: "Воронеж", days: [6] },
+] as const;
+export type CityId = (typeof CITIES)[number]["id"];
+
+/** Only the weekdays served in the chosen city are open; nothing is open before a city is chosen. */
+export function isCityDay(city: CityId | null, day: Date): boolean {
+  const c = CITIES.find((x) => x.id === city);
+  return !!c && (c.days as readonly number[]).includes(day.getDay());
+}
+
+export type SlotQueue = { date: string; slot: string; pending: number; closed: boolean };
+export type SlotState = "free" | "booked" | "rebooked" | "closed";
+
+/** White = free (1st), green = one pending (2nd), red = two pending (3rd), closed = 3 queued or confirmed/blocked. */
+export function slotState(queue: readonly SlotQueue[], dateKey: string, slot: string): SlotState {
+  const q = queue.find((x) => x.date === dateKey && x.slot === slot);
+  if (!q) return "free";
+  if (q.closed || q.pending >= 3) return "closed";
+  return q.pending === 2 ? "rebooked" : q.pending === 1 ? "booked" : "free";
+}
+
+export function isDayClosed(queue: readonly SlotQueue[], dateKey: string): boolean {
+  return BOOKING_SLOTS.every((b) => slotState(queue, dateKey, b.id) === "closed");
+}

@@ -36,6 +36,20 @@
       "when": 1795811642000,
       "tag": "0004_documentation_orders",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795862776758,
+      "tag": "0005_booking_city_queue",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1795862794173,
+      "tag": "0006_booking_trigger_insert_only",
+      "breakpoints": true
     }
   ]
 }
