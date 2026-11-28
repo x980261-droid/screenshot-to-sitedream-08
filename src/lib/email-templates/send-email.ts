@@ -11,9 +11,9 @@ const SITE_NAME = "Термин"
 // domain registered through Lovable, the domain itself or a name under it (e.g., "example.com", "app.example.com").
 // It MUST match the sender verified in Lovable's email setup.
 const SENDER_DOMAIN = "notify.termin-expert.pro"
-// FROM_DOMAIN is the domain shown in the From: header (e.g., "example.com").
-// Can be the root domain when display_from_root is enabled — this is cosmetic only.
-const FROM_DOMAIN = "termin-expert.pro"
+// FROM_DOMAIN is the domain shown in the From: header. Keep the visible sender
+// on the same verified delegated subdomain used for sending.
+const FROM_DOMAIN = "notify.termin-expert.pro"
 
 export type SendTemplateEmailResult =
   | { sent: true }

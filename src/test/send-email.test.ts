@@ -33,11 +33,11 @@ async function sendOwnerEmail() {
   });
 }
 
-it("uses noreply@termin-expert.pro as the visible sender and the verified delegated domain for sending", async () => {
+it("uses noreply@notify.termin-expert.pro as the visible sender and the verified delegated domain for sending", async () => {
   await sendOwnerEmail();
   const payload = sendLovableEmail.mock.calls[0]?.[0];
   expect(payload).toMatchObject({
-    from: { name: "Термин", address: "noreply@termin-expert.pro" },
+    from: { name: "Термин", address: "noreply@notify.termin-expert.pro" },
     sender_domain: "notify.termin-expert.pro",
   });
 });
