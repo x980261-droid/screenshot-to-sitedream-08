@@ -29,6 +29,7 @@ export async function sendOwnerNotification(kind: "booking" | "documentation", i
           { label: "ЖК / адрес объекта", value: b.address },
           { label: "Телефон", value: b.phone },
           { label: "Имя", value: b.client_name },
+          { label: "Комментарий", value: b.comment || "—" },
         ], {
           subject: `[${q}-й в очереди] ${city}, ${d}.${m}.${y}, ${time} — ${b.client_name}`,
           actions: [
@@ -51,6 +52,7 @@ export async function sendOwnerNotification(kind: "booking" | "documentation", i
         { label: "ЖК / ссылка / комментарий", value: o.project_description },
         { label: "Имя", value: o.client_name },
         { label: "Телефон", value: o.phone },
+        { label: "Комментарий", value: o.comment || "—" },
         ...links,
       ]);
     return { sent: true, messageId };

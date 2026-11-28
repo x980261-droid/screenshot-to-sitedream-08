@@ -10,6 +10,7 @@ export const MAX_DOCUMENT_SIZE = 20 * 1024 * 1024;
 export const MAX_DOCUMENTS = 5;
 export const documentationOrderSchema = z.object({
   service: z.enum(["project", "working", "estimate"], { errorMap: () => ({ message: "Выберите услугу." }) }),
+  comment: z.string().trim().max(2000, "Комментарий слишком длинный.").optional().transform((v) => v || null),
   project_description: z.string().trim().min(3, "Укажите ЖК, ссылку или комментарий.").max(2000, "Комментарий слишком длинный."),
   client_name: z.string().trim().min(1, "Укажите имя.").max(100),
   phone: z.string().trim().regex(/^[\d\s()+-]{5,30}$/, "Проверьте номер телефона."),

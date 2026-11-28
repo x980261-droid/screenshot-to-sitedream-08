@@ -1,0 +1,2 @@
+ALTER TABLE public.bookings ADD COLUMN comment text CHECK (comment IS NULL OR char_length(comment) <= 2000);
+ALTER TABLE public.documentation_orders ADD COLUMN comment text CHECK (comment IS NULL OR char_length(comment) <= 2000);

@@ -50,6 +50,13 @@
       "when": 1795862794173,
       "tag": "0006_booking_trigger_insert_only",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795863225249,
+      "tag": "0007_order_comments",
+      "breakpoints": true
     }
   ]
 }

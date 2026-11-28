@@ -74,12 +74,13 @@ export function InspectionRequestForm() {
     const address = String(f.get("address") ?? "").trim();
     const phone = String(f.get("phone") ?? "").trim();
     const client_name = String(f.get("client_name") ?? "").trim();
+    const comment = String(f.get("comment") ?? "").trim().slice(0, 2000) || null;
     if (address.length < 3) return setError("Укажите название ЖК или адрес объекта.");
     if (!/^[\d\s()+-]{5,30}$/.test(phone)) return setError("Проверьте номер телефона.");
     if (!client_name) return setError("Укажите имя.");
     setSubmitting(true);
     const id = crypto.randomUUID();
-    const { error: err } = await supabase.from("bookings").insert({ id, city, date: toDateKey(date), slot, address, phone, client_name });
+    const { error: err } = await supabase.from("bookings").insert({ id, city, date: toDateKey(date), slot, address, phone, client_name, comment });
     setSubmitting(false);
     if (err) {
       const msg = `${err.message ?? ""}`;
@@ -163,6 +164,10 @@ export function InspectionRequestForm() {
                 className="w-full border bg-card px-4 py-3 outline-none transition-colors focus:border-safe" />
             </label>
           ))}
+          <label className="block">
+            <span className="mb-2 block font-mono text-xs uppercase text-muted-foreground">Комментарий (дополнительные требования)</span>
+            <textarea name="comment" maxLength={2000} rows={3} className="w-full resize-y border bg-card px-4 py-3 outline-none transition-colors focus:border-safe" />
+          </label>
         </>
       )}
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}

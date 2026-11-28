@@ -52,7 +52,7 @@ it("uploads a PDF and saves a consented order without date or slot", async () =>
   fireEvent.submit(screen.getByRole("form"));
   await waitFor(() => expect(insert).toHaveBeenCalledTimes(1));
   expect(upload).toHaveBeenCalledTimes(1);
-  expect(insert).toHaveBeenCalledWith({ ...valid, service: "working", id: "8dfe2c82-61a1-4a50-9db3-2a15c9538759", files: [{ name: "plans.pdf", path: "8dfe2c82-61a1-4a50-9db3-2a15c9538759/8dfe2c82-61a1-4a50-9db3-2a15c9538759.pdf" }] });
+  expect(insert).toHaveBeenCalledWith({ ...valid, service: "working", comment: null, id: "8dfe2c82-61a1-4a50-9db3-2a15c9538759", files: [{ name: "plans.pdf", path: "8dfe2c82-61a1-4a50-9db3-2a15c9538759/8dfe2c82-61a1-4a50-9db3-2a15c9538759.pdf" }] });
   expect(notifyOwner).toHaveBeenCalledWith({ data: { kind: "documentation", id: "8dfe2c82-61a1-4a50-9db3-2a15c9538759" } });
   await screen.findByRole("status");
 });

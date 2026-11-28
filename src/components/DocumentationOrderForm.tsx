@@ -31,7 +31,7 @@ export function DocumentationOrderForm() {
       return;
     }
     const form = new FormData(e.currentTarget);
-    const result = documentationOrderSchema.safeParse({ service, project_description: form.get("project_description"), client_name: form.get("client_name"), phone: form.get("phone"), consent });
+    const result = documentationOrderSchema.safeParse({ service, project_description: form.get("project_description"), client_name: form.get("client_name"), phone: form.get("phone"), comment: form.get("comment") ?? "", consent });
     if (!result.success) { setError(result.error.issues[0]?.message ?? "Проверьте поля формы."); return; }
     const fileError = validateDocuments(files);
     if (fileError) { setError(fileError); return; }
@@ -94,6 +94,7 @@ export function DocumentationOrderForm() {
               <label><span className={caption}>Имя</span><input name="client_name" required maxLength={100} autoComplete="name" className={field} /></label>
               <label><span className={caption}>Телефон</span><input name="phone" type="tel" required maxLength={30} autoComplete="tel" className={field} /></label>
             </div>
+            <label><span className={caption}>Комментарий (дополнительные требования)</span><textarea name="comment" maxLength={2000} rows={3} className={`${field} resize-y`} /></label>
             <div className={`flex items-start gap-3 border bg-card p-4 text-sm ${error && !consent ? "border-danger" : "border-input"}`}>
               <Checkbox id="documentation-consent" checked={consent} onCheckedChange={(v) => setConsent(v === true)} className="mt-0.5 h-5 w-5 shrink-0 data-[state=checked]:border-safe data-[state=checked]:bg-safe data-[state=checked]:text-primary-foreground" />
               <label htmlFor="documentation-consent" className="cursor-pointer">Принимаю условия <Link to="/offer" className="font-semibold underline underline-offset-4 hover:text-accent">Публичная оферта</Link>, <Link to="/privacy" className="font-semibold underline underline-offset-4 hover:text-accent">Политика конфиденциальности</Link> и согласен на обработку данных заказа.</label>

@@ -95,7 +95,7 @@ it("registers the booking once the consent box is ticked", async () => {
     slot: "morning",
     address: "Москва, ул. Строителей, 12",
     phone: "+7 977 875 76 87",
-    client_name: "Иван",
+    client_name: "Иван", comment: null,
   });
   const bookingId = insert.mock.calls[0]?.[0].id;
   expect(bookingId).toEqual(expect.any(String));

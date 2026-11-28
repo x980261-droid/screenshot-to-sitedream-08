@@ -41,6 +41,7 @@ export type Database = {
           address: string
           city: string | null
           client_name: string
+          comment: string | null
           created_at: string
           date: string
           id: string
@@ -54,6 +55,7 @@ export type Database = {
           address: string
           city?: string | null
           client_name: string
+          comment?: string | null
           created_at?: string
           date: string
           id?: string
@@ -67,6 +69,7 @@ export type Database = {
           address?: string
           city?: string | null
           client_name?: string
+          comment?: string | null
           created_at?: string
           date?: string
           id?: string
@@ -80,6 +83,7 @@ export type Database = {
       documentation_orders: {
         Row: {
           client_name: string
+          comment: string | null
           consent: boolean
           created_at: string
           files: Json
@@ -90,6 +94,7 @@ export type Database = {
         }
         Insert: {
           client_name: string
+          comment?: string | null
           consent: boolean
           created_at?: string
           files?: Json
@@ -100,6 +105,7 @@ export type Database = {
         }
         Update: {
           client_name?: string
+          comment?: string | null
           consent?: boolean
           created_at?: string
           files?: Json

@@ -22,7 +22,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
-type Booking = { id: string; date: string; slot: string; address: string; phone: string; client_name: string; city: string | null; queue_position: number | null; status: string };
+type Booking = { id: string; date: string; slot: string; address: string; phone: string; client_name: string; city: string | null; queue_position: number | null; status: string; comment: string | null };
 const STATUS: Record<string, string> = { pending: "Ожидает", confirmed: "Подтверждена", rejected: "Отклонена" };
 type Block = { id: string; date: string; slot: string | null };
 const slotLabel = (s: string | null) => (s ? BOOKING_SLOTS.find((b) => b.id === s)?.label ?? s : "Весь день");
@@ -97,7 +97,7 @@ function Dashboard() {
   const dayTaken = day ? takenOn(taken, toDateKey(day)) : [];
   const load = useCallback(async () => {
     const [b, bl] = await Promise.all([
-      supabase.from("bookings").select("id,date,slot,address,phone,client_name,city,queue_position,status").order("date").order("slot", { ascending: false }),
+      supabase.from("bookings").select("id,date,slot,address,phone,client_name,city,queue_position,status,comment").order("date").order("slot", { ascending: false }),
       supabase.from("blocked_slots").select("id,date,slot").order("date"),
     ]);
     if (b.error || bl.error) setErr("Не удалось загрузить заявки или блокировки. Обновите страницу.");
@@ -129,7 +129,7 @@ function Dashboard() {
         <div className="overflow-x-auto rounded-md border border-border">
           <table className="w-full text-sm">
             <thead className="bg-muted text-left">
-              <tr>{["Дата", "Слот", "Город", "Очередь", "Статус", "ЖК / адрес", "Телефон", "Имя"].map((h) => <th key={h} className="px-3 py-2 font-medium">{h}</th>)}</tr>
+              <tr>{["Дата", "Слот", "Город", "Очередь", "Статус", "ЖК / адрес", "Телефон", "Имя", "Комментарий"].map((h) => <th key={h} className="px-3 py-2 font-medium">{h}</th>)}</tr>
             </thead>
             <tbody>
               {bookings.map((b) => (
@@ -142,6 +142,7 @@ function Dashboard() {
                   <td className="px-3 py-2">{b.address}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{b.phone}</td>
                   <td className="px-3 py-2">{b.client_name}</td>
+                  <td className="px-3 py-2 max-w-xs whitespace-pre-wrap break-words">{b.comment ?? ""}</td>
                 </tr>
               ))}
               {bookings.length === 0 && <tr><td colSpan={8} className="px-3 py-6 text-center text-muted-foreground">Заявок пока нет</td></tr>}
