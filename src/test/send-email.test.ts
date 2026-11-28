@@ -1,7 +1,7 @@
 import { afterAll, beforeEach, expect, it, vi } from "vitest";
 
 const { sendLovableEmail } = vi.hoisted(() => ({
-  sendLovableEmail: vi.fn(async (_payload: Record<string, unknown>, _options: Record<string, unknown>) => ({ success: true, message_id: "msg-123", status: "queued" } as Record<string, unknown>)),
+  sendLovableEmail: vi.fn(async (_payload: Record<string, unknown>, _options: Record<string, unknown>) => ({ success: true, send_id: "msg-123", status: "queued" } as Record<string, unknown>)),
 }));
 
 vi.mock("@lovable.dev/email-js", async (importOriginal) => {

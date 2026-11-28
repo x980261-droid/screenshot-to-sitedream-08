@@ -91,14 +91,16 @@ export async function sendTemplateEmail(
   }
 
   // Report success only when the gateway accepted the message and returned its id.
-  if (!response?.success || !response.message_id) {
+  // The gateway answers { success, send_id, status }; older versions used message_id.
+  const sendId = (response as { send_id?: string } | undefined)?.send_id ?? response?.message_id
+  if (!response?.success || !sendId) {
     throw new Error(
       `Email gateway did not accept the message${response?.status ? ` (status: ${response.status})` : ''}`
     )
   }
   return {
     sent: true,
-    messageId: response.message_id,
+    messageId: sendId,
     ...(response.status ? { status: response.status } : {}),
   }
 }
