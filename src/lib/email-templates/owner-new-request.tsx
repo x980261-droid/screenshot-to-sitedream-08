@@ -32,7 +32,7 @@ export const template = {
   component: Email,
   subject: (d: Record<string, any>) => `${d['kind'] ?? 'Новая заявка'} — ${d['name'] ?? 'сайт Термин'}`,
   displayName: 'Новая заявка (владельцу)',
-  to: 'termin.info@yandex.ru',
+  to: 'termin.info24@gmail.com',
   previewData: {
     kind: 'Запись на приёмку квартиры',
     name: 'Иван',

@@ -21,7 +21,7 @@ export async function sendOwnerNotification(kind: "booking" | "documentation", i
     if (!isFresh(b.created_at)) return { sent: false as const, error: "Заявка старше 15 минут — уведомление не отправляется" };
     const s = BOOKING_SLOTS.find((x) => x.id === b.slot);
     const [y, m, d] = b.date.split("-");
-    const result = await sendTemplateEmail("owner-new-request", "termin.info@yandex.ru", {
+    const result = await sendTemplateEmail("owner-new-request", "termin.info24@gmail.com", {
       idempotencyKey: `owner-new-request-booking-${b.id}`,
       templateData: {
         kind: "Запись на приёмку квартиры",
@@ -44,7 +44,7 @@ export async function sendOwnerNotification(kind: "booking" | "documentation", i
     const { data } = await supabaseAdmin.storage.from(DOCUMENTS_BUCKET).createSignedUrl(f.path, 60 * 60 * 24 * 7);
     return { label: `Файл ${f.name}`, value: data?.signedUrl ?? "ссылка недоступна — откройте в админке" };
   }));
-  const result = await sendTemplateEmail("owner-new-request", "termin.info@yandex.ru", {
+  const result = await sendTemplateEmail("owner-new-request", "termin.info24@gmail.com", {
     idempotencyKey: `owner-new-request-documentation-${o.id}`,
     templateData: {
       kind: "Заказ проверки проектной документации",

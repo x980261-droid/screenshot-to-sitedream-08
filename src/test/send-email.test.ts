@@ -42,15 +42,15 @@ it("uses noreply@notify.termin-expert.pro as the visible sender and the verified
   });
 });
 
-it("always delivers the owner template to termin.info@yandex.ru instead of a caller-provided address", async () => {
+it("always delivers the owner template to termin.info24@gmail.com instead of a caller-provided address", async () => {
   await sendOwnerEmail();
   const payload = sendLovableEmail.mock.calls[0]?.[0];
-  expect(payload).toMatchObject({ to: "termin.info@yandex.ru" });
+  expect(payload).toMatchObject({ to: "termin.info24@gmail.com" });
   expect(payload?.["to"]).not.toBe("visitor@example.com");
 });
 
 it("returns the gateway message id when the email is accepted", async () => {
-  const result = await sendTemplateEmail("owner-new-request", "termin.info@yandex.ru", {
+  const result = await sendTemplateEmail("owner-new-request", "termin.info24@gmail.com", {
     templateData: { kind: "Новая заявка", name: "Иван", rows: [] },
   });
   expect(result).toEqual({ sent: true, messageId: "msg-123", status: "queued" });
