@@ -11,13 +11,7 @@ export const notifyOwner = createServerFn({ method: "POST" })
       return await sendOwnerNotification(data.kind, data.id);
     } catch (error) {
       console.error("owner notification failed", error);
-      const { EmailAPIError } = await import("@lovable.dev/email-js");
-      const message =
-        error instanceof EmailAPIError
-          ? `${error.code ?? "email_error"} (HTTP ${error.status}): ${error.message}`
-          : error instanceof Error
-            ? error.message
-            : "Неизвестная ошибка отправки";
+      const message = error instanceof Error ? error.message : "Неизвестная ошибка отправки";
       return { sent: false as const, error: message };
     }
   });
